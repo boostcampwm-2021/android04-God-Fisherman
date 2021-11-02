@@ -11,4 +11,6 @@
     <dimen name="text_median">16dp</dimen>
     <dimen name="text_large">20dp</dimen>
     <dimen name="text_x_large">24dp</dimen>
+
+    <dimen name="camera_guide_margin">60dp</dimen>
 </resources>
