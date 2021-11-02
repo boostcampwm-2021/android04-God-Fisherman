@@ -29,14 +29,21 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera) {
+class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera),
+    SensorEventListener {
     override val viewModel: CameraViewModel by viewModels()
 
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
 
+    private val sensorManager by lazy{
+        getSystemService(SENSOR_SERVICE) as SensorManager
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         setFullScreen()
         operateCamera()
@@ -45,6 +52,25 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             takePhoto()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_FASTEST)
+
+    }
+
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let{
+            binding.lvTest.onSensorEvent(event)
+        }
+    }
+
 
     private fun setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -156,6 +182,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+        sensorManager.unregisterListener(this)
     }
 
     private inner class FishAnalyzer : ImageAnalysis.Analyzer {
