@@ -19,5 +19,6 @@ class HomeViewModel @Inject constructor(
         val (latitude, longitude) = location.latitude to location.longitude
         println("latitude : $latitude")
         println("longitude : $longitude")
+        locationRepository.updateLocation(latitude, longitude)
     }
 }
