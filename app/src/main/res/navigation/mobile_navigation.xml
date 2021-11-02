@@ -22,4 +22,16 @@
         android:name="com.android04.godfisherman.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_stopwatch"
+        android:name="com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment"
+        android:label="@string/navigation_menu_stopwatch"
+        tools:layout="@layout/fragment_stopwatch_info" />
+
+    <fragment
+        android:id="@+id/navigation_my_page"
+        android:name="com.android04.godfisherman.ui.mypage.MyPageFragment"
+        android:label="@string/navigation_menu_my_page"
+        tools:layout="@layout/fragment_my_page" />
 </navigation>

@@ -16,4 +16,13 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
 
+    <item
+        android:id="@+id/navigation_stopwatch"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/navigation_menu_stopwatch" />
+
+    <item
+        android:id="@+id/navigation_my_page"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/navigation_menu_my_page" />
 </menu>
