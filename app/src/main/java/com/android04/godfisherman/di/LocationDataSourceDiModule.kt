@@ -1,7 +1,7 @@
 package com.android04.godfisherman.di
 
-import com.android04.godfisherman.data.datasource.remote.RemoteLocationDataSource
-import com.android04.godfisherman.data.datasource.remote.RemoteLocationDataSourceImpl
+import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSource
+import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,6 +13,6 @@ abstract class LocationDataSourceDiModule {
 
     @Binds
     abstract fun bindRemoteLocationDataSource(
-        remoteLocationDataSourceImpl: RemoteLocationDataSourceImpl
-    ): RemoteLocationDataSource
+        locationRemoteDataSourceImpl: LocationRemoteDataSourceImpl
+    ): LocationRemoteDataSource
 }
