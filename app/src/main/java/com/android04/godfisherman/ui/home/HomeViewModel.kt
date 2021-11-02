@@ -13,6 +13,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun diTest() {
-        locationRepository.test()
+        locationRepository.loadData()
     }
 }

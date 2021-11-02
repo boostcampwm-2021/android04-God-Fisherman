@@ -1,12 +1,13 @@
 package com.android04.godfisherman.data.repository
 
+import com.android04.godfisherman.data.datasource.remote.RemoteLocationDataSource
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
-
+    private val remoteDataSource: RemoteLocationDataSource
 ) {
-    // TODO This is a test
-    fun test() {
-        println("This is a di test!")
+
+    fun loadData() {
+        remoteDataSource.loadData()
     }
 }
