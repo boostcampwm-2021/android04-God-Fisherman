@@ -13,12 +13,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <ImageView
+            android:id="@+id/iv_fish_guide"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/img_fish_guide"
+            app:layout_constraintStart_toStartOf="@id/iv_guide_line"
+            app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/iv_guide_line"/>
+
+        <ImageView
+            android:id="@+id/iv_guide_line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_line_guide"
+            android:layout_marginStart="@dimen/camera_guide_margin"
+            android:layout_marginEnd="@dimen/camera_guide_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bt_shutter"/>
+
+        <ImageView
+            android:id="@+id/iv_money_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_money_guide"
+            app:layout_constraintTop_toBottomOf="@id/iv_guide_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/iv_guide_line"
+            app:layout_constraintEnd_toEndOf="@id/iv_guide_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/camera_1000_won_text"
+            android:textSize="36dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/iv_money_guide"
+            app:layout_constraintEnd_toEndOf="@id/iv_money_guide"
+            app:layout_constraintTop_toTopOf="@id/iv_money_guide"
+            app:layout_constraintBottom_toBottomOf="@id/iv_money_guide" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_shutter"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@drawable/bg_primary_to_secondary_circle"
-            android:layout_marginEnd="58dp"
+            android:layout_marginEnd="@dimen/camera_guide_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
