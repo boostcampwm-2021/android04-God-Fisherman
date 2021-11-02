@@ -6,8 +6,4 @@ import javax.inject.Inject
 class LocationRepository @Inject constructor(
     private val remoteDataSource: RemoteLocationDataSource
 ) {
-
-    fun loadData() {
-        remoteDataSource.loadData()
-    }
 }
