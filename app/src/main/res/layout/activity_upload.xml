@@ -140,6 +140,20 @@
                     app:layout_constraintStart_toEndOf="@id/iv_fish_type_title"
                     app:layout_constraintTop_toTopOf="@id/iv_fish_type_title" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_fish_type"
+                    style="@style/customExposedDropdownMenu"
+                    android:layout_width="@dimen/upload_text_input_layout_width"
+                    android:layout_height="@dimen/upload_text_input_layout_height"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_fish_type_title">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
