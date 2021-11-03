@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1093588958424-9bv8f84f5ump4vulijivjb3nhi1eab2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android04.godfisherman",
+            "certificate_hash": "c81482cf3dc7b1436c73b2d4825fce80ea3ce1f4"
+          }
+        },
+        {
           "client_id": "1093588958424-rd383g969dltlr0v16fnhk304p4e81n4.apps.googleusercontent.com",
           "client_type": 3
         }
