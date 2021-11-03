@@ -17,5 +17,6 @@
     <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/notosans_font_family</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>
