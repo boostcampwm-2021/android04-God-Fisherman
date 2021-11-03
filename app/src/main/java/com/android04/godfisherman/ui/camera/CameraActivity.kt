@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
-import java.nio.ByteBuffer
+import com.android04.godfisherman.utils.toByteArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -183,14 +183,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             image.close()
         }
 
-    }
-
-    // TODO: Util 로 분리 필요
-    private fun ByteBuffer.toByteArray(): ByteArray {
-        rewind()
-        val data = ByteArray(remaining())
-        get(data)
-        return data
     }
 
     companion object {
