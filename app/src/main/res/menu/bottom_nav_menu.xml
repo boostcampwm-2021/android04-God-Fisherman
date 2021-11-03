@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_home_round"
         android:title="@string/title_home" />
 
     <item
@@ -13,16 +13,16 @@
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:icon="@drawable/ic_add_box"
+        android:title="@string/title_camera" />
 
     <item
         android:id="@+id/navigation_stopwatch"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_sailing_round"
         android:title="@string/navigation_menu_stopwatch" />
 
     <item
         android:id="@+id/navigation_my_page"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_person_round"
         android:title="@string/navigation_menu_my_page" />
 </menu>

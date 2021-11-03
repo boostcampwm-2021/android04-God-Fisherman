@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.android04.godfisherman.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_camera"
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
