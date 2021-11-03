@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1093588958424",
+    "project_id": "god-fisherman",
+    "storage_bucket": "god-fisherman.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093588958424:android:69c51c0fdd9ab32bf3abad",
+        "android_client_info": {
+          "package_name": "com.android04.godfisherman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093588958424-rd383g969dltlr0v16fnhk304p4e81n4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh1vkrjzcKLgtbvwZ_Wppf1IZvoe22uoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093588958424-rd383g969dltlr0v16fnhk304p4e81n4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
