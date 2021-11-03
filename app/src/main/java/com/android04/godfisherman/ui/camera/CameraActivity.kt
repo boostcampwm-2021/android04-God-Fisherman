@@ -39,8 +39,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         setFullScreen()
         setBinding()
@@ -48,6 +46,9 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     private fun setFullScreen() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
