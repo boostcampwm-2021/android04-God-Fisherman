@@ -22,9 +22,11 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
+import com.android04.godfisherman.utils.ObjectDetector
 import com.android04.godfisherman.utils.toByteArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.roundToInt
 
 class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera),
     SensorEventListener {
@@ -182,10 +184,22 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private inner class FishAnalyzer : ImageAnalysis.Analyzer {
 
-        override fun analyze(image: ImageProxy) {
-            image.close()
+        val detector = ObjectDetector {
+            binding.stroke.top = dpToPx(it.top)
+            binding.stroke.bottom = dpToPx(it.bottom)
+            binding.stroke.left = dpToPx(it.left)
+            binding.stroke.right = dpToPx(it.right)
         }
 
+        override fun analyze(image: ImageProxy) {
+            detector.detectImage(image)
+        }
+
+    }
+
+    fun dpToPx(dp: Int): Int {
+        val density = resources.displayMetrics.density
+        return (dp * density).roundToInt()
     }
 
     companion object {
