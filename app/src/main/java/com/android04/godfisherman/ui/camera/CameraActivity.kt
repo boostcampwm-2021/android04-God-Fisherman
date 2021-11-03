@@ -1,7 +1,6 @@
 package com.android04.godfisherman.ui.camera
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -23,9 +22,7 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
-import com.android04.godfisherman.ui.main.MainActivity
 import java.nio.ByteBuffer
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -52,25 +49,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             takePhoto()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        sensorManager.registerListener(this,
-            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_FASTEST)
-
-    }
-
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        event?.let{
-            binding.lvTest.onSensorEvent(event)
-        }
-    }
-
 
     private fun setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -169,14 +147,28 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
 
-                    val msg = "Photo capture succeeded"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-
-                    // TODO: 데이터 전달 로직 추
+                    // TODO: 데이터 전달 로직 추가
 
                     image.close()
                 }
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_FASTEST)
+
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let{
+            binding.lvTest.onSensorEvent(event)
+        }
     }
 
     override fun onDestroy() {
