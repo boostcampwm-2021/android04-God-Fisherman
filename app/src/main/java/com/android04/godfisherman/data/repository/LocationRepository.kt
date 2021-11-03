@@ -9,8 +9,8 @@ class LocationRepository @Inject constructor(
     private val preferenceManager: SharedPreferenceManager
 ) {
 
-    fun updateLocation(latitude: Double, longitude: Double) {
-        // TODO 위도, 경도 기반의 위치 정보를 remoteDataSource 로 부터 전달받아야한다.
-        preferenceManager.saveString(SharedPreferenceManager.PREF_LOCATION, "$latitude,$longitude")
+    suspend fun updateLocation(latitude: Double, longitude: Double) {
+        val currentAddress = remoteDataSource.fetchAddress(latitude, longitude)
+        preferenceManager.saveString(SharedPreferenceManager.PREF_LOCATION, currentAddress.getAddressLine(0))
     }
 }
