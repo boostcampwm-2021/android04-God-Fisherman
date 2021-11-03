@@ -30,7 +30,7 @@
 
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">100dp</item>
+        <item name="cornerSize">50dp</item>
     </style>
 
 </resources>

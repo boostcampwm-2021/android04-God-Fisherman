@@ -17,6 +17,6 @@
     <dimen name="camera_guide_margin">60dp</dimen>
     <dimen name="upload_thumbnail_height">240dp</dimen>
     <dimen name="upload_iv_length_title_margin_top">36dp</dimen>
-    <dimen name="upload_text_input_layout_height">45dp</dimen>
-    <dimen name="upload_text_input_layout_width">120dp</dimen>
+    <dimen name="upload_text_input_layout_height">60dp</dimen>
+    <dimen name="upload_text_input_layout_width">160dp</dimen>
 </resources>
