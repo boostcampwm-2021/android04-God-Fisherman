@@ -11,6 +11,7 @@ class LocationRepository @Inject constructor(
 
     suspend fun updateLocation(latitude: Double, longitude: Double) {
         val currentAddress = remoteDataSource.fetchAddress(latitude, longitude)
+        println("location : ${currentAddress.getAddressLine(0)}")
         preferenceManager.saveString(SharedPreferenceManager.PREF_LOCATION, currentAddress.getAddressLine(0))
     }
 }
