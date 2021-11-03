@@ -43,11 +43,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         setFullScreen()
+        setBinding()
         operateCamera()
-
-        binding.btShutter.setOnClickListener {
-            takePhoto()
-        }
     }
 
     private fun setFullScreen() {
@@ -56,6 +53,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         } else {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
+    }
+
+    private fun setBinding() {
+        binding.activity = this
     }
 
     private fun operateCamera() {
@@ -134,7 +135,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         }
     }
 
-    private fun takePhoto() {
+    fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
@@ -163,6 +164,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
