@@ -162,7 +162,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         super.onResume()
         sensorManager.registerListener(this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_FASTEST)
+            SensorManager.SENSOR_DELAY_NORMAL)
 
     }
 
