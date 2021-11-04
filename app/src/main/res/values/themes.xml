@@ -17,5 +17,20 @@
     <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/notosans_font_family</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="customExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="boxBackgroundColor">@color/secondary_container</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintAnimationEnabled">false</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
+
 </resources>
