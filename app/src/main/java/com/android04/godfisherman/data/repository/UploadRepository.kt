@@ -6,8 +6,7 @@ import javax.inject.Inject
 class UploadRepository @Inject constructor(
     val localDataSource: UploadDataSource.LocalDataSource,
     val remoteDataSource: UploadDataSource.RemoteDataSource
-) : UploadDataSource.LocalDataSource, UploadDataSource.RemoteDataSource {
+) {
 
-    override suspend fun fetchFishTypeList(): List<String> = remoteDataSource.fetchFishTypeList()
-
+    suspend fun fetchFishTypeList(): List<String> = remoteDataSource.fetchFishTypeList()
 }
