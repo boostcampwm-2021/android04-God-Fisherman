@@ -14,7 +14,6 @@ abstract class BaseActivity<T : ViewDataBinding, R : ViewModel>(
     lateinit var binding: T
     abstract val viewModel: R
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutResID)

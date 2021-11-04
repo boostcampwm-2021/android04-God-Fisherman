@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.android04.godfisherman.R
 
 class StopwatchInfoFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
