@@ -15,7 +15,9 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
             .get()
             .addOnSuccessListener {
                 with(fishTypeList) { addAll(it.data?.get("array") as List<String>) }
-            }.await()
+            }
+            .addOnFailureListener { throw it }
+            .await()
 
         return fishTypeList
     }
