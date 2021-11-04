@@ -6,7 +6,9 @@ import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityUploadBinding
 import com.android04.godfisherman.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UploadActivity() :
     BaseActivity<ActivityUploadBinding, UploadViewModel>(R.layout.activity_upload) {
 
@@ -15,12 +17,22 @@ class UploadActivity() :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initDropdownAdapter()
+        binding.uploadViewModel = viewModel
+        binding.lifecycleOwner = this
+
+        setupObserver()
+        viewModel.fetchFishTypeList()
     }
 
-    fun initDropdownAdapter() {
-        val items = listOf("1", "2", "3", "4")
-        val adapter = ArrayAdapter(applicationContext, R.layout.item_fish_type, items)
-        binding.autoCompleteTextviewFishType.setAdapter(adapter)
+    fun setupObserver() {
+        viewModel.fishTypeList.observe(this) {
+            val adapter = ArrayAdapter(
+                binding.autoCompleteTextviewFishType.context,
+                R.layout.item_fish_type,
+                it
+            )
+
+            binding.autoCompleteTextviewFishType.setAdapter(adapter)
+        }
     }
 }

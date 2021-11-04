@@ -11,7 +11,8 @@ class AddressHelper @Inject constructor(
 ){
     private val geocoder = Geocoder(context)
 
-    fun getAddress(latitude: Double, longitude: Double): Address {
-        return geocoder.getFromLocation(latitude, longitude, 1)[0]
+    fun getAddress(latitude: Double, longitude: Double): String {
+        val address = geocoder.getFromLocation(latitude, longitude, 1)[0].getAddressLine(0).split(" ")
+        return "${address[1]} ${address[2]}"
     }
 }
