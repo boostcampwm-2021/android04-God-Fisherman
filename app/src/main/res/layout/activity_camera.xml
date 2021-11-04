@@ -9,9 +9,14 @@
             name="activity"
             type="com.android04.godfisherman.ui.camera.CameraActivity" />
 
+        <variable
+            name="viewModel"
+            type="com.android04.godfisherman.ui.camera.CameraViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/camera_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.camera.CameraActivity">
@@ -87,6 +92,16 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_primary_radius_5dp"
+            setRect="@{viewModel.firstRect}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/stroke_second"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_primary_radius_5dp"
+            setRect="@{viewModel.secondRect}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
