@@ -6,7 +6,9 @@ import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityUploadBinding
 import com.android04.godfisherman.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UploadActivity() :
     BaseActivity<ActivityUploadBinding, UploadViewModel>(R.layout.activity_upload) {
 
