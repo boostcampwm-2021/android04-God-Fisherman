@@ -7,7 +7,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 
-class ObjectDetector(private val successCallback: (Rect) -> Unit) {
+class ObjectDetector {
     private val options =  ObjectDetectorOptions.Builder()
         .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
         .enableMultipleObjects()
@@ -17,7 +17,7 @@ class ObjectDetector(private val successCallback: (Rect) -> Unit) {
     private val detector = ObjectDetection.getClient(options)
 
     @SuppressLint("UnsafeOptInUsageError")
-    fun detectImage(imageProxy: ImageProxy) {
+    fun detectImage(imageProxy: ImageProxy, successCallback: (List<Rect>) -> Unit) {
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
@@ -25,9 +25,9 @@ class ObjectDetector(private val successCallback: (Rect) -> Unit) {
             val process = detector.process(image)
 
             process.addOnSuccessListener {
-                it.forEach { obj ->
-                    successCallback(obj.boundingBox)
-                }
+                successCallback(it.map {
+                    it.boundingBox
+                })
             }
 
             process.addOnCompleteListener {

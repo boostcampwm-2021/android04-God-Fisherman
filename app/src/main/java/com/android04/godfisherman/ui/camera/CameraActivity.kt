@@ -60,6 +60,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private fun setBinding() {
         binding.activity = this
+        binding.viewModel = viewModel
     }
 
     private fun operateCamera() {
@@ -139,6 +140,12 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
+        Toast.makeText(
+            this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
+        ).show()
+
+        finish()
+
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
@@ -185,15 +192,21 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private inner class FishAnalyzer : ImageAnalysis.Analyzer {
 
-        val detector = ObjectDetector {
-            binding.stroke.top = dpToPx(it.top)
-            binding.stroke.bottom = dpToPx(it.bottom)
-            binding.stroke.left = dpToPx(it.left)
-            binding.stroke.right = dpToPx(it.right)
-        }
+        val detector = ObjectDetector()
 
         override fun analyze(image: ImageProxy) {
-            detector.detectImage(image)
+            detector.detectImage(image) { rectList ->
+                viewModel.setRect(
+                    rectList.map {
+                        listOf(dpToPx(it.top), dpToPx(it.bottom), dpToPx(it.left), dpToPx(it.right))
+                    }
+                )
+                viewModel.setSize(
+                    rectList.map {
+                        it.right - it.left
+                    }
+                )
+            }
         }
 
     }
