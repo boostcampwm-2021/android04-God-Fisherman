@@ -173,6 +173,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     override fun onSensorChanged(event: SensorEvent?) {
         event?.let{
             binding.lvTest.onSensorEvent(event)
+            viewModel.changedLevel(event)
         }
     }
 

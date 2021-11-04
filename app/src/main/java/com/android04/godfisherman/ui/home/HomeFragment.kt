@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
     override val viewModel: HomeViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.viewModel = viewModel
         updateLocation()
     }
 
@@ -27,13 +27,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
     private fun updateLocation() {
         if (isGrantedLocationPermission(requireContext())) {
             viewModel.updateLocation()
-            // demo 용 저장된 위치 표시하는 Toast
-            Toast.makeText(
-                requireContext(),
-                SharedPreferenceManager(requireContext()).getString(SharedPreferenceManager.PREF_LOCATION),
-                Toast.LENGTH_SHORT
-            ).show()
-
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION)
         }

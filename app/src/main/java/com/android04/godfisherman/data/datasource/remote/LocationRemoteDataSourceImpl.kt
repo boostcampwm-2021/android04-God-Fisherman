@@ -10,7 +10,5 @@ class LocationRemoteDataSourceImpl @Inject constructor(
     private val addressHelper: AddressHelper
 )  : LocationRemoteDataSource {
 
-    override suspend fun fetchAddress(latitude: Double, longitude: Double): Address = withContext(Dispatchers.IO) {
-        addressHelper.getAddress(latitude, longitude)
-    }
+    override fun fetchAddress(latitude: Double, longitude: Double): String = addressHelper.getAddress(latitude, longitude)
 }
