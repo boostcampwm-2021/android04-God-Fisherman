@@ -1,7 +1,6 @@
 package com.android04.godfisherman.ui.camera
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -23,11 +22,11 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
-import com.android04.godfisherman.ui.main.MainActivity
-import java.nio.ByteBuffer
-import java.util.*
+import com.android04.godfisherman.utils.ObjectDetector
+import com.android04.godfisherman.utils.toByteArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.roundToInt
 
 class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera),
     SensorEventListener {
@@ -42,42 +41,25 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         setFullScreen()
+        setBinding()
         operateCamera()
-
-        binding.btShutter.setOnClickListener {
-            takePhoto()
-        }
     }
-
-    override fun onResume() {
-        super.onResume()
-        sensorManager.registerListener(this,
-            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_FASTEST)
-
-    }
-
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        event?.let{
-            binding.lvTest.onSensorEvent(event)
-        }
-    }
-
 
     private fun setFullScreen() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
+    }
+
+    private fun setBinding() {
+        binding.activity = this
     }
 
     private fun operateCamera() {
@@ -156,7 +138,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         }
     }
 
-    private fun takePhoto() {
+    fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
@@ -169,14 +151,29 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
 
-                    val msg = "Photo capture succeeded"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-
-                    // TODO: 데이터 전달 로직 추
+                    // TODO: 데이터 전달 로직 추가
 
                     image.close()
                 }
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_FASTEST)
+
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let{
+            binding.lvTest.onSensorEvent(event)
+        }
     }
 
     override fun onDestroy() {
@@ -187,18 +184,22 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private inner class FishAnalyzer : ImageAnalysis.Analyzer {
 
+        val detector = ObjectDetector {
+            binding.stroke.top = dpToPx(it.top)
+            binding.stroke.bottom = dpToPx(it.bottom)
+            binding.stroke.left = dpToPx(it.left)
+            binding.stroke.right = dpToPx(it.right)
+        }
+
         override fun analyze(image: ImageProxy) {
-            image.close()
+            detector.detectImage(image)
         }
 
     }
 
-    // TODO: Util 로 분리 필요
-    private fun ByteBuffer.toByteArray(): ByteArray {
-        rewind()
-        val data = ByteArray(remaining())
-        get(data)
-        return data
+    fun dpToPx(dp: Int): Int {
+        val density = resources.displayMetrics.density
+        return (dp * density).roundToInt()
     }
 
     companion object {

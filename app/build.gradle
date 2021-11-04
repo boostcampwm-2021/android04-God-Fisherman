@@ -63,6 +63,10 @@ dependencies {
     implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:1.0.0-alpha30"
+
+    //ML Kit
+    implementation 'com.google.mlkit:object-detection:16.2.7'
+
     //Firebase
     implementation "com.google.firebase:firebase-bom:29.0.0"
     implementation 'com.google.firebase:firebase-firestore-ktx:24.0.0'

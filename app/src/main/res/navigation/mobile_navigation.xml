@@ -17,11 +17,11 @@
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_notifications"
-        android:name="com.android04.godfisherman.ui.notifications.NotificationsFragment"
+        android:name="com.android04.godfisherman.ui.camera.CameraActivity"
         android:label="@string/title_camera"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/activity_camera" />
 
     <fragment
         android:id="@+id/navigation_stopwatch"
