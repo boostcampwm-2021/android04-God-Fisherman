@@ -48,7 +48,7 @@ class LocationHelper @Inject constructor(
     }
 
     override fun onLocationChanged(p0: Location) {
-        TODO("Not yet implemented")
+        // TODO: 위치 변경 시 처리 필요 없음
     }
 
 }
