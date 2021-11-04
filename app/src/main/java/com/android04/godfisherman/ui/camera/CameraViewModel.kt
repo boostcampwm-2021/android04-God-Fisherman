@@ -12,6 +12,9 @@ class CameraViewModel : ViewModel() {
     private val _secondRect = MutableLiveData<List<Int>?>()
     val secondRect : LiveData<List<Int>?> = _secondRect
 
+    private val _bodySize = MutableLiveData<Float?>()
+    val bodySize : LiveData<Float?> = _bodySize
+
     fun setRect(list: List<List<Int>>) {
         when {
             list.size >= 2 -> {
@@ -22,10 +25,18 @@ class CameraViewModel : ViewModel() {
                 _firstRect.value = list[0]
                 _secondRect.value = null
             }
-            else -> {
+            list.isEmpty() -> {
                 _firstRect.value = null
                 _secondRect.value = null
             }
+        }
+    }
+
+    fun setSize(list: List<Int>) {
+        if (list.size >= 2) {
+            _bodySize.value = list[0].toFloat() / list[1]
+        } else {
+            _bodySize.value = null
         }
     }
 }

@@ -140,6 +140,12 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
+        Toast.makeText(
+            this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
+        ).show()
+
+        finish()
+
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
@@ -192,6 +198,11 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 viewModel.setRect(
                     rectList.map {
                         listOf(dpToPx(it.top), dpToPx(it.bottom), dpToPx(it.left), dpToPx(it.right))
+                    }
+                )
+                viewModel.setSize(
+                    rectList.map {
+                        it.right - it.left
                     }
                 )
             }

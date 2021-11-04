@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,7 +16,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/camera_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.camera.CameraActivity">
@@ -31,54 +30,55 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/img_fish_guide"
-            app:layout_constraintStart_toStartOf="@id/iv_guide_line"
+            app:layout_constraintBottom_toTopOf="@id/iv_guide_line"
             app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/iv_guide_line"/>
+            app:layout_constraintStart_toStartOf="@id/iv_guide_line"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_guide_line"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/img_line_guide"
             android:layout_marginStart="@dimen/camera_guide_margin"
             android:layout_marginEnd="@dimen/camera_guide_margin"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/img_line_guide"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bt_shutter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/bt_shutter"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_money_guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_money_guide"
-            app:layout_constraintTop_toBottomOf="@id/iv_guide_line"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
             app:layout_constraintStart_toStartOf="@id/iv_guide_line"
-            app:layout_constraintEnd_toEndOf="@id/iv_guide_line" />
+            app:layout_constraintTop_toBottomOf="@id/iv_guide_line" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_1000_won_text"
-            android:textSize="36dp"
             android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@id/iv_money_guide"
+            android:textSize="36dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_money_guide"
             app:layout_constraintEnd_toEndOf="@id/iv_money_guide"
-            app:layout_constraintTop_toTopOf="@id/iv_money_guide"
-            app:layout_constraintBottom_toBottomOf="@id/iv_money_guide" />
+            app:layout_constraintStart_toStartOf="@id/iv_money_guide"
+            app:layout_constraintTop_toTopOf="@id/iv_money_guide" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_shutter"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@drawable/bg_primary_to_secondary_circle"
             android:layout_marginEnd="@dimen/camera_guide_margin"
+            android:background="@drawable/bg_primary_to_secondary_circle"
+            android:enabled="@{viewModel.bodySize != null}"
             android:onClickListener="@{()->activity.takePhoto()}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.android04.godfisherman.utils.LevelView
             android:id="@+id/lv_test"
@@ -89,21 +89,28 @@
 
         <View
             android:id="@+id/stroke"
+            setRect="@{viewModel.firstRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_primary_radius_5dp"
-            setRect="@{viewModel.firstRect}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            tools:ignore="MissingConstraints" />
 
         <View
             android:id="@+id/stroke_second"
+            setRect="@{viewModel.secondRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_primary_radius_5dp"
-            setRect="@{viewModel.secondRect}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tv_body_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_x_large"
+            app:layout_constraintBottom_toTopOf="@id/iv_guide_line"
+            app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
+            app:layout_constraintStart_toStartOf="@id/iv_guide_line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
