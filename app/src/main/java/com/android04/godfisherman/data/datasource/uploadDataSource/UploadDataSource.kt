@@ -6,5 +6,6 @@ interface UploadDataSource {
     }
 
     interface RemoteDataSource {
+        suspend fun fetchFishTypeList(): List<String>
     }
 }

@@ -17,12 +17,19 @@ class UploadActivity() :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initDropdownAdapter()
+        setupObserver()
+        viewModel.fetchFishTypeList()
     }
 
-    fun initDropdownAdapter() {
-        val items = listOf("1", "2", "3", "4")
-        val adapter = ArrayAdapter(applicationContext, R.layout.item_fish_type, items)
-        binding.autoCompleteTextviewFishType.setAdapter(adapter)
+    fun setupObserver() {
+        viewModel.fishTypeList.observe(this) {
+            val adapter = ArrayAdapter(
+                binding.autoCompleteTextviewFishType.context,
+                R.layout.item_fish_type,
+                it
+            )
+
+            binding.autoCompleteTextviewFishType.setAdapter(adapter)
+        }
     }
 }
