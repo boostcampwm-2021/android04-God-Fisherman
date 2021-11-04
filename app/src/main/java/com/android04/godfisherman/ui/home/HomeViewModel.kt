@@ -10,12 +10,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val locationHelper: LocationHelper
 ) : ViewModel() {
-
+  
     fun updateLocation() {
         val location = locationHelper.getLocation() ?: return
         val (latitude, longitude) = location.latitude to location.longitude
@@ -23,4 +24,5 @@ class HomeViewModel @Inject constructor(
             locationRepository.updateLocation(latitude, longitude)
         }
     }
+    
 }

@@ -42,4 +42,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
     companion object {
         const val REQUEST_CODE_LOCATION = 2
     }
+
 }
