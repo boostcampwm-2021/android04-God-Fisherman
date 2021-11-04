@@ -1,6 +1,7 @@
 package com.android04.godfisherman.ui.camera
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
+import com.android04.godfisherman.ui.camera.upload.UploadActivity
 import com.android04.godfisherman.utils.ObjectDetector
 import com.android04.godfisherman.utils.toByteArray
 import java.util.concurrent.ExecutorService
@@ -144,7 +146,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
         ).show()
 
-        finish()
+        val intent = Intent(this, UploadActivity::class.java)
+        startActivity(intent)
 
         val imageCapture = imageCapture ?: return
 
@@ -159,6 +162,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                     val data = buffer.toByteArray()
 
                     // TODO: 데이터 전달 로직 추가
+                    // TODO: 실 기기 처리 필요
 
                     image.close()
                 }
