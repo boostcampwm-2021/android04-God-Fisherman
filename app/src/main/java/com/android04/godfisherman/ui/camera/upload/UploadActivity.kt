@@ -17,6 +17,9 @@ class UploadActivity() :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.uploadViewModel = viewModel
+        binding.lifecycleOwner = this
+
         setupObserver()
         viewModel.fetchFishTypeList()
     }
