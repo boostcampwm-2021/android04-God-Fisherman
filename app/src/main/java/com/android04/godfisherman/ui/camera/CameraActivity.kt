@@ -16,7 +16,6 @@ import android.util.Size
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -115,9 +114,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
 
             } catch (exc: Exception) {
-                Toast.makeText(
-                    this, getText(R.string.camera_start_error), Toast.LENGTH_SHORT
-                ).show()
+                showToast(this, R.string.camera_start_error)
                 finish()
             }
 
@@ -140,11 +137,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(
-                    this,
-                    getText(R.string.camera_permission_denied),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(this, R.string.camera_permission_denied)
                 finish()
             }
         }
@@ -170,7 +163,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                     intent.putExtra(INTENT_FISH_SIZE, viewModel.bodySize.value)
                     startActivity(intent)
 
-                    showToast(this@CameraActivity, R.string.camera_capture_error)
+                    showToast(this@CameraActivity, R.string.camera_capture_success)
                     image.close()
                 }
             })
