@@ -27,13 +27,13 @@ class RecyclerViewEmptySupport : RecyclerView {
             {
                 if (adapter.itemCount == 0)
                 {
-                    emptyView!!.visibility = View.VISIBLE;
-                    this@RecyclerViewEmptySupport.visibility = View.INVISIBLE;
+                    emptyView!!.visibility = View.VISIBLE
+                    this@RecyclerViewEmptySupport.visibility = View.GONE
                 }
                 else
                 {
-                    emptyView!!.visibility = View.GONE;
-                    this@RecyclerViewEmptySupport.visibility = View.VISIBLE;
+                    emptyView!!.visibility = View.GONE
+                    this@RecyclerViewEmptySupport.visibility = View.VISIBLE
                 }
             }
         }
