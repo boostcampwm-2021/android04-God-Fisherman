@@ -32,4 +32,14 @@ object BindingAdapter {
             .error(R.color.money_red)
             .into(view)
     }
+
+    @JvmStatic
+    @BindingAdapter("setTransparent")
+    fun setViewAlphaWithBoolean(view: View, isChecked: Boolean) {
+        if (isChecked) {
+            view.alpha = 0.3F
+        } else {
+            view.alpha = 1F
+        }
+    }
 }

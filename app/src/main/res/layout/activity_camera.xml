@@ -27,6 +27,7 @@
 
         <ImageView
             android:id="@+id/iv_fish_guide"
+            setTransparent="@{viewModel.fishRect != null}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/img_fish_guide"
@@ -37,6 +38,7 @@
 
         <ImageView
             android:id="@+id/iv_guide_line"
+            setTransparent="@{viewModel.fishRect != null &amp;&amp; viewModel.moneyRect != null}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/camera_guide_margin"
@@ -49,6 +51,7 @@
 
         <ImageView
             android:id="@+id/iv_money_guide"
+            setTransparent="@{viewModel.moneyRect != null}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_money_guide"
@@ -58,6 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/iv_guide_line" />
 
         <TextView
+            setTransparent="@{viewModel.moneyRect != null}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_1000_won_text"
