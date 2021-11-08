@@ -26,6 +26,7 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_top"
+                setMenuClick="@{uploadViewModel.saveFishingRecord}"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:menu="@menu/menu_upload_top_app_bar"

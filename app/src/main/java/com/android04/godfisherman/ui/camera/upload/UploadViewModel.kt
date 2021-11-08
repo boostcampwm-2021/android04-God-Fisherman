@@ -31,4 +31,7 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
         fishTypeSelected = selected.toString()
     }
 
+    fun saveFishingRecord() {
+        //Todo
+    }
 }
