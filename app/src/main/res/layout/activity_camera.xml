@@ -88,19 +88,19 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
-            android:id="@+id/stroke"
-            setRect="@{viewModel.firstRect}"
+            android:id="@+id/stroke_fish"
+            setRect="@{viewModel.fishRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_primary_radius_5dp"
+            android:background="@drawable/bg_fish_yellow_stroke_5dp"
             tools:ignore="MissingConstraints" />
 
         <View
-            android:id="@+id/stroke_second"
-            setRect="@{viewModel.secondRect}"
+            android:id="@+id/stroke_money"
+            setRect="@{viewModel.moneyRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_primary_radius_5dp"
+            android:background="@drawable/bg_money_red_stroke_5dp"
             tools:ignore="MissingConstraints" />
 
         <TextView

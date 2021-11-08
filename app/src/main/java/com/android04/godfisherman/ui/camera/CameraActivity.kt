@@ -154,7 +154,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         )
 
         val toastSuccess = Toast.makeText(
-            this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
+            this@CameraActivity, viewModel.bodySize.value, Toast.LENGTH_SHORT
         )
 
         val intent = Intent(this, UploadActivity::class.java)

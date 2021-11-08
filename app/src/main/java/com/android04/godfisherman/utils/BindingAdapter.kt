@@ -18,15 +18,4 @@ object BindingAdapter {
             view.visibility = View.GONE
         }
     }
-
-    @JvmStatic
-    @BindingAdapter("setBodySize")
-    fun setBodySizeWithFloat(view: TextView, size: Float?) {
-        if (size == null) {
-            view.visibility = View.GONE
-        } else {
-            view.visibility = View.VISIBLE
-            view.text = size.toString() + "배"
-        }
-    }
 }
