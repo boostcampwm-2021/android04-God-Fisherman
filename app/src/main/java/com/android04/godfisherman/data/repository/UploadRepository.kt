@@ -8,8 +8,8 @@ import java.util.*
 import javax.inject.Inject
 
 class UploadRepository @Inject constructor(
-    val localDataSource: UploadDataSource.LocalDataSource,
-    val remoteDataSource: UploadDataSource.RemoteDataSource
+    private val localDataSource: UploadDataSource.LocalDataSource,
+    private val remoteDataSource: UploadDataSource.RemoteDataSource
 ) {
 
     suspend fun fetchFishTypeList(): List<String> = remoteDataSource.fetchFishTypeList()
