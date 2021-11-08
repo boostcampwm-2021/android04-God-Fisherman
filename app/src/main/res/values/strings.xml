@@ -15,4 +15,5 @@
     <string name="all_fish_type">어종</string>
     <string name="upload_title">업로드</string>
     <string name="time_line">타임라인</string>
+    <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
 </resources>
