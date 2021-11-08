@@ -2,6 +2,8 @@ package com.android04.godfisherman.data.datasource.uploadDataSource.remote
 
 import android.graphics.Bitmap
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
+import com.android04.godfisherman.data.entity.FishingRecord
+import com.android04.godfisherman.data.entity.Type
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -56,5 +58,21 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         }.await()
 
         return imageUrl
+    }
+
+    override suspend fun saveImageType(type: Type, fishingRecord: FishingRecord) {
+        val newImageTypeRef = database.collection("Feed")
+
+        newImageTypeRef.add(type).continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+
+            task.result.collection("fishingRecord").add(fishingRecord)
+        }.addOnFailureListener {
+            throw it
+        }
     }
 }
