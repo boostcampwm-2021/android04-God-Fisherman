@@ -80,7 +80,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="574dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.android04.godfisherman.utils.RecyclerViewEmptySupport
                     android:id="@+id/rv_time_line"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
@@ -91,6 +91,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
                     android:layout_marginTop="@dimen/space_median" />
+
+                <TextView
+                    android:id="@+id/tv_empty_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Empty!!!!"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
+                    android:layout_marginTop="@dimen/space_median"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

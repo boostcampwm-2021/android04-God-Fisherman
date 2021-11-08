@@ -2,8 +2,10 @@ package com.android04.godfisherman.ui.stopwatch
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.R
+import com.android04.godfisherman.utils.RecyclerViewEmptySupport
 
 class StopwatchActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,11 +13,17 @@ class StopwatchActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_stopwatch)
 
         // RecyclerView 테스트
-        val recyclerView = findViewById<RecyclerView>(R.id.rv_time_line)
-        val adapter = TimelineListAdapter()
-        recyclerView.adapter = adapter
+        val recyclerViewEmptySupport = findViewById<RecyclerViewEmptySupport>(R.id.rv_time_line)
+        val emptyView = findViewById<TextView>(R.id.tv_empty_view)
+
+
         val dummy = TimeLineDataTest("00 : 16 : 27", "방어", "123.12", "상주은모래비치")
         val dummyList = arrayListOf(dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy)
-        adapter.submitList(dummyList)
+        val emptyList = arrayListOf<TimeLineDataTest>()
+
+        recyclerViewEmptySupport.adapter = TimelineListAdapter()
+        recyclerViewEmptySupport.setEmptyView(emptyView)
+        // recyclerViewEmptySupport.submitList(emptyList)
+        recyclerViewEmptySupport.submitList(dummyList)
     }
 }
