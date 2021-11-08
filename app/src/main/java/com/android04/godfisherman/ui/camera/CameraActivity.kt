@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -170,10 +172,13 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
+                    val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+                    captureImage = bitmap
+
+                    intent.putExtra(INTENT_FISH_SIZE, viewModel.bodySize.value)
+                    startActivity(intent)
 
                     toastSuccess.show()
-
-                    startActivity(intent)
                     image.close()
                 }
             })
@@ -243,7 +248,9 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     companion object {
+        const val INTENT_FISH_SIZE = "Fish Size"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        lateinit var captureImage : Bitmap
     }
 }
