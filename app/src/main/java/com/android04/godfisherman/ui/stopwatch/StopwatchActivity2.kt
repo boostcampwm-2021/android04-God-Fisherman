@@ -19,10 +19,12 @@ class StopwatchActivity2 : AppCompatActivity() {
 
         val dummy = TimeLineDataTest("00 : 16 : 27", "방어", "123.12", "상주은모래비치")
         val dummyList = arrayListOf(dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy)
-        val emptyList = arrayListOf<TimeLineDataTest>()
+        // val emptyList = arrayListOf<TimeLineDataTest>()
 
         recyclerViewEmptySupport.adapter = TimelineListAdapter()
         recyclerViewEmptySupport.setEmptyView(emptyView)
+        recyclerViewEmptySupport.setVerticalInterval(50)
+
         // recyclerViewEmptySupport.submitList(emptyList)
         recyclerViewEmptySupport.submitList(dummyList)
     }

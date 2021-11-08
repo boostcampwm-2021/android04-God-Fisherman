@@ -1,6 +1,7 @@
 package com.android04.godfisherman.utils
 
 import android.content.Context
+import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.Log
@@ -60,5 +61,21 @@ class RecyclerViewEmptySupport : RecyclerView {
         }
     }
 
+    fun setVerticalInterval(height: Int) {
+        this.addItemDecoration(VerticalItemDecoration(height))
+    }
 
+    class VerticalItemDecoration(private val height: Int) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect, view: View, parent: RecyclerView, state: State
+        ) {
+            outRect.top = height
+            parent.adapter?.let { parentAdapter ->
+                if (parent.getChildAdapterPosition(view) == parentAdapter.itemCount - 1) {
+                    outRect.bottom = height
+                }
+            }
+        }
+    }
 }
