@@ -11,6 +11,8 @@
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
     <string name="camera_permission_denied">앱 사용을 위해서 카메라 권한이 필요합니다.</string>
+    <string name="camera_start_error">카메라를 실행할 수 없습니다.</string>
+    <string name="camera_capture_error">사진 촬영을 실패했습니다.</string>
     <string name="all_fish_length">체장</string>
     <string name="all_fish_type">어종</string>
     <string name="upload_title">업로드</string>

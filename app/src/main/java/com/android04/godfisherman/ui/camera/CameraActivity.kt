@@ -28,7 +28,6 @@ import com.android04.godfisherman.utils.ObjectDetector
 import com.android04.godfisherman.utils.toByteArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.math.roundToInt
 
 class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera),
     SensorEventListener {
@@ -36,6 +35,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
+
+    private val screenSize : Size by lazy {
+        Size(resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
+    }
 
     private val sensorManager by lazy{
         getSystemService(SENSOR_SERVICE) as SensorManager
@@ -90,10 +93,11 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 }
 
             imageCapture = ImageCapture.Builder()
-                .setTargetResolution(Size(1920, 1080))
+                .setTargetResolution(screenSize)
                 .build()
 
             val imageAnalyzer = ImageAnalysis.Builder()
+                .setTargetResolution(screenSize)
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, FishAnalyzer())
@@ -109,7 +113,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
 
             } catch (exc: Exception) {
-                // TODO: 예외 처리
+                Toast.makeText(
+                    this, getText(R.string.camera_start_error), Toast.LENGTH_SHORT
+                ).show()
+                finish()
             }
 
         }, ContextCompat.getMainExecutor(this))
@@ -142,28 +149,31 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
-        Toast.makeText(
+        val toastError = Toast.makeText(
+            this@CameraActivity, R.string.camera_capture_error, Toast.LENGTH_SHORT
+        )
+
+        val toastSuccess = Toast.makeText(
             this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
-        ).show()
+        )
 
         val intent = Intent(this, UploadActivity::class.java)
-        startActivity(intent)
 
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
             ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
                 override fun onError(exc: ImageCaptureException) {
-                    // TODO: 예외 처리
+                    toastError.show()
                 }
 
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
 
-                    // TODO: 데이터 전달 로직 추가
-                    // TODO: 실 기기 처리 필요
+                    toastSuccess.show()
 
+                    startActivity(intent)
                     image.close()
                 }
             })
@@ -202,7 +212,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             detector.detectImage(image) { rectList ->
                 viewModel.setRect(
                     rectList.map {
-                        listOf(dpToPx(it.top), dpToPx(it.bottom), dpToPx(it.left), dpToPx(it.right))
+                        listOf(heightConvert(it.top, image.height),
+                            heightConvert(it.bottom, image.height),
+                            widthConvert(it.left, image.width),
+                            widthConvert(it.right, image.width))
                     }
                 )
                 viewModel.setSize(
@@ -215,9 +228,18 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     }
 
-    fun dpToPx(dp: Int): Int {
-        val density = resources.displayMetrics.density
-        return (dp * density).roundToInt()
+    fun widthConvert(x: Int, imageWidth: Int) : Int {
+        val width = screenSize.width.toFloat()
+        val ratio = width / imageWidth
+
+        return (x * ratio).toInt()
+    }
+
+    fun heightConvert(y: Int, imageHeight: Int) : Int {
+        val height = screenSize.height.toFloat()
+        val ratio = height / imageHeight
+
+        return (y * ratio).toInt()
     }
 
     companion object {
