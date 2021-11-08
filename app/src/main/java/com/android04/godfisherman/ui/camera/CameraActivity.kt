@@ -27,7 +27,9 @@ import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.upload.UploadActivity
 import com.android04.godfisherman.utils.ObjectDetector
+import com.android04.godfisherman.utils.heightConvert
 import com.android04.godfisherman.utils.toByteArray
+import com.android04.godfisherman.utils.widthConvert
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -101,6 +103,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             val imageAnalyzer = ImageAnalysis.Builder()
                 .setTargetResolution(screenSize)
                 .build()
+
                 .also {
                     it.setAnalyzer(cameraExecutor, FishAnalyzer())
                 }
@@ -156,7 +159,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         )
 
         val toastSuccess = Toast.makeText(
-            this@CameraActivity, viewModel.bodySize.value, Toast.LENGTH_SHORT
+            this@CameraActivity, getString(R.string.camera_capture_success), Toast.LENGTH_SHORT
         )
 
         val intent = Intent(this, UploadActivity::class.java)
@@ -217,10 +220,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             detector.detectImage(image) { rectList ->
                 viewModel.setRect(
                     rectList.map {
-                        listOf(heightConvert(it.top, image.height),
-                            heightConvert(it.bottom, image.height),
-                            widthConvert(it.left, image.width),
-                            widthConvert(it.right, image.width))
+                        listOf(heightConvert(it.top, image.height, screenSize.height),
+                            heightConvert(it.bottom, image.height, screenSize.height),
+                            widthConvert(it.left, image.width, screenSize.width),
+                            widthConvert(it.right, image.width, screenSize.width))
                     }
                 )
                 viewModel.setSize(
@@ -231,20 +234,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             }
         }
 
-    }
-
-    fun widthConvert(x: Int, imageWidth: Int) : Int {
-        val width = screenSize.width.toFloat()
-        val ratio = width / imageWidth
-
-        return (x * ratio).toInt()
-    }
-
-    fun heightConvert(y: Int, imageHeight: Int) : Int {
-        val height = screenSize.height.toFloat()
-        val ratio = height / imageHeight
-
-        return (y * ratio).toInt()
     }
 
     companion object {
