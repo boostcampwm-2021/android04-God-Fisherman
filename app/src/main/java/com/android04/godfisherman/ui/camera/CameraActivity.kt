@@ -26,10 +26,7 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.upload.UploadActivity
-import com.android04.godfisherman.utils.ObjectDetector
-import com.android04.godfisherman.utils.heightConvert
-import com.android04.godfisherman.utils.toByteArray
-import com.android04.godfisherman.utils.widthConvert
+import com.android04.godfisherman.utils.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -154,14 +151,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
-        val toastError = Toast.makeText(
-            this@CameraActivity, R.string.camera_capture_error, Toast.LENGTH_SHORT
-        )
-
-        val toastSuccess = Toast.makeText(
-            this@CameraActivity, getString(R.string.camera_capture_success), Toast.LENGTH_SHORT
-        )
-
         val intent = Intent(this, UploadActivity::class.java)
 
         val imageCapture = imageCapture ?: return
@@ -169,7 +158,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         imageCapture.takePicture(
             ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
                 override fun onError(exc: ImageCaptureException) {
-                    toastError.show()
+                    showToast(this@CameraActivity, R.string.camera_capture_error)
                 }
 
                 override fun onCaptureSuccess(image: ImageProxy) {
@@ -181,7 +170,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                     intent.putExtra(INTENT_FISH_SIZE, viewModel.bodySize.value)
                     startActivity(intent)
 
-                    toastSuccess.show()
+                    showToast(this@CameraActivity, R.string.camera_capture_error)
                     image.close()
                 }
             })
@@ -192,7 +181,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         sensorManager.registerListener(this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_NORMAL)
-
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
