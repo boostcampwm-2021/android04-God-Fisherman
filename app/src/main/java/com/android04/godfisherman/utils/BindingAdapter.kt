@@ -3,6 +3,7 @@ package com.android04.godfisherman.utils
 import android.graphics.Bitmap
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
 import com.bumptech.glide.Glide
@@ -40,6 +41,24 @@ object BindingAdapter {
             view.alpha = 0.3F
         } else {
             view.alpha = 1F
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("objectError", "levelError")
+    fun setErrorMessage(view: TextView, isObjectCorrect: Boolean, isLevelCorrect: Boolean) {
+        when {
+            !isLevelCorrect -> {
+                view.setText(R.string.level_error)
+                view.visibility = View.VISIBLE
+            }
+            !isObjectCorrect -> {
+                view.setText(R.string.object_error)
+                view.visibility = View.VISIBLE
+            }
+            else -> {
+                view.visibility = View.INVISIBLE
+            }
         }
     }
 }

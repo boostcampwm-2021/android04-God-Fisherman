@@ -116,6 +116,21 @@
             app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
             app:layout_constraintStart_toStartOf="@id/iv_guide_line" />
 
+        <TextView
+            android:id="@+id/tv_error"
+            levelError="@{viewModel.isLevelOk}"
+            objectError="@{viewModel.fishRect != null &amp;&amp; viewModel.moneyRect != null}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/level_error"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintBottom_toTopOf="@id/bt_shutter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_guide_line" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
