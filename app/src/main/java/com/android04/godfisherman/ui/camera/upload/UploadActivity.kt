@@ -10,7 +10,7 @@ import com.android04.godfisherman.ui.camera.CameraActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UploadActivity() :
+class UploadActivity :
     BaseActivity<ActivityUploadBinding, UploadViewModel>(R.layout.activity_upload) {
 
     override val viewModel: UploadViewModel by viewModels()
@@ -26,11 +26,12 @@ class UploadActivity() :
 
     private fun setUpBinding() {
         binding.uploadViewModel = viewModel
+        binding.uploadActivity = this
         binding.bodySize = intent.getStringExtra(CameraActivity.INTENT_FISH_SIZE)
         binding.captureImage = CameraActivity.captureImage
     }
 
-    fun setupObserver() {
+    private fun setupObserver() {
         viewModel.fishTypeList.observe(this) {
             val adapter = ArrayAdapter(
                 binding.autoCompleteTextviewFishType.context,
