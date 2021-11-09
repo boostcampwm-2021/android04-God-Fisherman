@@ -20,16 +20,18 @@ class UploadActivity :
 
         setupObserver()
         setUpBinding()
+        loadData()
 
         viewModel.fetchFishTypeList()
     }
 
     private fun setUpBinding() {
         binding.uploadViewModel = viewModel
-        binding.uploadActivity = this
-        binding.bodySize = intent.getStringExtra(CameraActivity.INTENT_FISH_SIZE)
-        binding.captureImage = CameraActivity.captureImage
-        CameraActivity.captureImage = null
+    }
+
+    private fun loadData() {
+        val size = intent.getDoubleExtra(CameraActivity.INTENT_FISH_SIZE, 0.0)
+        viewModel.fetchInitData(size)
     }
 
     private fun setupObserver() {
@@ -42,5 +44,6 @@ class UploadActivity :
 
             binding.autoCompleteTextviewFishType.setAdapter(adapter)
         }
+        binding.textInputLayoutFishType
     }
 }

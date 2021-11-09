@@ -18,8 +18,8 @@ class CameraViewModel : ViewModel() {
     private val _moneyRect = MutableLiveData<List<Int>?>()
     val moneyRect : LiveData<List<Int>?> = _moneyRect
 
-    private val _bodySize = MutableLiveData<String?>()
-    val bodySize : LiveData<String?> = _bodySize
+    private val _bodySize = MutableLiveData<Double?>()
+    val bodySize : LiveData<Double?> = _bodySize
 
     fun setRect(list: List<List<Int>>) {
         when {
@@ -45,7 +45,7 @@ class CameraViewModel : ViewModel() {
 
     fun setSize(list: List<Int>) {
         if (list.size >= 2) {
-            _bodySize.value = convertCentiMeter(list[0].toFloat() / list[1] * MONEY_SIZE)
+            _bodySize.value = list[0].toDouble() / list[1] * MONEY_SIZE
         } else {
             _bodySize.value = null
         }

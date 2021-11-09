@@ -6,20 +6,8 @@
     <data>
 
         <variable
-            name="uploadActivity"
-            type="com.android04.godfisherman.ui.camera.upload.UploadActivity" />
-
-        <variable
             name="uploadViewModel"
             type="com.android04.godfisherman.ui.camera.upload.UploadViewModel" />
-
-        <variable
-            name="bodySize"
-            type="String" />
-
-        <variable
-            name="captureImage"
-            type="android.graphics.Bitmap" />
 
     </data>
 
@@ -59,7 +47,7 @@
 
                 <ImageView
                     android:id="@+id/iv_fish_thumbnail"
-                    setImage="@{captureImage}"
+                    setImage="@{uploadViewModel.fishThumbnail}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/upload_thumbnail_height"
                     android:layout_marginTop="@dimen/space_x_large"
@@ -124,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_small"
                     android:layout_marginEnd="@dimen/space_large"
-                    android:text="@{bodySize}"
+                    android:text="@{uploadViewModel.bodySizeCentiMeter}"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
