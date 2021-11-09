@@ -12,4 +12,12 @@
     <color name="secondary_container">#B5EAFF</color>
     <color name="surface2">#E9F0F8</color>
     <color name="transparent">#00000000</color>
+    <color name="gradient_main_start">#4D95D9</color>
+    <color name="gradient_main_end">#20AED4</color>
+    <color name="bg_time_line">#F1F0F4</color>
+    <color name="decoration_time_line">#FFE16F</color>
+    <color name="location_time_line">#0062A2</color>
+    <color name="fish_yellow">#FFE16F</color>
+    <color name="money_red">#FF8066</color>
+    <color name="disabled_gray">#646464</color>
 </resources>
