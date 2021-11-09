@@ -1,7 +1,11 @@
 package com.android04.godfisherman.ui.camera.upload
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Window
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
@@ -17,11 +21,14 @@ class UploadActivity :
 
     override val viewModel: UploadViewModel by viewModels()
 
+    private lateinit var loadingDialog: Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setupObserver()
         setUpBinding()
+        setLoadingDialog()
         loadData()
 
         viewModel.fetchFishTypeList()
@@ -57,11 +64,45 @@ class UploadActivity :
                 }
             }
         }
+        viewModel.isLoading.observe(this) {
+            when (it) {
+                true -> {
+                    showLoadingDialog()
+                }
+                false -> {
+                    cancelLoadingDialog()
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
         val intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun setLoadingDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.setContentView(R.layout.dialog_upload_loading)
+
+        loadingDialog = dialog
+    }
+
+    private fun showLoadingDialog() {
+        if (::loadingDialog.isInitialized) {
+            loadingDialog.show()
+        }
+    }
+
+    private fun cancelLoadingDialog() {
+        if (::loadingDialog.isInitialized) {
+            loadingDialog.cancel()
+        }
     }
 }
