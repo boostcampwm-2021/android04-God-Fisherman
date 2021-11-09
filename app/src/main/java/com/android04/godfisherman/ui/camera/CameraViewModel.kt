@@ -4,9 +4,7 @@ import android.hardware.SensorEvent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android04.godfisherman.utils.MONEY_SIZE
-import com.android04.godfisherman.utils.convertCentiMeter
-import com.android04.godfisherman.utils.findHeightCenter
+import com.android04.godfisherman.utils.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -50,6 +48,21 @@ class CameraViewModel : ViewModel() {
             _bodySize.value = convertCentiMeter(list[0].toFloat() / list[1] * MONEY_SIZE)
         } else {
             _bodySize.value = null
+        }
+    }
+
+    fun getCropRect(curWidth: Int, curHeight: Int, imgWidth: Int, imgHeight: Int): List<Int>? {
+        val rect = fishRect.value
+
+        return if (rect != null) {
+            listOf(
+                heightConvert(rect[0], curHeight, imgHeight),
+                heightConvert(rect[1], curHeight, imgHeight),
+                widthConvert(rect[2], curWidth, imgWidth),
+                widthConvert(rect[3], curWidth, imgWidth)
+            )
+        } else {
+            null
         }
     }
     

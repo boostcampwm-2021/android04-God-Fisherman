@@ -29,6 +29,7 @@ class UploadActivity :
         binding.uploadActivity = this
         binding.bodySize = intent.getStringExtra(CameraActivity.INTENT_FISH_SIZE)
         binding.captureImage = CameraActivity.captureImage
+        CameraActivity.captureImage = null
     }
 
     private fun setupObserver() {

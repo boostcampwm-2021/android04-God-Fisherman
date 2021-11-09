@@ -157,14 +157,24 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
-                    val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                    captureImage = bitmap
+                    val origin = BitmapFactory.decodeByteArray(data, 0, data.size)
 
-                    intent.putExtra(INTENT_FISH_SIZE, viewModel.bodySize.value)
-                    startActivity(intent)
+                    val rect = viewModel.getCropRect(screenSize.width, screenSize.height, image.width, image.height)
+                    val size = viewModel.bodySize.value
 
-                    showToast(this@CameraActivity, R.string.camera_capture_success)
-                    image.close()
+                    if (rect != null && size != null) {
+                        val crop = Bitmap.createBitmap(origin, rect[2], rect[0], rect[3] - rect[2], rect[1] - rect[0])
+
+                        captureImage = crop
+                        intent.putExtra(INTENT_FISH_SIZE, size)
+                        startActivity(intent)
+
+                        showToast(this@CameraActivity, R.string.camera_capture_success)
+                        image.close()
+                    } else {
+                        showToast(this@CameraActivity, R.string.camera_detect_error)
+                        image.close()
+                    }
                 }
             })
     }
@@ -221,6 +231,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         const val INTENT_FISH_SIZE = "Fish Size"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        lateinit var captureImage : Bitmap
+        var captureImage : Bitmap? = null
     }
 }
