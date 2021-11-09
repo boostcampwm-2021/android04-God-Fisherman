@@ -171,6 +171,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
                         showToast(this@CameraActivity, R.string.camera_capture_success)
                         image.close()
+
+                        finish()
                     } else {
                         showToast(this@CameraActivity, R.string.camera_detect_error)
                         image.close()

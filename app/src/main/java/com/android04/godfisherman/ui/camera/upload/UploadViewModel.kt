@@ -21,6 +21,8 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     private val _fishTypeList: MutableLiveData<List<String>> by lazy { MutableLiveData<List<String>>() }
     val fishTypeList: LiveData<List<String>> = _fishTypeList
 
+    val isUploadSuccess = MutableLiveData<Boolean?>(null)
+
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
     var bodySizeCentiMeter : String? = null
@@ -49,7 +51,10 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
         if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
             viewModelScope.launch {
                 repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!)
+                isUploadSuccess.postValue(true)
             }
+        } else {
+            isUploadSuccess.postValue(false)
         }
     }
 }
