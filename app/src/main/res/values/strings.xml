@@ -11,8 +11,15 @@
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
     <string name="camera_permission_denied">앱 사용을 위해서 카메라 권한이 필요합니다.</string>
+    <string name="camera_start_error">카메라를 실행할 수 없습니다.</string>
+    <string name="camera_capture_error">사진 촬영을 실패했습니다.</string>
+    <string name="camera_capture_success">사진을 촬영했습니다.</string>
     <string name="all_fish_length">체장</string>
     <string name="all_fish_type">어종</string>
     <string name="upload_title">업로드</string>
+    <string name="level_error">수평을 맞춰주세요.</string>
+    <string name="object_error">물체를 인식해주세요.</string>
+    
+    <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
 </resources>
