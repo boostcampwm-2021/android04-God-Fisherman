@@ -11,4 +11,7 @@
     <color name="secondary">#20AED4</color>
     <color name="secondary_container">#B5EAFF</color>
     <color name="surface2">#E9F0F8</color>
+    <color name="fish_yellow">#FFE16F</color>
+    <color name="money_red">#FF8066</color>
+    <color name="disabled_gray">#646464</color>
 </resources>

@@ -1,8 +1,12 @@
 package com.android04.godfisherman.utils
 
+import android.graphics.Bitmap
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.android04.godfisherman.R
+import com.bumptech.glide.Glide
 
 object BindingAdapter {
     @JvmStatic
@@ -20,13 +24,41 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("setBodySize")
-    fun setBodySizeWithFloat(view: TextView, size: Float?) {
-        if (size == null) {
-            view.visibility = View.GONE
+    @BindingAdapter("setImage")
+    fun setImageWithBitmap(view: ImageView, img: Bitmap) {
+        // TODO: 에러 상태 이미지 처리 필요
+        Glide.with(view.context)
+            .load(img)
+            .placeholder(R.color.purple_200)
+            .error(R.color.money_red)
+            .into(view)
+    }
+
+    @JvmStatic
+    @BindingAdapter("setTransparent")
+    fun setViewAlphaWithBoolean(view: View, isChecked: Boolean) {
+        if (isChecked) {
+            view.alpha = 0.3F
         } else {
-            view.visibility = View.VISIBLE
-            view.text = size.toString() + "배"
+            view.alpha = 1F
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("objectError", "levelError")
+    fun setErrorMessage(view: TextView, isObjectCorrect: Boolean, isLevelCorrect: Boolean) {
+        when {
+            !isLevelCorrect -> {
+                view.setText(R.string.level_error)
+                view.visibility = View.VISIBLE
+            }
+            !isObjectCorrect -> {
+                view.setText(R.string.object_error)
+                view.visibility = View.VISIBLE
+            }
+            else -> {
+                view.visibility = View.INVISIBLE
+            }
         }
     }
 }
