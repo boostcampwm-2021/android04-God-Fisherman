@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
+import com.google.android.material.appbar.MaterialToolbar
 import com.bumptech.glide.Glide
 
 object BindingAdapter {
@@ -60,5 +61,20 @@ object BindingAdapter {
                 view.visibility = View.INVISIBLE
             }
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setMenuClick")
+    fun setOnMenuItemClickListener(toolbar: MaterialToolbar, saveFishingRecord: () -> Unit) {
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.complete -> {
+                    saveFishingRecord()
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
 }
