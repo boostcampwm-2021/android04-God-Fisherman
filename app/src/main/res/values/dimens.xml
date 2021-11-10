@@ -1,0 +1,24 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="space_xx_small">4dp</dimen>
+    <dimen name="space_x_small">8dp</dimen>
+    <dimen name="space_small">12dp</dimen>
+    <dimen name="space_median">16dp</dimen>
+    <dimen name="space_s_large">18dp</dimen>
+    <dimen name="space_large">20dp</dimen>
+    <dimen name="space_x_large">24dp</dimen>
+    <dimen name="space_xxx_large">32dp</dimen>
+    <dimen name="text_regular">14dp</dimen>
+    <dimen name="text_median">16dp</dimen>
+    <dimen name="text_large">20dp</dimen>
+    <dimen name="text_x_large">24dp</dimen>
+    <dimen name="text_xxxx_large">36dp</dimen>
+
+    <dimen name="camera_guide_margin">60dp</dimen>
+    <dimen name="upload_thumbnail_height">240dp</dimen>
+    <dimen name="upload_iv_length_title_margin_top">36dp</dimen>
+    <dimen name="upload_text_input_layout_height">60dp</dimen>
+    <dimen name="upload_text_input_layout_width">160dp</dimen>
+</resources>

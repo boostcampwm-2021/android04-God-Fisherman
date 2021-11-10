@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="uploadActivity"
+            type="com.android04.godfisherman.ui.camera.upload.UploadActivity" />
+
+        <variable
+            name="uploadViewModel"
+            type="com.android04.godfisherman.ui.camera.upload.UploadViewModel" />
+
+        <variable
+            name="bodySize"
+            type="String" />
+
+        <variable
+            name="captureImage"
+            type="android.graphics.Bitmap" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_surface_to_white"
+        tools:context=".ui.camera.upload.UploadActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingRight="@dimen/space_x_small">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_top"
+                setMenuClick="@{uploadViewModel.saveFishingRecord}"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/menu_upload_top_app_bar"
+                app:navigationIcon="@drawable/ic_arrow_back_round"
+                app:title="@string/upload_title" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/space_large">
+
+                <ImageView
+                    android:id="@+id/iv_fish_thumbnail"
+                    setImage="@{captureImage}"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/upload_thumbnail_height"
+                    android:layout_marginTop="@dimen/space_x_large"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_location_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:background="@drawable/ic_location_outline"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_fish_thumbnail" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xx_small"
+                    android:text="상주은모래비치"
+                    android:textSize="@dimen/text_regular"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_location_title"
+                    app:layout_constraintStart_toEndOf="@id/iv_location_title"
+                    app:layout_constraintTop_toTopOf="@id/iv_location_title" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    app:dividerColor="@color/material_on_surface_stroke"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_location_title" />
+
+                <ImageView
+                    android:id="@+id/iv_length_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:background="@drawable/ic_length"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <TextView
+                    android:id="@+id/tv_length_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xx_small"
+                    android:text="@string/all_fish_length"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_length_title"
+                    app:layout_constraintStart_toEndOf="@id/iv_length_title"
+                    app:layout_constraintTop_toTopOf="@id/iv_length_title" />
+
+                <TextView
+                    android:id="@+id/tv_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_large"
+                    android:text="@{bodySize}"
+                    android:textSize="@dimen/text_large"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_length_title" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    app:dividerColor="@color/material_on_surface_stroke"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_length" />
+
+                <ImageView
+                    android:id="@+id/iv_fish_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_large"
+                    android:background="@drawable/ic_fish_type"
+                    android:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                <TextView
+                    android:id="@+id/tv_fish_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xx_small"
+                    android:text="@string/all_fish_type"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_fish_type_title"
+                    app:layout_constraintStart_toEndOf="@id/iv_fish_type_title"
+                    app:layout_constraintTop_toTopOf="@id/iv_fish_type_title" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_fish_type"
+                    style="@style/customExposedDropdownMenu"
+                    android:layout_width="@dimen/upload_text_input_layout_width"
+                    android:layout_height="@dimen/upload_text_input_layout_height"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_fish_type_title">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/auto_complete_textview_fish_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:afterTextChanged="@{(s) -> uploadViewModel.setFishTypeSelected(s)}"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
