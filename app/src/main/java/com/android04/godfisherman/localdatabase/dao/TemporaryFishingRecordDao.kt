@@ -8,7 +8,7 @@ import com.android04.godfisherman.localdatabase.entity.TemporaryFishingRecord
 @Dao
 interface TemporaryFishingRecordDao {
 
-    @Query("SELECT * FROM temporary_fishing_record WHERE userId == :userId")
+    @Query("SELECT * FROM temporary_fishing_record WHERE userId == :userId ORDER BY date ASC")
     fun getTemporaryRecords(userId: String): List<TemporaryFishingRecord>
 
     @Insert
