@@ -7,16 +7,30 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_menu_stopwatch">낚시시작</string>
     <string name="navigation_menu_my_page">마이페이지</string>
+    <string name="loading">loading...</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
     <string name="camera_permission_denied">앱 사용을 위해서 카메라 권한이 필요합니다.</string>
+    <string name="camera_start_error">카메라를 실행할 수 없습니다.</string>
+    <string name="camera_capture_error">사진 촬영을 실패했습니다.</string>
+    <string name="camera_detect_error">물고기 인식에 실패했습니다. 다시 촬영해주세요.</string>
+    <string name="camera_capture_success">사진을 촬영했습니다.</string>
     <string name="all_fish_length">체장</string>
     <string name="all_fish_type">어종</string>
     <string name="upload_title">업로드</string>
-
+    <string name="level_error">수평을 맞춰주세요.</string>
+    <string name="object_error">물체를 인식해주세요.</string>
+  
     <!-- Stopwatch info Fragment -->
     <string name="info_stopwatch_info">스톱워치를 시작한 후\n아래의 촬영 버튼을 클릭해\n낚시 기록을 남겨보세요\n\n낚시 타임라인을 만들 수 있어요</string>
     <string name="description_stopwatch_info">낚시 기록을 시작해 보세요!</string>
     <string name="start_stopwatch_info">기록 시작</string>
+
+    <!-- Upload Activity -->
+    <string name="upload_complete">완료</string>
+    
+    <!-- StopWatch Activity -->
+    <string name="time_line">타임라인</string>
+    <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
 </resources>

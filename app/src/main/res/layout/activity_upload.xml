@@ -21,12 +21,15 @@
             android:id="@+id/app_bar_layout_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null">
+            android:background="@null"
+            android:paddingRight="@dimen/space_x_small">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_top"
+                setMenuClick="@{uploadViewModel.saveFishingRecord}"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/menu_upload_top_app_bar"
                 app:navigationIcon="@drawable/ic_arrow_back_round"
                 app:title="@string/upload_title" />
 
@@ -44,10 +47,10 @@
 
                 <ImageView
                     android:id="@+id/iv_fish_thumbnail"
+                    setImage="@{uploadViewModel.fishThumbnail}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/upload_thumbnail_height"
                     android:layout_marginTop="@dimen/space_x_large"
-                    android:background="@color/purple_200"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_small"
                     android:layout_marginEnd="@dimen/space_large"
-                    android:text="123.4 cm"
+                    android:text="@{uploadViewModel.bodySizeCentiMeter}"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

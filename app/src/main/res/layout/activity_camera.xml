@@ -27,6 +27,7 @@
 
         <ImageView
             android:id="@+id/iv_fish_guide"
+            setTransparent="@{viewModel.fishRect != null}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/img_fish_guide"
@@ -37,6 +38,7 @@
 
         <ImageView
             android:id="@+id/iv_guide_line"
+            setTransparent="@{viewModel.fishRect != null &amp;&amp; viewModel.moneyRect != null}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/camera_guide_margin"
@@ -49,6 +51,7 @@
 
         <ImageView
             android:id="@+id/iv_money_guide"
+            setTransparent="@{viewModel.moneyRect != null}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_money_guide"
@@ -58,6 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/iv_guide_line" />
 
         <TextView
+            setTransparent="@{viewModel.moneyRect != null}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_1000_won_text"
@@ -74,7 +78,7 @@
             android:layout_height="70dp"
             android:layout_marginEnd="@dimen/camera_guide_margin"
             android:background="@drawable/bg_primary_to_secondary_circle"
-            android:enabled="@{viewModel.bodySize != null}"
+            android:enabled="@{viewModel.bodySize != null &amp;&amp; viewModel.isLevelOk}"
             android:onClickListener="@{()->activity.takePhoto()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,19 +92,19 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
-            android:id="@+id/stroke"
-            setRect="@{viewModel.firstRect}"
+            android:id="@+id/stroke_fish"
+            setRect="@{viewModel.fishRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_primary_radius_5dp"
+            android:background="@drawable/bg_fish_yellow_stroke_5dp"
             tools:ignore="MissingConstraints" />
 
         <View
-            android:id="@+id/stroke_second"
-            setRect="@{viewModel.secondRect}"
+            android:id="@+id/stroke_money"
+            setRect="@{viewModel.moneyRect}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_primary_radius_5dp"
+            android:background="@drawable/bg_money_red_stroke_5dp"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -111,6 +115,21 @@
             app:layout_constraintBottom_toTopOf="@id/iv_guide_line"
             app:layout_constraintEnd_toEndOf="@id/iv_guide_line"
             app:layout_constraintStart_toStartOf="@id/iv_guide_line" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            levelError="@{viewModel.isLevelOk}"
+            objectError="@{viewModel.fishRect != null &amp;&amp; viewModel.moneyRect != null}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/level_error"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_large"
+            app:layout_constraintBottom_toTopOf="@id/bt_shutter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_guide_line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

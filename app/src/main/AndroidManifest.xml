@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-feature android:name="android.hardware.camera.any" />
-  
+
     <application
         android:name=".common.App"
         android:allowBackup="true"
@@ -16,6 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GodFisherman">
+        <activity
+            android:name=".ui.stopwatch.StopwatchActivity2"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.camera.upload.UploadActivity"
             android:exported="false" />

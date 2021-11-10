@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -14,21 +16,19 @@ import android.util.Size
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.upload.UploadActivity
-import com.android04.godfisherman.utils.ObjectDetector
-import com.android04.godfisherman.utils.toByteArray
+import com.android04.godfisherman.utils.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.math.roundToInt
 
 class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.layout.activity_camera),
     SensorEventListener {
@@ -36,6 +36,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
+
+    private val screenSize : Size by lazy {
+        Size(resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
+    }
 
     private val sensorManager by lazy{
         getSystemService(SENSOR_SERVICE) as SensorManager
@@ -47,6 +51,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         setFullScreen()
         setBinding()
         operateCamera()
+        (application as App).exitCameraActivityFlag = true
     }
 
     private fun setFullScreen() {
@@ -90,11 +95,13 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 }
 
             imageCapture = ImageCapture.Builder()
-                .setTargetResolution(Size(1920, 1080))
+                .setTargetResolution(screenSize)
                 .build()
 
             val imageAnalyzer = ImageAnalysis.Builder()
+                .setTargetResolution(screenSize)
                 .build()
+
                 .also {
                     it.setAnalyzer(cameraExecutor, FishAnalyzer())
                 }
@@ -109,7 +116,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
 
             } catch (exc: Exception) {
-                // TODO: 예외 처리
+                showToast(this, R.string.camera_start_error)
+                finish()
             }
 
         }, ContextCompat.getMainExecutor(this))
@@ -131,40 +139,46 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
-                Toast.makeText(
-                    this,
-                    getText(R.string.camera_permission_denied),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(this, R.string.camera_permission_denied)
                 finish()
             }
         }
     }
 
     fun takePhoto() {
-        Toast.makeText(
-            this@CameraActivity, viewModel.bodySize.value.toString(), Toast.LENGTH_SHORT
-        ).show()
-
         val intent = Intent(this, UploadActivity::class.java)
-        startActivity(intent)
 
         val imageCapture = imageCapture ?: return
 
         imageCapture.takePicture(
             ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
                 override fun onError(exc: ImageCaptureException) {
-                    // TODO: 예외 처리
+                    showToast(this@CameraActivity, R.string.camera_capture_error)
                 }
 
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
+                    val origin = BitmapFactory.decodeByteArray(data, 0, data.size)
 
-                    // TODO: 데이터 전달 로직 추가
-                    // TODO: 실 기기 처리 필요
+                    val rect = viewModel.getCropRect(screenSize.width, screenSize.height, image.width, image.height)
+                    val size = viewModel.bodySize.value
 
-                    image.close()
+                    if (rect != null && size != null) {
+                        val crop = Bitmap.createBitmap(origin, rect[2], rect[0], rect[3] - rect[2], rect[1] - rect[0])
+
+                        captureImage = crop
+                        intent.putExtra(INTENT_FISH_SIZE, size)
+                        startActivity(intent)
+
+                        showToast(this@CameraActivity, R.string.camera_capture_success)
+                        image.close()
+
+                        finish()
+                    } else {
+                        showToast(this@CameraActivity, R.string.camera_detect_error)
+                        image.close()
+                    }
                 }
             })
     }
@@ -174,7 +188,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         sensorManager.registerListener(this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_NORMAL)
-
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -202,7 +215,10 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             detector.detectImage(image) { rectList ->
                 viewModel.setRect(
                     rectList.map {
-                        listOf(dpToPx(it.top), dpToPx(it.bottom), dpToPx(it.left), dpToPx(it.right))
+                        listOf(heightConvert(it.top, image.height, screenSize.height),
+                            heightConvert(it.bottom, image.height, screenSize.height),
+                            widthConvert(it.left, image.width, screenSize.width),
+                            widthConvert(it.right, image.width, screenSize.width))
                     }
                 )
                 viewModel.setSize(
@@ -212,16 +228,12 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
             }
         }
-
-    }
-
-    fun dpToPx(dp: Int): Int {
-        val density = resources.displayMetrics.density
-        return (dp * density).roundToInt()
     }
 
     companion object {
+        const val INTENT_FISH_SIZE = "Fish Size"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        var captureImage : Bitmap? = null
     }
 }
