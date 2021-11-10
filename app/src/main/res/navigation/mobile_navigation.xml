@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.android04.godfisherman.ui.dashboard.FeedFragment"
+        android:name="com.android04.godfisherman.ui.feed.FeedFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_feed" />
 

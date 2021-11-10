@@ -1,4 +1,4 @@
-package com.android04.godfisherman.ui.dashboard
+package com.android04.godfisherman.ui.feed
 
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R

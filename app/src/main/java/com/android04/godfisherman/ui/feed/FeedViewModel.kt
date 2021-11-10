@@ -1,4 +1,4 @@
-package com.android04.godfisherman.ui.dashboard
+package com.android04.godfisherman.ui.feed
 
 import androidx.lifecycle.ViewModel
 
