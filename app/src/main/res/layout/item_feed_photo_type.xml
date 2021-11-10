@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/space_x_small"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/feed_photo_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_small"
+                android:text="@string/sample_text_short"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_median"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_location_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:src="@drawable/ic_feed_location"
+                app:layout_constraintStart_toStartOf="@id/tv_user_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_xx_small"
+                android:layout_marginEnd="@dimen/space_median"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/sample_text_long"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_regular"
+                app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
+                app:layout_constraintEnd_toStartOf="@id/tv_date"
+                app:layout_constraintStart_toEndOf="@id/iv_location_icon"
+                app:layout_constraintTop_toTopOf="@id/iv_location_icon" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_median"
+                android:text="@string/sample_text_short"
+                android:textColor="@color/feed_text_dark_gray"
+                android:textSize="@dimen/feed_date_text_size"
+                app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_fish_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/space_small"
+                android:adjustViewBounds="true"
+                app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
+
+            <ImageView
+                android:id="@+id/iv_fish_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_small"
+                android:layout_marginBottom="@dimen/space_small"
+                android:src="@drawable/ic_clarity_fish_line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_fish_photo" />
+
+            <TextView
+                android:id="@+id/tv_fish_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_xx_small"
+                android:layout_marginEnd="@dimen/space_small"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/sample_text_long"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_regular"
+                app:layout_constraintBottom_toBottomOf="@id/iv_fish_type"
+                app:layout_constraintEnd_toStartOf="@id/tv_fish_size"
+                app:layout_constraintStart_toEndOf="@id/iv_fish_type"
+                app:layout_constraintTop_toTopOf="@id/iv_fish_type" />
+
+            <TextView
+                android:id="@+id/tv_fish_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_median"
+                android:text="@string/sample_text_short"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_median"
+                app:layout_constraintBottom_toBottomOf="@id/iv_fish_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_fish_type" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

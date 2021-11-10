@@ -8,6 +8,8 @@
     <string name="navigation_menu_stopwatch">낚시시작</string>
     <string name="navigation_menu_my_page">마이페이지</string>
     <string name="loading">loading...</string>
+    <string name="sample_text_short">sample</string>
+    <string name="sample_text_long">sample text sample text</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
@@ -28,4 +30,11 @@
     <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
     <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
+
+    <!-- Feed Fragment -->
+    <string name="feed_all">전체</string>
+    <string name="feed_photo">📷사진 타입</string>
+    <string name="feed_timeline">⌛️타임라인 타입</string>
+    <string name="feed_show_timeline">⌛️타임라인 보기</string>
+    <string name="sample_time">10:10</string>
 </resources>
