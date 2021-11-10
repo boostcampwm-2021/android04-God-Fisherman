@@ -12,11 +12,10 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.utils.StopwatchService
-import java.util.*
-import android.app.ActivityManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.android04.godfisherman.ui.main.MainActivity
 
 
 class StopwatchActivity :
@@ -27,13 +26,14 @@ class StopwatchActivity :
 
     override val viewModel: StopwatchViewModel by viewModels()
     private lateinit var serviceIntent: Intent
-
     private var isPlayAnimate = false
+    private var isFromService = false
     private val receiveTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, receiveIntent: Intent) {
             val receivedTime = receiveIntent.getDoubleExtra(StopwatchService.SERVICE_DESTROYED, 0.0)
             Log.d("receiveFromService", "리시브 실행 : $receivedTime")
             viewModel.passedTimeFromService(receivedTime)
+            isFromService = true
             NotificationManagerCompat.from(context).cancel(StopwatchService.NOTIFICATION_ID)
         }
     }
@@ -98,4 +98,13 @@ class StopwatchActivity :
         passStopwatchToService(viewModel.time)
     }
 
+    override fun onBackPressed() {
+        if(isFromService){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            finish()
+        }
+    }
 }
