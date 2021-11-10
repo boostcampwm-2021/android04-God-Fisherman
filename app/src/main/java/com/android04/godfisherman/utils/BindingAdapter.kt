@@ -2,6 +2,7 @@ package com.android04.godfisherman.utils
 
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
 
 object BindingAdapter {
@@ -27,6 +28,16 @@ object BindingAdapter {
         } else {
             view.visibility = View.VISIBLE
             view.text = size.toString() + "배"
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setStopwatchBtnText")
+    fun setStopwatchBtnText(view: AppCompatButton, isStarted: Boolean?) {
+        if (isStarted == true) {
+            view.text = "Stop"
+        } else {
+            view.text = "Start"
         }
     }
 }
