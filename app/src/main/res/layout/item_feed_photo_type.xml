@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="data"
+            type="com.android04.godfisherman.ui.feed.FeedPhotoData" />
+
+    </data>
+
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         style="@style/Widget.Material3.CardView.Elevated"
@@ -22,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_small"
-                android:text="@string/sample_text_short"
+                android:text="@{data.userId}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_median"
                 android:textStyle="bold"
@@ -46,7 +54,7 @@
                 android:layout_marginEnd="@dimen/space_median"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@string/sample_text_long"
+                android:text="@{data.location}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_regular"
                 app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
@@ -59,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_median"
-                android:text="@string/sample_text_short"
+                android:text="@{data.date}"
                 android:textColor="@color/feed_text_dark_gray"
                 android:textSize="@dimen/feed_date_text_size"
                 app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
@@ -71,6 +79,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/space_small"
                 android:adjustViewBounds="true"
+                setImage="@{data.photoUrl}"
                 app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
 
             <ImageView
@@ -93,7 +102,7 @@
                 android:layout_marginEnd="@dimen/space_small"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@string/sample_text_long"
+                android:text="@{data.fishType}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_regular"
                 app:layout_constraintBottom_toBottomOf="@id/iv_fish_type"
@@ -103,10 +112,10 @@
 
             <TextView
                 android:id="@+id/tv_fish_size"
+                setSizeText="@{data.fishSize}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_median"
-                android:text="@string/sample_text_short"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintBottom_toBottomOf="@id/iv_fish_type"
