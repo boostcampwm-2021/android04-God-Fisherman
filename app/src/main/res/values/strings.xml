@@ -14,4 +14,9 @@
     <string name="all_fish_length">체장</string>
     <string name="all_fish_type">어종</string>
     <string name="upload_title">업로드</string>
+
+    <!-- Stopwatch info Fragment -->
+    <string name="info_stopwatch_info">스톱워치를 시작한 후\n아래의 촬영 버튼을 클릭해\n낚시 기록을 남겨보세요\n\n낚시 타임라인을 만들 수 있어요</string>
+    <string name="description_stopwatch_info">낚시 기록을 시작해 보세요!</string>
+    <string name="start_stopwatch_info">기록 시작</string>
 </resources>
