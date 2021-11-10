@@ -19,11 +19,11 @@ data class FeedTimelineData(
     override val userId: String,
     override val location: String,
     override val date: String,
+    val photoUrlList: List<String>,
     val timeline: List<TimeLineData>,
 ) : FeedData()
 
 data class TimeLineData(
-    val photoUrl: String,
     val fishType: String,
     val fishSize: Double,
     val time: String
