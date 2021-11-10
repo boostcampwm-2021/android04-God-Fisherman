@@ -26,6 +26,13 @@ class StopwatchViewModel: ViewModel() {
         }
     }
 
+    fun passedTimeFromService(passedTime: Double){
+        time = passedTime
+        stopwatch = Timer()
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
+        _isStopwatchStarted.value = true
+    }
+
     private fun startStopwatch(){
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
