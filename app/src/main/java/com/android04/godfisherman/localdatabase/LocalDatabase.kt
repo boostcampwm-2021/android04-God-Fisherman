@@ -14,23 +14,23 @@ abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun temporaryFishingRecordDao(): TemporaryFishingRecordDao
 
-    companion object {
-
-        @Volatile
-        private var INSTANCE: LocalDatabase? = null
-
-        fun getInstance(context: Context): LocalDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    LocalDatabase::class.java,
-                    "local_database"
-                ).build()
-                INSTANCE = instance
-                // return instance
-                instance
-            }
-        }
-
-    }
+    // TODO Hilt로 의존성 받아올 수 있는지 확인하고 주석 삭제
+//    companion object {
+//
+//        @Volatile
+//        private var INSTANCE: LocalDatabase? = null
+//
+//        fun getInstance(context: Context): LocalDatabase {
+//            return INSTANCE ?: synchronized(this) {
+//                val instance = Room.databaseBuilder(
+//                    context.applicationContext,
+//                    LocalDatabase::class.java,
+//                    "local_database"
+//                ).build()
+//                INSTANCE = instance
+//                // return instance
+//                instance
+//            }
+//        }
+//    }
 }
