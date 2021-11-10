@@ -9,6 +9,7 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.android04.godfisherman.ui.base.BaseActivity
+import com.android04.godfisherman.utils.StopwatchNotification
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
@@ -20,6 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
+        StopwatchNotification.createChannel(this)
     }
     
 }

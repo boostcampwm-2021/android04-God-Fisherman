@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.android04.godfisherman.ui.stopwatch.StopwatchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +49,7 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/text_xxxx_large"
                         android:textStyle="bold"
-                        android:text="00 : 16 : 27"
+                        android:text="@{viewModel.displayTime}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +63,7 @@
                     android:layout_height="66dp"
                     android:clickable="true"
                     android:background="@drawable/btn_start_to_stop"
+                    android:onClick="@{()->viewModel.startOrStopTimer()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_fishing_time"
