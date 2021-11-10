@@ -27,4 +27,5 @@
     
     <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
+    <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
 </resources>

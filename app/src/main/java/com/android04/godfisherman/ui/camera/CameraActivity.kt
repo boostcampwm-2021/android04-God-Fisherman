@@ -22,6 +22,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.upload.UploadActivity
@@ -50,6 +51,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         setFullScreen()
         setBinding()
         operateCamera()
+        (application as App).exitCameraActivityFlag = true
     }
 
     private fun setFullScreen() {
@@ -226,7 +228,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
             }
         }
-
     }
 
     companion object {
