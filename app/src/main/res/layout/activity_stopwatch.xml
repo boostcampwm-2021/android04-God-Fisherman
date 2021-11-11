@@ -44,25 +44,38 @@
 
                     <TextView
                         android:id="@+id/tv_fishing_time"
-                        android:layout_width="195dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{viewModel.displayTime}"
                         android:textAlignment="center"
                         android:textSize="@dimen/text_xxxx_large"
                         android:textStyle="bold"
-                        android:text="@{viewModel.displayTime}"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/v_shadow"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
+                    android:layout_marginTop="140dp"
+                    android:background="@drawable/shadow_stopwatch_yellow"
+                    android:elevation="18dp"
+                    android:outlineSpotShadowColor="@color/decoration_time_line"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/view_start_stop"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:clickable="true"
-                    android:background="@drawable/btn_start_to_stop"
+                    android:background="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop : @drawable/btn_start}"
                     android:onClick="@{()->viewModel.startOrStopTimer()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -71,16 +84,16 @@
 
                 <TextView
                     android:id="@+id/tv_title_time_line"
-                    android:layout_width="76dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/space_large"
-                    android:text="@string/time_line"
+                    android:layout_marginTop="574dp"
                     android:gravity="center_vertical"
+                    android:text="@string/time_line"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="574dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.android04.godfisherman.utils.RecyclerViewEmptySupport
                     android:id="@+id/rv_time_line"

@@ -1,10 +1,12 @@
 package com.android04.godfisherman.utils
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
 import com.google.android.material.appbar.MaterialToolbar
@@ -74,16 +76,6 @@ object BindingAdapter {
         }
     }
 
-    @JvmStatic
-    @BindingAdapter("setStopwatchBtnText")
-    fun setStopwatchBtnText(view: AppCompatButton, isStarted: Boolean?) {
-        if (isStarted == true) {
-            view.text = "Stop"
-        } else {
-            view.text = "Start"
-        }
-    }
-    
     @JvmStatic
     @BindingAdapter("setMenuClick")
     fun setOnMenuItemClickListener(toolbar: MaterialToolbar, saveFishingRecord: () -> Unit) {

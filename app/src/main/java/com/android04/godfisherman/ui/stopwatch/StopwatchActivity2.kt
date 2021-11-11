@@ -3,11 +3,18 @@ package com.android04.godfisherman.ui.stopwatch
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.R
 import com.android04.godfisherman.utils.RecyclerViewEmptySupport
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StopwatchActivity2 : AppCompatActivity() {
+
+    val viewModel: StopWatchInfoTestViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stopwatch)

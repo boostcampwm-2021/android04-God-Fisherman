@@ -21,8 +21,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.stopwatch.StopwatchActivity2"
-            android:exported="true">
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".ui.camera.upload.UploadActivity"
             android:exported="false" />
