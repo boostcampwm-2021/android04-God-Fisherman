@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityStopwatchBinding
@@ -16,18 +17,25 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.android04.godfisherman.ui.main.MainActivity
+import com.android04.godfisherman.utils.RecyclerViewEmptySupport
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class StopwatchActivity :
     BaseActivity<ActivityStopwatchBinding, StopwatchViewModel>(R.layout.activity_stopwatch) {
     companion object {
         var isStopwatchServiceRunning = false
     }
 
+    val dummy = TimeLineDataTest("00 : 16 : 27", "방어", "123.12", "상주은모래비치")
+    val dummyList = arrayListOf(dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy)
+
     override val viewModel: StopwatchViewModel by viewModels()
     private lateinit var serviceIntent: Intent
     private var isPlayAnimate = false
     private var isFromService = false
+
     private val receiveTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, receiveIntent: Intent) {
             val receivedTime = receiveIntent.getDoubleExtra(StopwatchService.SERVICE_DESTROYED, 0.0)
@@ -43,10 +51,17 @@ class StopwatchActivity :
         binding.viewModel = viewModel
         serviceIntent = Intent(applicationContext, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
-
+        setRV()
         setObserver()
     }
-
+    private fun setRV(){
+        val recyclerViewEmptySupport = binding.rvTimeLine
+        val emptyView = binding.tvEmptyView
+        recyclerViewEmptySupport.adapter = TimelineListAdapter()
+        recyclerViewEmptySupport.setEmptyView(emptyView)
+        recyclerViewEmptySupport.setVerticalInterval(50)
+        recyclerViewEmptySupport.submitList(dummyList)
+    }
     override fun onResume() {
         super.onResume()
         Log.d("serviceRunning", "$isStopwatchServiceRunning")
