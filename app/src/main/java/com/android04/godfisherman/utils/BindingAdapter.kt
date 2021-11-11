@@ -1,13 +1,18 @@
 package com.android04.godfisherman.utils
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.util.*
 
 object BindingAdapter {
     @JvmStatic
@@ -32,6 +37,16 @@ object BindingAdapter {
             .load(img)
             .placeholder(R.color.purple_200)
             .error(R.color.money_red)
+            .into(view)
+    }
+
+    @JvmStatic
+    @BindingAdapter("setImage")
+    fun setImageWithUrl(view: ImageView, url: String) {
+        Glide.with(view.context)
+            .load(url)
+            .placeholder(R.drawable.bg_loading_skeleton)
+            .error(R.drawable.bg_image_error)
             .into(view)
     }
 
@@ -75,6 +90,17 @@ object BindingAdapter {
                 else -> false
             }
         }
+    }
 
+    @JvmStatic
+    @BindingAdapter("setSizeText")
+    fun setSizeTextWithDouble(view: TextView, size: Double) {
+        view.text = convertCentiMeter(size)
+    }
+
+    @JvmStatic
+    @BindingAdapter("setDate")
+    fun setSizeTextWithDouble(view: TextView, date: Date) {
+        view.text = date.toDateString()
     }
 }

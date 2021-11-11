@@ -7,12 +7,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_menu_stopwatch">낚시시작</string>
     <string name="navigation_menu_my_page">마이페이지</string>
+    <string name="loading">loading...</string>
+    <string name="sample_text_short">sample</string>
+    <string name="sample_text_long">sample text sample text</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
     <string name="camera_permission_denied">앱 사용을 위해서 카메라 권한이 필요합니다.</string>
     <string name="camera_start_error">카메라를 실행할 수 없습니다.</string>
     <string name="camera_capture_error">사진 촬영을 실패했습니다.</string>
+    <string name="camera_detect_error">물고기 인식에 실패했습니다. 다시 촬영해주세요.</string>
     <string name="camera_capture_success">사진을 촬영했습니다.</string>
     <string name="all_fish_length">체장</string>
     <string name="all_fish_type">어종</string>
@@ -20,9 +24,32 @@
     <string name="level_error">수평을 맞춰주세요.</string>
     <string name="object_error">물체를 인식해주세요.</string>
   
+    <!-- Stopwatch info Fragment -->
+    <string name="info_stopwatch_info">스톱워치를 시작한 후\n아래의 촬영 버튼을 클릭해\n낚시 기록을 남겨보세요\n\n낚시 타임라인을 만들 수 있어요</string>
+    <string name="description_stopwatch_info">낚시 기록을 시작해 보세요!</string>
+    <string name="start_stopwatch_info">기록 시작</string>
+
     <!-- Upload Activity -->
     <string name="upload_complete">완료</string>
     
     <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
+    <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
+
+    <!-- Feed Fragment -->
+    <string name="feed_all">전체</string>
+    <string name="feed_photo">📷사진 타입</string>
+    <string name="feed_timeline">⌛️타임라인 타입</string>
+    <string name="feed_show_timeline">⌛️타임라인 보기</string>
+    <string name="sample_time">10:10</string>
+
+    <!-- Home Fragment -->
+    <string name="home_sample_id">안녕하세요 구전김박님!</string>
+    <string name="home_sample_rank_user">이번 주 구전김박님의 전체 순위는 10위입니다</string>
+    <string name="home_this_week_rank">이번 주 전체 랭킹</string>
+    <string name="home_show_all">더보기</string>
+    <string name="home_recommend">추천 영상</string>
+    <string name="home_today_weather">현재 날씨</string>
+    <string name="home_location_desc">기준</string>
+    <string name="home_recommend_sample">주차하고 바로 던지는 우럭 루어낚시! 잘나와도 어쩌고 저쩌고</string>
 </resources>

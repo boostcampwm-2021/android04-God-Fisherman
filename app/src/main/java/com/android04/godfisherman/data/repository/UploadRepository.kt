@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.google.firebase.Timestamp
 import java.util.*
 import javax.inject.Inject
 
@@ -18,11 +20,16 @@ class UploadRepository @Inject constructor(
         val imageUrl = remoteDataSource.getImageUrl(image)
 
         imageUrl?.let {
-            val type = Type(false, "", 0, "user1")
-            val fishingRecord = FishingRecord(imageUrl, Date(), fishLength, fishType)
+            val type = Type(Timestamp(Date()),false, "", 0, "user1")
+            val fishingRecord = FishingRecord(0, imageUrl, Date(), fishLength, fishType)
 
             remoteDataSource.saveImageType(type, fishingRecord)
         }
+    }
+
+    suspend fun saveTmpTimeLineRecord(image: Bitmap, fishLength: Double, fishType: String){
+        val fishingRecord = TmpFishingRecord(image, Date(), fishLength, fishType)
+        localDataSource.saveTmpTimeLineRecord(fishingRecord)
     }
 
 }

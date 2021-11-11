@@ -22,6 +22,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.ActivityCameraBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.upload.UploadActivity
@@ -50,6 +51,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         setFullScreen()
         setBinding()
         operateCamera()
+        (application as App).exitCameraActivityFlag = true
     }
 
     private fun setFullScreen() {
@@ -157,14 +159,26 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val buffer = image.planes[0].buffer
                     val data = buffer.toByteArray()
-                    val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                    captureImage = bitmap
+                    val origin = BitmapFactory.decodeByteArray(data, 0, data.size)
 
-                    intent.putExtra(INTENT_FISH_SIZE, viewModel.bodySize.value)
-                    startActivity(intent)
+                    val rect = viewModel.getCropRect(screenSize.width, screenSize.height, image.width, image.height)
+                    val size = viewModel.bodySize.value
 
-                    showToast(this@CameraActivity, R.string.camera_capture_success)
-                    image.close()
+                    if (rect != null && size != null) {
+                        val crop = Bitmap.createBitmap(origin, rect[2], rect[0], rect[3] - rect[2], rect[1] - rect[0])
+
+                        captureImage = crop
+                        intent.putExtra(INTENT_FISH_SIZE, size)
+                        startActivity(intent)
+
+                        showToast(this@CameraActivity, R.string.camera_capture_success)
+                        image.close()
+
+                        finish()
+                    } else {
+                        showToast(this@CameraActivity, R.string.camera_detect_error)
+                        image.close()
+                    }
                 }
             })
     }
@@ -214,13 +228,12 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                 )
             }
         }
-
     }
 
     companion object {
         const val INTENT_FISH_SIZE = "Fish Size"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        lateinit var captureImage : Bitmap
+        var captureImage : Bitmap? = null
     }
 }
