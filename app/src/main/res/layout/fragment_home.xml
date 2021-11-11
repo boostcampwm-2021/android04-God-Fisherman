@@ -42,6 +42,17 @@
                 app:layout_constraintStart_toStartOf="@id/tv_user_name"
                 app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimationView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="@dimen/space_median"
+                app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+                app:layout_constraintStart_toEndOf="@id/tv_user_name"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="lottie_home.json"
+                app:lottie_loop="true" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/v_background"
                 android:layout_width="match_parent"
@@ -87,10 +98,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/space_median"
                             android:orientation="vertical"
-                            tools:listitem="@layout/item_home_ranking"
-                            tools:itemCount="5"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintTop_toBottomOf="@id/tv_this_week_ranking" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_this_week_ranking"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/item_home_ranking" />
 
                         <TextView
                             android:id="@+id/tv_show_all"
@@ -121,10 +132,10 @@
                     app:layout_constraintTop_toBottomOf="@id/cv_ranking_card" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginStart="24dp"
                     android:id="@+id/rv_recommend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="@dimen/space_median"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -147,9 +158,9 @@
                     android:id="@+id/tv_location_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/space_x_large"
                     android:text="@string/home_location_desc"
                     android:textSize="12dp"
-                    android:layout_marginEnd="@dimen/space_x_large"
                     app:layout_constraintBottom_toBottomOf="@id/tv_weather"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_weather" />
