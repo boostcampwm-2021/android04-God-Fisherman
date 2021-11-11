@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityStopwatchBinding
@@ -16,10 +15,11 @@ import com.android04.godfisherman.utils.StopwatchService
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.utils.RecyclerViewEmptySupport
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StopwatchActivity :
@@ -76,7 +76,9 @@ class StopwatchActivity :
             isPlayAnimate = it
             if(it){
 //                StopwatchViewModel.isTimeLine = true
-                animateShadow()
+                lifecycleScope.launchWhenStarted{
+                    animateShadow()
+                }
             }else{
 //                StopwatchViewModel.isTimeLine = false
             }
@@ -101,6 +103,7 @@ class StopwatchActivity :
 
     private fun passStopwatchToService(time: Double) {
         if (viewModel.isStopwatchStarted.value == true) {
+            viewModel.passStopwatchToService()
             serviceIntent.putExtra(StopwatchService.TIME_EXTRA, time)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent)
@@ -112,6 +115,7 @@ class StopwatchActivity :
 
     override fun onStop() {
         super.onStop()
+        isPlayAnimate = false
         passStopwatchToService(viewModel.time)
     }
 
