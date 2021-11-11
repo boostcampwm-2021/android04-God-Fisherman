@@ -39,6 +39,16 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("setImage")
+    fun setImageWithUrl(view: ImageView, url: String) {
+        Glide.with(view.context)
+            .load(url)
+            .placeholder(R.drawable.bg_loading_skeleton)
+            .error(R.drawable.bg_image_error)
+            .into(view)
+    }
+
+    @JvmStatic
     @BindingAdapter("setTransparent")
     fun setViewAlphaWithBoolean(view: View, isChecked: Boolean) {
         if (isChecked) {
@@ -78,5 +88,11 @@ object BindingAdapter {
                 else -> false
             }
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setSizeText")
+    fun setSizeTextWithDouble(view: TextView, size: Double) {
+        view.text = convertCentiMeter(size)
     }
 }
