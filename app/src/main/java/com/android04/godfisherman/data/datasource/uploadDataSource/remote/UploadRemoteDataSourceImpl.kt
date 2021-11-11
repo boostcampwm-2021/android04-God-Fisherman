@@ -75,4 +75,15 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
             throw it
         }
     }
+
+    override suspend fun saveTimeLineType(type: Type, fishingRecordList: List<FishingRecord>) {
+        val newTimeLineTypeRef = database.collection("Feed")
+        newTimeLineTypeRef.add(type).addOnSuccessListener {
+            it.collection("fishingRecord").apply{
+                fishingRecordList.forEach{ record ->
+                    add(record)
+                }
+            }
+        }
+    }
 }

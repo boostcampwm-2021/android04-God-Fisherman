@@ -20,7 +20,7 @@ class StopwatchViewModel @Inject constructor(
 ): ViewModel() {
 
     companion object{
-        var isTimeLine = true
+        var isTimeLine = false
     }
 
     private val _isStopwatchStarted: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -51,18 +51,27 @@ class StopwatchViewModel @Inject constructor(
     }
 
     private fun startStopwatch(){
+        isTimeLine = true
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
         _isStopwatchStarted.value = true
     }
 
     private fun endStopwatch(){
+        isTimeLine = false
+        viewModelScope.launch(Dispatchers.IO){
+            saveTimeLineRecord()
+        }
         _isStopwatchStarted.value = false
         stopwatch.cancel()
         sleep(100)
         time = 0.0
         _displayTime.value = time.toTimeMilliSecond()
         _isStopwatchStarted.value = false
+    }
+
+    private suspend fun saveTimeLineRecord(){
+        repository.saveTimeLineRecord(time)
     }
 
     private inner class StopwatchTask() : TimerTask() {

@@ -15,5 +15,6 @@ interface UploadDataSource {
         suspend fun fetchFishTypeList(): List<String>
         suspend fun getImageUrl(bitmap: Bitmap): String?
         suspend fun saveImageType(type: Type, fishingRecord: FishingRecord)
+        suspend fun saveTimeLineType(type: Type, fishingRecordList: List<FishingRecord>)
     }
 }
