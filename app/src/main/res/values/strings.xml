@@ -42,4 +42,14 @@
     <string name="feed_timeline">⌛️타임라인 타입</string>
     <string name="feed_show_timeline">⌛️타임라인 보기</string>
     <string name="sample_time">10:10</string>
+
+    <!-- Home Fragment -->
+    <string name="home_sample_id">안녕하세요 구전김박님!</string>
+    <string name="home_sample_rank_user">이번 주 구전김박님의 전체 순위는 10위입니다</string>
+    <string name="home_this_week_rank">이번 주 전체 랭킹</string>
+    <string name="home_show_all">더보기</string>
+    <string name="home_recommend">추천 영상</string>
+    <string name="home_today_weather">현재 날씨</string>
+    <string name="home_location_desc">기준</string>
+    <string name="home_recommend_sample">주차하고 바로 던지는 우럭 루어낚시! 잘나와도 어쩌고 저쩌고</string>
 </resources>

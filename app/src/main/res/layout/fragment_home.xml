@@ -4,31 +4,189 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.android04.godfisherman.ui.home.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_test"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@{viewModel.address}"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="주소" />
+            android:layout_height="match_parent"
+            android:background="#CFE4FF"
+            tools:context=".ui.home.HomeFragment">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_large"
+                android:layout_marginTop="@dimen/camera_guide_margin"
+                android:text="@string/home_sample_id"
+                android:textSize="@dimen/text_x_large"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_user_ranking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:text="@string/home_sample_rank_user"
+                android:textSize="@dimen/text_median"
+                app:layout_constraintStart_toStartOf="@id/tv_user_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimationView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="@dimen/space_median"
+                app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+                app:layout_constraintStart_toEndOf="@id/tv_user_name"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="lottie_home.json"
+                app:lottie_loop="true" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/v_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_home_round_top"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_ranking">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_ranking_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_large"
+                    android:layout_marginEnd="@dimen/space_x_large"
+                    android:elevation="10dp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="@dimen/space_median"
+                        android:paddingEnd="@dimen/space_median"
+                        android:paddingBottom="@dimen/space_small">
+
+                        <TextView
+                            android:id="@+id/tv_this_week_ranking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_median"
+                            android:text="@string/home_this_week_rank"
+                            android:textSize="@dimen/text_x_large"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_ranking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_median"
+                            android:orientation="vertical"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintTop_toBottomOf="@id/tv_this_week_ranking"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/item_home_ranking" />
+
+                        <TextView
+                            android:id="@+id/tv_show_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/space_small"
+                            android:text="@string/home_show_all"
+                            android:textColor="@color/primary"
+                            android:textSize="@dimen/text_median"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_ranking" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_large"
+                    android:layout_marginTop="@dimen/space_x_large"
+                    android:text="@string/home_recommend"
+                    android:textSize="@dimen/text_x_large"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_ranking_card" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tv_recommend"
+                    tools:listitem="@layout/item_home_recommend" />
+
+                <TextView
+                    android:id="@+id/tv_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_x_large"
+                    android:layout_marginTop="@dimen/space_x_large"
+                    android:text="@string/home_today_weather"
+                    android:textSize="@dimen/text_x_large"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_recommend" />
+
+                <TextView
+                    android:id="@+id/tv_location_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/space_x_large"
+                    android:text="@string/home_location_desc"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_weather"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_weather" />
+
+                <TextView
+                    android:id="@+id/tv_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@{viewModel.address}"
+                    android:textAlignment="textEnd"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_location_desc"
+                    app:layout_constraintEnd_toStartOf="@id/tv_location_desc"
+                    app:layout_constraintStart_toEndOf="@id/tv_weather"
+                    app:layout_constraintTop_toTopOf="@id/tv_location_desc"
+                    tools:text="주소" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </layout>
