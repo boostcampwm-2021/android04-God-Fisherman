@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.UploadRepository
+import com.android04.godfisherman.localdatabase.entity.TemporaryFishingRecord
 import com.android04.godfisherman.ui.camera.CameraActivity
+import com.android04.godfisherman.ui.stopwatch.StopwatchViewModel
 import com.android04.godfisherman.utils.convertCentiMeter
 import com.android04.godfisherman.utils.roundBodySize
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,15 +51,29 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     }
 
     fun saveFishingRecord() {
-        if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
-            isLoading.value = true
-            viewModelScope.launch {
-                repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!)
-                isUploadSuccess.postValue(true)
-                isLoading.postValue(false)
+        if (StopwatchViewModel.isTimeLine){
+            if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
+                isLoading.value = true
+                viewModelScope.launch(Dispatchers.IO){
+                    repository.saveTmpTimeLineRecord(fishThumbnail,bodySize!!,fishTypeSelected!!)
+                    isUploadSuccess.postValue(true)
+                    isLoading.postValue(false)
+                }
+            } else {
+                isUploadSuccess.postValue(false)
             }
         } else {
-            isUploadSuccess.postValue(false)
+            if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
+                isLoading.value = true
+                viewModelScope.launch {
+                    repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!)
+                    isUploadSuccess.postValue(true)
+                    isLoading.postValue(false)
+                }
+            } else {
+                isUploadSuccess.postValue(false)
+            }
+
         }
     }
 }

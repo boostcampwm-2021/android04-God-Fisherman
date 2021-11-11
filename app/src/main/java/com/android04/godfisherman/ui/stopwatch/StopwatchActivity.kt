@@ -77,9 +77,10 @@ class StopwatchActivity :
             binding.vShadow.isVisible = it
             isPlayAnimate = it
             if(it){
+//                StopwatchViewModel.isTimeLine = true
                 animateShadow()
             }else{
-
+//                StopwatchViewModel.isTimeLine = false
             }
         })
     }

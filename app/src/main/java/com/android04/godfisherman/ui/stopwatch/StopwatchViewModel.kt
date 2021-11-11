@@ -16,7 +16,7 @@ class StopwatchViewModel @Inject constructor(
 ): ViewModel() {
 
     companion object{
-        var isTimeLine = false
+        var isTimeLine = true
     }
 
     private val _isStopwatchStarted = MutableLiveData<Boolean>(false)
