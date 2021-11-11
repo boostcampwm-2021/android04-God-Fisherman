@@ -21,7 +21,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        setRecyclerView()
         updateLocation()
+    }
+
+    private fun setRecyclerView() {
+        binding.rvRanking.adapter = RankingRecyclerViewAdapter()
+        (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(
+            listOf(
+                HomeRankingData(
+                    "아이비", "물개", 140.5
+                ),
+                HomeRankingData(
+                    "아이비", "물개", 140.5
+                ),
+                HomeRankingData(
+                    "아이비", "물개", 140.5
+                ),
+                HomeRankingData(
+                    "아이비", "물개", 140.5
+                ),
+                HomeRankingData(
+                    "아이비", "물개", 140.5
+                )
+            )
+        )
+
+        binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
+        (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(
+            listOf(
+                HomeRecommendData("", getString(R.string.home_recommend_sample)),
+                HomeRecommendData("", getString(R.string.home_recommend_sample)),
+                HomeRecommendData("", getString(R.string.home_recommend_sample)),
+                HomeRecommendData("", getString(R.string.home_recommend_sample)),
+                HomeRecommendData("", getString(R.string.home_recommend_sample)),
+                HomeRecommendData("", getString(R.string.home_recommend_sample))
+            )
+        )
     }
 
     private fun updateLocation() {
