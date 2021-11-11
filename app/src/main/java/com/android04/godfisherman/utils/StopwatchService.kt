@@ -37,7 +37,7 @@ class StopwatchService:
                 Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra(TIME_SAVED, saveTime)
         val pendingIntent = PendingIntent
-            .getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            .getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         notification = NotificationCompat.Builder(this, StopwatchNotification.CHANNEL_ID)
             .setContentTitle("그물잠")

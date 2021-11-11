@@ -1,17 +1,15 @@
 package com.android04.godfisherman.localdatabase
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.android04.godfisherman.localdatabase.dao.TemporaryFishingRecordDao
-import com.android04.godfisherman.localdatabase.entity.TemporaryFishingRecord
+import com.android04.godfisherman.localdatabase.dao.TmpFishingRecordDao
+import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 
-@Database(entities = [TemporaryFishingRecord::class], version = 1, exportSchema = false)
+@Database(entities = [TmpFishingRecord::class], version = 1, exportSchema = false)
 @TypeConverters(DatabaseTypeConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 
-    abstract fun temporaryFishingRecordDao(): TemporaryFishingRecordDao
+    abstract fun temporaryFishingRecordDao(): TmpFishingRecordDao
 
 }

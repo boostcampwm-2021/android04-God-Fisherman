@@ -15,9 +15,13 @@ import com.android04.godfisherman.utils.StopwatchService
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class StopwatchActivity :
     BaseActivity<ActivityStopwatchBinding, StopwatchViewModel>(R.layout.activity_stopwatch) {
     companion object {
@@ -28,6 +32,7 @@ class StopwatchActivity :
     private lateinit var serviceIntent: Intent
     private var isPlayAnimate = false
     private var isFromService = false
+
     private val receiveTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, receiveIntent: Intent) {
             val receivedTime = receiveIntent.getDoubleExtra(StopwatchService.SERVICE_DESTROYED, 0.0)
@@ -43,10 +48,18 @@ class StopwatchActivity :
         binding.viewModel = viewModel
         serviceIntent = Intent(applicationContext, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
-
+        initRecyclerView()
         setObserver()
     }
+    private fun initRecyclerView(){
+        viewModel.loadTmpTimeLineRecord()
+        val recyclerViewEmptySupport = binding.rvTimeLine
+        val emptyView = binding.tvEmptyView
+        recyclerViewEmptySupport.adapter = TimelineListAdapter()
+        recyclerViewEmptySupport.setEmptyView(emptyView)
+        recyclerViewEmptySupport.setVerticalInterval(50)
 
+    }
     override fun onResume() {
         super.onResume()
         Log.d("serviceRunning", "$isStopwatchServiceRunning")
@@ -62,10 +75,16 @@ class StopwatchActivity :
             binding.vShadow.isVisible = it
             isPlayAnimate = it
             if(it){
-                animateShadow()
+//                StopwatchViewModel.isTimeLine = true
+                lifecycleScope.launchWhenStarted{
+                    animateShadow()
+                }
             }else{
-
+//                StopwatchViewModel.isTimeLine = false
             }
+        })
+        viewModel.tmpFishingList.observe(this, Observer{
+            binding.rvTimeLine.submitList(it)
         })
     }
 
@@ -84,6 +103,7 @@ class StopwatchActivity :
 
     private fun passStopwatchToService(time: Double) {
         if (viewModel.isStopwatchStarted.value == true) {
+            viewModel.passStopwatchToService()
             serviceIntent.putExtra(StopwatchService.TIME_EXTRA, time)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent)
@@ -95,6 +115,7 @@ class StopwatchActivity :
 
     override fun onStop() {
         super.onStop()
+        isPlayAnimate = false
         passStopwatchToService(viewModel.time)
     }
 
