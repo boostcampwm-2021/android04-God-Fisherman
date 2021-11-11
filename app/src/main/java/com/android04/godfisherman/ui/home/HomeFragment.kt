@@ -3,34 +3,36 @@ package com.android04.godfisherman.ui.home
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
-import com.android04.godfisherman.utils.SharedPreferenceManager
 import com.android04.godfisherman.utils.isGrantedLocationPermission
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
 
     override val viewModel: HomeViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        // updateLocation()
-    }
 
+        updateLocation()
+    }
 
     private fun updateLocation() {
         if (isGrantedLocationPermission(requireContext())) {
             viewModel.updateLocation()
         } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION)
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE_LOCATION
+            )
         }
     }
 
@@ -50,4 +52,3 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
         application.exitCameraActivityFlag = false
     }
 }
-
