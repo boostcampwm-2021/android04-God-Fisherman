@@ -3,9 +3,13 @@ package com.android04.godfisherman.ui.stopwatch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.StopwatchRepository
+import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Thread.sleep
 import java.util.*
 import javax.inject.Inject
@@ -19,8 +23,11 @@ class StopwatchViewModel @Inject constructor(
         var isTimeLine = true
     }
 
-    private val _isStopwatchStarted = MutableLiveData<Boolean>(false)
+    private val _isStopwatchStarted: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
+
+    private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy{ MutableLiveData<List<TmpFishingRecord>>() }
+    val tmpFishingList: LiveData<List<TmpFishingRecord>> = _tmpFishingList
 
     private lateinit var stopwatch: Timer
     var time = 0.0
@@ -62,6 +69,12 @@ class StopwatchViewModel @Inject constructor(
         override fun run() {
             time++
             _displayTime.postValue(time.toTimeMilliSecond())
+        }
+    }
+
+    fun loadTmpTimeLineRecord(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _tmpFishingList.postValue(repository.loadTmpTimeLineRecord())
         }
     }
 }

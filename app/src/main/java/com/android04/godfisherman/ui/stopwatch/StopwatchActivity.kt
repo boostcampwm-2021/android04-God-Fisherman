@@ -28,9 +28,6 @@ class StopwatchActivity :
         var isStopwatchServiceRunning = false
     }
 
-    val dummy = TimeLineDataTest("00 : 16 : 27", "방어", "123.12", "상주은모래비치")
-    val dummyList = arrayListOf(dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy)
-
     override val viewModel: StopwatchViewModel by viewModels()
     private lateinit var serviceIntent: Intent
     private var isPlayAnimate = false
@@ -51,16 +48,17 @@ class StopwatchActivity :
         binding.viewModel = viewModel
         serviceIntent = Intent(applicationContext, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
-        setRV()
+        initRecyclerView()
         setObserver()
     }
-    private fun setRV(){
+    private fun initRecyclerView(){
+        viewModel.loadTmpTimeLineRecord()
         val recyclerViewEmptySupport = binding.rvTimeLine
         val emptyView = binding.tvEmptyView
         recyclerViewEmptySupport.adapter = TimelineListAdapter()
         recyclerViewEmptySupport.setEmptyView(emptyView)
         recyclerViewEmptySupport.setVerticalInterval(50)
-        recyclerViewEmptySupport.submitList(dummyList)
+
     }
     override fun onResume() {
         super.onResume()
@@ -82,6 +80,9 @@ class StopwatchActivity :
             }else{
 //                StopwatchViewModel.isTimeLine = false
             }
+        })
+        viewModel.tmpFishingList.observe(this, Observer{
+            binding.rvTimeLine.submitList(it)
         })
     }
 

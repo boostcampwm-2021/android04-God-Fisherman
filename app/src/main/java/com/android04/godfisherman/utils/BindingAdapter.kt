@@ -11,6 +11,8 @@ import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.util.*
 
 object BindingAdapter {
     @JvmStatic
@@ -94,5 +96,11 @@ object BindingAdapter {
     @BindingAdapter("setSizeText")
     fun setSizeTextWithDouble(view: TextView, size: Double) {
         view.text = convertCentiMeter(size)
+    }
+
+    @JvmStatic
+    @BindingAdapter("setDate")
+    fun setSizeTextWithDouble(view: TextView, date: Date) {
+        view.text = date.toDateString()
     }
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.UploadRepository
-import com.android04.godfisherman.localdatabase.entity.TemporaryFishingRecord
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.ui.stopwatch.StopwatchViewModel
 import com.android04.godfisherman.utils.convertCentiMeter

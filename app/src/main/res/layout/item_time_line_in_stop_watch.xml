@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.android04.godfisherman.ui.stopwatch.TimeLineDataTest" />
+            type="com.android04.godfisherman.localdatabase.entity.TmpFishingRecord" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -34,7 +34,7 @@
                 android:layout_width="108dp"
                 android:layout_height="wrap_content"
                 tools:text="00 : 12 : 34"
-                android:text="@{item.time}"
+                setDate = "@{item.date}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="가물치"
-                android:text="@{item.fishTag}"
+                android:text="@{item.fishType}"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintTop_toBottomOf="@+id/tv_time_in_time_line"
                 android:layout_marginTop="@dimen/space_small"
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="12.3cm"
-                android:text="@{item.length}"
+                android:text="@{Double.toString(item.fishLength)}"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintTop_toBottomOf="@+id/tv_time_in_time_line"
                 android:layout_marginTop="@dimen/space_small"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="상주은모래비치"
-                android:text="@{item.location}"
+                android:text="상주은모래비치"
                 android:textSize="@dimen/text_median"
                 android:textColor="@color/location_time_line"
                 app:layout_constraintTop_toBottomOf="@id/tv_fish_tag_in_time_line"

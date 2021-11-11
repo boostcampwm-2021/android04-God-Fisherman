@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "temporary_fishing_record")
-data class TemporaryFishingRecord(
+data class TmpFishingRecord(
     val image: Bitmap,
     val date: Date,
     val fishLength: Double,

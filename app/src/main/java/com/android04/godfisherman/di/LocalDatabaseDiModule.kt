@@ -3,7 +3,7 @@ package com.android04.godfisherman.di
 import android.content.Context
 import androidx.room.Room
 import com.android04.godfisherman.localdatabase.LocalDatabase
-import com.android04.godfisherman.localdatabase.dao.TemporaryFishingRecordDao
+import com.android04.godfisherman.localdatabase.dao.TmpFishingRecordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class LocalDatabaseDiModule {
 
     @Provides
-    fun providesTemporaryFishingRecordDao(localDatabase: LocalDatabase): TemporaryFishingRecordDao {
+    fun providesTemporaryFishingRecordDao(localDatabase: LocalDatabase): TmpFishingRecordDao {
         return localDatabase.temporaryFishingRecordDao()
     }
 
