@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_feed"
         android:name="com.android04.godfisherman.ui.feed.FeedFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_feed"
         tools:layout="@layout/fragment_feed" />
 
     <activity

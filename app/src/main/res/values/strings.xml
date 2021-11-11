@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">GodFisherman</string>
     <string name="title_home">홈</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_feed">낚시 피드</string>
     <string name="title_camera">촬영</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="navigation_menu_stopwatch">낚시시작</string>
+    <string name="navigation_menu_stopwatch">낚시타임</string>
     <string name="navigation_menu_my_page">마이페이지</string>
     <string name="loading">loading...</string>
     <string name="sample_text_short">sample</string>
