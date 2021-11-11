@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_median"
+        android:paddingEnd="@dimen/space_median">
+
+        <ImageView
+            android:id="@+id/tv_medal"
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/medal_sample"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1위"
+            android:textSize="@dimen/text_median"
+            android:layout_marginStart="@dimen/space_x_small"
+            app:layout_constraintStart_toEndOf="@id/tv_medal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이비"
+            android:textSize="@dimen/text_median"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/space_median"
+            app:layout_constraintStart_toEndOf="@id/tv_rank"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:text="갸라도스"
+            android:textSize="@dimen/text_median"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_small"
+            app:layout_constraintEnd_toStartOf="@id/tv_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_size"
+            android:text="34.5 cm"
+            android:textSize="@dimen/text_median"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/disabled_gray"
+            android:layout_marginTop="@dimen/space_median"
+            app:layout_constraintTop_toBottomOf="@id/tv_rank"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
