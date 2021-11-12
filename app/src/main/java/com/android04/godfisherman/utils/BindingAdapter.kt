@@ -103,4 +103,10 @@ object BindingAdapter {
     fun setSizeTextWithDouble(view: TextView, date: Date) {
         view.text = date.toDateString()
     }
+
+    @JvmStatic
+    @BindingAdapter("setImage")
+    fun setImage(view: ImageView, image: Bitmap) {
+        view.setImageBitmap(image)
+    }
 }
