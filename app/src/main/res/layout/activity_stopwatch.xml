@@ -70,17 +70,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <View
+                <ImageButton
                     android:id="@+id/view_start_stop"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:clickable="true"
-                    android:background="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop : @drawable/btn_start}"
+                    android:elevation="10dp"
+                    android:src="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop_with_ripple : @drawable/btn_start}"
                     android:onClick="@{()->viewModel.startOrStopTimer()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_fishing_time"
-                    android:layout_marginTop="@dimen/space_xxx_large" />
+                    android:layout_marginTop="@dimen/space_xxx_large"
+                    android:background="@null"/>
 
                 <TextView
                     android:id="@+id/tv_title_time_line"
