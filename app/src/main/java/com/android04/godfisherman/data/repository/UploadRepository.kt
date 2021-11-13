@@ -22,7 +22,13 @@ class UploadRepository @Inject constructor(
         val imageUrl = remoteDataSource.getImageUrl(image)
 
         imageUrl?.let {
-            val type = Type(Timestamp(Date()),false, "", 0, "user1")
+            val type = Type(
+                Timestamp(Date()),
+                false,
+                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",
+                0,
+                "user1"
+            )
             val fishingRecord = FishingRecord(0, imageUrl, Date(), fishLength, fishType)
 
             remoteDataSource.saveImageType(type, fishingRecord)
