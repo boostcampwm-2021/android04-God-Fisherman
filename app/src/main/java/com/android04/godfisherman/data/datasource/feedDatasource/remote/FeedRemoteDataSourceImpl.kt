@@ -1,5 +1,6 @@
 package com.android04.godfisherman.data.datasource.feedDatasource.remote
 
+import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.Type
@@ -13,8 +14,8 @@ import javax.inject.Inject
 class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteDataSource {
     private val database = Firebase.firestore
 
-    override suspend fun fetchFeedDataList(): List<Pair<Type, List<FishingRecord>>> {
-        val result = mutableListOf<Pair<Type, List<FishingRecord>>>()
+    override suspend fun fetchFeedDataList(): List<FeedDTO> {
+        val result = mutableListOf<FeedDTO>()
 
         val feedRef = database.collection("Feed")
 
@@ -40,7 +41,7 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
                         }
 
                         if (feedType != null && fishingRecordList.isNotEmpty()) {
-                            result.add(Pair(feedType, fishingRecordList.toList()))
+                            result.add(FeedDTO(feedType, fishingRecordList.toList()))
                         }
 
                     }.addOnFailureListener {
