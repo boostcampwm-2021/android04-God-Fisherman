@@ -53,6 +53,11 @@ class UploadActivity :
 
             binding.autoCompleteTextviewFishType.setAdapter(adapter)
         }
+        viewModel.isFetchSuccess.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.fetch_fail)
+            }
+        }
         viewModel.isUploadSuccess.observe(this) {
             when (it) {
                 true -> {

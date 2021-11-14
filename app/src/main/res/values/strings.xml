@@ -31,6 +31,7 @@
 
     <!-- Upload Activity -->
     <string name="upload_complete">완료</string>
+    <string name="fetch_fail">어종 타입을오지 못했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="upload_server_success">업로드가 완료되었습니다.</string>
     <string name="upload_server_fail">업로드에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="upload_input_fail">업로드에 실패했습니다. 입력한 정보를 확인해주세요.</string>

@@ -16,7 +16,20 @@ class UploadRepository @Inject constructor(
     private val remoteDataSource: UploadDataSource.RemoteDataSource
 ) {
 
-    suspend fun fetchFishTypeList(): List<String> = remoteDataSource.fetchFishTypeList()
+    suspend fun fetchFishTypeList(callback: RepoResponse<Unit>): List<String> {
+        var isSuccess = true
+        var ret = listOf<String>()
+
+        try {
+            ret = remoteDataSource.fetchFishTypeList()
+        } catch (e: Exception) {
+            isSuccess = false
+        } finally {
+            callback.invoke(isSuccess, Unit)
+        }
+
+        return ret
+    }
 
     suspend fun saveImageType(image: Bitmap, fishLength: Double, fishType: String, callback: RepoResponse<Unit>) {
         val imageUrl = remoteDataSource.getImageUrl(image)
@@ -47,7 +60,5 @@ class UploadRepository @Inject constructor(
         } finally {
             callback.invoke(isSuccess, Unit)
         }
-
     }
-
 }
