@@ -31,7 +31,10 @@
 
     <!-- Upload Activity -->
     <string name="upload_complete">완료</string>
-    
+    <string name="upload_server_success">업로드가 완료되었습니다.</string>
+    <string name="upload_server_fail">업로드에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="upload_input_fail">업로드에 실패했습니다. 입력한 정보를 확인해주세요.</string>
+
     <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
     <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
