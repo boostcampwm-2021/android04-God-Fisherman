@@ -16,5 +16,17 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvFeed.adapter = FeedRecyclerViewAdapter()
+        setupObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchFeedDataList()
+    }
+
+    fun setupObserver() {
+        viewModel.feedDataList.observe(viewLifecycleOwner) {
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
+        }
     }
 }
