@@ -22,7 +22,7 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     private val _fishTypeList: MutableLiveData<List<String>> by lazy { MutableLiveData<List<String>>() }
     val fishTypeList: LiveData<List<String>> = _fishTypeList
 
-    val isUploadSuccess = MutableLiveData<Boolean?>(null)
+    val isUploadSuccess: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading = MutableLiveData<Boolean?>(null)
 
     var fishTypeSelected: String? = null

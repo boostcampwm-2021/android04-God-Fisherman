@@ -23,7 +23,7 @@ class StopwatchViewModel @Inject constructor(
         var isTimeLine = false
     }
 
-    private val _isStopwatchStarted: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
 
     private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy{ MutableLiveData<List<TmpFishingRecord>>() }
@@ -32,7 +32,7 @@ class StopwatchViewModel @Inject constructor(
     private lateinit var stopwatch: Timer
     var time = 0.0
 
-    private val _displayTime = MutableLiveData<String>("00:00:00.00")
+    private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
     fun startOrStopTimer(){

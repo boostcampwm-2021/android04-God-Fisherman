@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     private val locationHelper: LocationHelper
 ) : ViewModel() {
 
-    private val _address = MutableLiveData<String>()
+    private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val address: LiveData<String> = _address
     
     fun updateLocation() {
