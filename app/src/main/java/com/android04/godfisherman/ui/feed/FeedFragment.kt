@@ -16,6 +16,9 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvFeed.adapter = FeedRecyclerViewAdapter()
+        binding.feedViewModel = viewModel
+
+        initListener()
         setupObserver()
     }
 
@@ -24,7 +27,13 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         viewModel.fetchFeedDataList()
     }
 
-    fun setupObserver() {
+    private fun initListener() {
+        binding.cgType.setOnCheckedChangeListener { group, checkedId ->
+            viewModel.setFilter(checkedId)
+        }
+    }
+
+    private fun setupObserver() {
         viewModel.feedDataList.observe(viewLifecycleOwner) {
             (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
         }
