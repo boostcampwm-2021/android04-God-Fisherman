@@ -6,6 +6,8 @@ import com.android04.godfisherman.ui.feed.FeedData
 import com.android04.godfisherman.ui.feed.FeedPhotoData
 import com.android04.godfisherman.ui.feed.FeedTimelineData
 import com.android04.godfisherman.ui.feed.TimeLineData
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class FeedRepository @Inject constructor(
@@ -15,6 +17,12 @@ class FeedRepository @Inject constructor(
 
     suspend fun fetch(type: Type): List<FeedData> {
         val list = mutableListOf<FeedData>()
+        val dateFormat = SimpleDateFormat("MM월 dd일")
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+
+        val timeFormat = SimpleDateFormat("HH:mm")
+        timeFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+
         remoteDataSource.fetchFeedDataList(type)?.forEach { feed ->
 
             when (feed.typeInfo.isTimeline) {
@@ -25,13 +33,13 @@ class FeedRepository @Inject constructor(
                         FeedTimelineData(
                             typeInfo.userName,
                             typeInfo.location,
-                            typeInfo.id.toDate().toString(),
+                            dateFormat.format(typeInfo.id.toDate()),
                             feed.fishingRecordList.map { it.imageUrl },
                             feed.fishingRecordList.map {
                                 TimeLineData(
                                     it.fishType,
                                     it.fishLength,
-                                    it.date.toString()
+                                    timeFormat.format(it.date)
                                 )
                             })
                     )
@@ -44,7 +52,7 @@ class FeedRepository @Inject constructor(
                         FeedPhotoData(
                             typeInfo.userName,
                             typeInfo.location,
-                            typeInfo.id.toDate().toString(),
+                            dateFormat.format(typeInfo.id.toDate()),
                             photo.imageUrl,
                             photo.fishType,
                             photo.fishLength

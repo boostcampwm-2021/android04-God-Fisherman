@@ -10,6 +10,7 @@
     <dimen name="space_large">20dp</dimen>
     <dimen name="space_x_large">24dp</dimen>
     <dimen name="space_xxx_large">32dp</dimen>
+    <dimen name="text_small">12dp</dimen>
     <dimen name="text_regular">14dp</dimen>
     <dimen name="text_median">16dp</dimen>
     <dimen name="text_large">20dp</dimen>

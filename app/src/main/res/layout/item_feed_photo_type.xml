@@ -69,7 +69,7 @@
                 android:layout_marginEnd="@dimen/space_median"
                 android:text="@{data.date}"
                 android:textColor="@color/feed_text_dark_gray"
-                android:textSize="@dimen/feed_date_text_size"
+                android:textSize="@dimen/text_small"
                 app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
                 app:layout_constraintEnd_toEndOf="parent" />
 
