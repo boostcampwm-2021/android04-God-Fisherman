@@ -136,11 +136,13 @@
                     android:id="@+id/rv_recommend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_marginTop="@dimen/space_median"
+                    android:clipToPadding="false"
                     android:orientation="horizontal"
+                    android:paddingStart="24dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/tv_recommend"
+                    tools:itemCount="20"
                     tools:listitem="@layout/item_home_recommend" />
 
                 <TextView
