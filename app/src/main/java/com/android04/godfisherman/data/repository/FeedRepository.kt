@@ -16,9 +16,9 @@ class FeedRepository @Inject constructor(
         val list = mutableListOf<FeedData>()
         remoteDataSource.fetchFeedDataList()?.forEach { feed ->
 
-            when (feed.type.isTimeline) {
+            when (feed.typeInfo.isTimeline) {
                 true -> {
-                    val type = feed.type
+                    val type = feed.typeInfo
 
                     list.add(
                         FeedTimelineData(
@@ -36,7 +36,7 @@ class FeedRepository @Inject constructor(
                     )
                 }
                 false -> {
-                    val type = feed.type
+                    val type = feed.typeInfo
                     val photo = feed.fishingRecordList[0]
 
                     list.add(

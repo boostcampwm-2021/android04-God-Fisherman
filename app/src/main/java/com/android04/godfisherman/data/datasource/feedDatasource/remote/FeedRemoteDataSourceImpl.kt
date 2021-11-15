@@ -3,7 +3,7 @@ package com.android04.godfisherman.data.datasource.feedDatasource.remote
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -26,7 +26,7 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
 
         feedDocs?.let { feedList ->
             feedList.forEach { feed ->
-                val feedType: Type? = feed.toObject<Type>()
+                val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
                 feed.reference.collection("fishingRecord").get()
                     .addOnSuccessListener { docs ->
@@ -40,8 +40,8 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
                             }
                         }
 
-                        if (feedType != null && fishingRecordList.isNotEmpty()) {
-                            result.add(FeedDTO(feedType, fishingRecordList.toList()))
+                        if (feedTypeInfo != null && fishingRecordList.isNotEmpty()) {
+                            result.add(FeedDTO(feedTypeInfo, fishingRecordList.toList()))
                         }
 
                     }.addOnFailureListener {
