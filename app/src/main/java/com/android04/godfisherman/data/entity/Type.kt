@@ -3,10 +3,10 @@ package com.android04.godfisherman.data.entity
 import com.google.firebase.Timestamp
 
 data class Type(
-    val id: Timestamp,
+    val id: Timestamp = Timestamp.now(),
     @field:JvmField
-    val isTimeline: Boolean,
-    val location: String,
-    val fishingTime: Int,
-    val userName: String
+    val isTimeline: Boolean = false,
+    val location: String = "",
+    val fishingTime: Int = 0,
+    val userName: String = ""
 )

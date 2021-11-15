@@ -1,12 +1,8 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="66dp"
-    android:height="66dp"
-    android:viewportWidth="66"
-    android:viewportHeight="66">
-  <path
-      android:pathData="M33,33m-33,0a33,33 0,1 1,66 0a33,33 0,1 1,-66 0"
-      android:fillColor="#20AED4"/>
-  <path
-      android:pathData="M25.5,21.75H40.5C41.4946,21.75 42.4484,22.1451 43.1517,22.8483C43.8549,23.5516 44.25,24.5054 44.25,25.5V40.5C44.25,41.4946 43.8549,42.4484 43.1517,43.1517C42.4484,43.8549 41.4946,44.25 40.5,44.25H25.5C24.5054,44.25 23.5516,43.8549 22.8483,43.1517C22.1451,42.4484 21.75,41.4946 21.75,40.5V25.5C21.75,24.5054 22.1451,23.5516 22.8483,22.8483C23.5516,22.1451 24.5054,21.75 25.5,21.75V21.75Z"
-      android:fillColor="#FFE16F"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@drawable/bg_stopwatch_button"/>
+  <item android:drawable="@drawable/ic_stop"
+      android:width="24dp"
+      android:height="24dp"
+      android:gravity="center"/>
+</layer-list>
