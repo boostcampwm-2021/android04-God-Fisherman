@@ -26,6 +26,9 @@ class HomeViewModel @Inject constructor(
 
     private val _youtubeList: MutableLiveData<List<HomeRecommendData>> by lazy { MutableLiveData<List<HomeRecommendData>>() }
     val youtubeList: LiveData<List<HomeRecommendData>> = _youtubeList
+
+    private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
     
     fun updateLocation() {
         locationHelper.setLocationUpdate()
@@ -43,10 +46,11 @@ class HomeViewModel @Inject constructor(
 
             repoCallback.addSuccessCallback {
                 _youtubeList.postValue(it)
+                _isYoutubeSuccess.postValue(true)
             }
 
             repoCallback.addFailureCallback {
-
+                _isYoutubeSuccess.postValue(false)
             }
 
             homeRepository.fetchYoutubeData(repoCallback)

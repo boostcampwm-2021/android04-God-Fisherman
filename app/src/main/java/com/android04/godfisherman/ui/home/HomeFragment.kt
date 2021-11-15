@@ -10,6 +10,7 @@ import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.utils.isGrantedLocationPermission
+import com.android04.godfisherman.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,8 +55,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     }
 
     private fun setObserver() {
-        viewModel.youtubeList.observe(this) {
+        viewModel.youtubeList.observe(viewLifecycleOwner) {
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
+        }
+        viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
+            if (!it) {
+                showToast(requireContext(), R.string.home_recommend_fail)
+            }
         }
     }
 
