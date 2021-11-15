@@ -47,18 +47,41 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/view_stopwatch_small"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_stopwatch_small"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_gradient_main"
-            android:gravity="center"
-            android:text="Test!!"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/cl_container_stopwatch"
             app:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
             app:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
-            app:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch" />
+            app:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch">
+
+            <TextView
+                android:id="@+id/view_stopwatch_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Test!!"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/space_large"/>
+
+            <TextView
+                android:id="@+id/textView_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/space_small"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <fragment
             android:id="@+id/fl_stopwatch_big"

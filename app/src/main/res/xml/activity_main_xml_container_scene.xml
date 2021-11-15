@@ -24,13 +24,14 @@
             motion:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@id/view_stopwatch_small"
+            android:id="@+id/cl_stopwatch_small"
             android:layout_width="0dp"
             android:layout_height="0dp"
             motion:layout_constraintBottom_toBottomOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
             motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
-            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch" />
+            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch"
+            />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
@@ -39,7 +40,7 @@
             android:alpha="0"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/view_stopwatch_small"
+            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch"
             />
 
         <Constraint
@@ -64,12 +65,13 @@
             motion:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@id/view_stopwatch_small"
+            android:id="@+id/cl_stopwatch_small"
             android:layout_width="0dp"
             android:layout_height="0dp"
             motion:layout_constraintBottom_toTopOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
-            motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch" />
+            motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
+            />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
