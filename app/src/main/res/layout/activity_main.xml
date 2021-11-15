@@ -63,22 +63,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Test!!"
+                android:text="00 : 00 : 00"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/space_large"/>
 
-            <TextView
-                android:id="@+id/textView_close"
+            <ImageView
+                android:id="@+id/iv_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="x"
+                android:src="@drawable/ic_close_24"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:padding="@dimen/space_small"
                 android:layout_marginEnd="@dimen/space_small"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

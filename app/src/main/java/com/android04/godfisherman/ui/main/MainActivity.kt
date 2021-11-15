@@ -41,7 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
         }
 
-        binding.textViewClose.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             binding.container.transitionToState(R.id.end_close)
             viewModel.stopwatchOnFlag.value = false
         }

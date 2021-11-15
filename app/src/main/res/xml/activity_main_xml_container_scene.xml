@@ -18,10 +18,12 @@
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:id="@id/cl_container_stopwatch"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="56dp"
             motion:layout_constraintBottom_toTopOf="@+id/nav_view"
-            motion:layout_constraintStart_toStartOf="parent" />
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="60dp"/>
 
         <Constraint
             android:id="@+id/cl_stopwatch_small"
