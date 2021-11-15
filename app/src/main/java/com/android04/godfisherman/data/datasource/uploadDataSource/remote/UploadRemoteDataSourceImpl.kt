@@ -84,6 +84,8 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
                     add(record)
                 }
             }
+        }.addOnFailureListener {
+            throw it
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.UploadRepository
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.ui.stopwatch.StopwatchViewModel
+import com.android04.godfisherman.utils.RepoResponseImpl
 import com.android04.godfisherman.utils.convertCentiMeter
 import com.android04.godfisherman.utils.roundBodySize
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +23,17 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     private val _fishTypeList: MutableLiveData<List<String>> by lazy { MutableLiveData<List<String>>() }
     val fishTypeList: LiveData<List<String>> = _fishTypeList
 
-    val isUploadSuccess = MutableLiveData<Boolean?>(null)
-    val isLoading = MutableLiveData<Boolean?>(null)
+    private val _isFetchSuccess: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isFetchSuccess: LiveData<Boolean?> = _isFetchSuccess
+
+    private val _isUploadSuccess: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isUploadSuccess: LiveData<Boolean?> = _isUploadSuccess
+
+    private val _isInputCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isInputCorrect: MutableLiveData<Boolean?> = _isInputCorrect
+
+    private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isLoading: MutableLiveData<Boolean?> = _isLoading
 
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
@@ -40,7 +50,13 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     fun fetchFishTypeList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _fishTypeList.postValue(repository.fetchFishTypeList())
+                val callback = RepoResponseImpl<Unit>()
+
+                callback.addFailureCallback {
+                    _isFetchSuccess.postValue(false)
+                }
+
+                _fishTypeList.postValue(repository.fetchFishTypeList(callback))
             }
         }
     }
@@ -50,29 +66,49 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     }
 
     fun saveFishingRecord() {
-        if (StopwatchViewModel.isTimeLine){
-            if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
-                isLoading.value = true
-                viewModelScope.launch(Dispatchers.IO){
-                    repository.saveTmpTimeLineRecord(fishThumbnail,bodySize!!,fishTypeSelected!!)
-                    isUploadSuccess.postValue(true)
-                    isLoading.postValue(false)
+        if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
+            _isInputCorrect.value = true
+            _isLoading.value = true
+            if (StopwatchViewModel.isTimeLine) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val callback = RepoResponseImpl<Unit>()
+
+                    callback.addSuccessCallback {
+                        _isUploadSuccess.postValue(true)
+                        _isLoading.postValue(false)
+                    }
+
+                    callback.addFailureCallback {
+                        _isUploadSuccess.postValue(false)
+                        _isLoading.postValue(false)
+                    }
+
+                    repository.saveTmpTimeLineRecord(
+                        fishThumbnail,
+                        bodySize!!,
+                        fishTypeSelected!!,
+                        callback
+                    )
                 }
             } else {
-                isUploadSuccess.postValue(false)
+                viewModelScope.launch {
+                    val callback = RepoResponseImpl<Unit>()
+
+                    callback.addSuccessCallback {
+                        _isUploadSuccess.postValue(true)
+                        _isLoading.postValue(false)
+                    }
+
+                    callback.addFailureCallback {
+                        _isUploadSuccess.postValue(false)
+                        _isLoading.postValue(false)
+                    }
+
+                    repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!, callback)
+                }
             }
         } else {
-            if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
-                isLoading.value = true
-                viewModelScope.launch {
-                    repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!)
-                    isUploadSuccess.postValue(true)
-                    isLoading.postValue(false)
-                }
-            } else {
-                isUploadSuccess.postValue(false)
-            }
-
+            _isInputCorrect.value = false
         }
     }
 }

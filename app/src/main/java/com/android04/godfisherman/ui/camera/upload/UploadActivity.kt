@@ -53,15 +53,25 @@ class UploadActivity :
 
             binding.autoCompleteTextviewFishType.setAdapter(adapter)
         }
+        viewModel.isFetchSuccess.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.fetch_fail)
+            }
+        }
         viewModel.isUploadSuccess.observe(this) {
             when (it) {
                 true -> {
-                    showToast(this, "업로드가 완료되었습니다.")
+                    showToast(this, R.string.upload_server_success)
                     finish()
                 }
                 false -> {
-                    showToast(this, "업로드에 실패했습니다. 입력한 정보를 확인해주세요.")
+                    showToast(this, R.string.upload_server_fail)
                 }
+            }
+        }
+        viewModel.isInputCorrect.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.upload_input_fail)
             }
         }
         viewModel.isLoading.observe(this) {
