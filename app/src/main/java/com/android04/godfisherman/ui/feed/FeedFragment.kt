@@ -29,12 +29,14 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
     }
 
     private fun initListener() {
-        binding.cgType.setOnCheckedChangeListener { group, checkedId ->
+        binding.cgType.setOnCheckedChangeListener { _, checkedId ->
             viewModel.setFilter(checkedId)
             (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
 
             binding.lottieLoading.visibility = View.VISIBLE
             binding.lottieLoading.playAnimation()
+
+            binding.cgType.visibility = View.INVISIBLE
         }
     }
 
@@ -42,6 +44,8 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         viewModel.feedDataList.observe(viewLifecycleOwner) {
             binding.lottieLoading.visibility = View.GONE
             binding.lottieLoading.pauseAnimation()
+
+            binding.cgType.visibility = View.VISIBLE
 
             (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
         }
