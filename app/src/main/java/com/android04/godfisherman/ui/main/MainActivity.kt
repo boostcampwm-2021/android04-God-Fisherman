@@ -2,6 +2,7 @@ package com.android04.godfisherman.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
@@ -11,6 +12,8 @@ import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
+import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
+import com.android04.godfisherman.utils.BindingAdapter
 import com.android04.godfisherman.utils.StopwatchNotification
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +26,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         super.onCreate(savedInstanceState)
         StopwatchNotification.createChannel(this)
         initBottomNavigation()
+
+        viewModel.stopwatchOnFlag.observe(this) { flag ->
+            if (flag) {
+                // 라이브데이터 바인딩이 제대로 되지 않아서 일단 임시 방편으로 바인딩 어댑터를 직접 사용
+                BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
+                binding.container.transitionToEnd()
+            }
+        }
     }
 
     private fun initBottomNavigation() {
@@ -42,6 +53,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 }
                 R.id.navigation_stopwatch -> {
                     // TODO 플래그를 두고 현재 스톱워치가 동작하는지 여부를 판단
+                    if (true) // 원래는 스톱워치가 동작하고 있지 않은 경우임
+                    changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
                     true
                 }
                 R.id.navigation_my_page -> {

@@ -62,7 +62,7 @@
 
         <fragment
             android:id="@+id/fl_stopwatch_big"
-            android:name="com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment"
+            android:name="com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0"
