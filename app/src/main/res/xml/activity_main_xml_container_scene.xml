@@ -7,7 +7,7 @@
         android:id="@+id/transition"
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
+        motion:duration="400">
 
         <OnSwipe
             motion:touchAnchorId="@id/cl_container_stopwatch"

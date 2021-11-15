@@ -97,6 +97,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             override fun onTransitionChange(motionLayout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+
                 if (viewModel.isFromInfoFragment) {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_fragment_container, HomeFragment()).commit()
                     viewModel.isFromInfoFragment = false
@@ -106,9 +107,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
                     viewModel.isFromStopwatchFragment = false
                 }
+                viewModel.isOpened = currentId == R.id.end
             }
 
             override fun onTransitionTrigger(motionLayout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
         })
+    }
+
+    override fun onBackPressed() {
+        Log.d("TAG", "onBackPressed: Test")
+        if (viewModel.isOpened) {
+            binding.container.transitionToState(R.id.start)
+        } else {
+            super.onBackPressed()
+        }
     }
 }
