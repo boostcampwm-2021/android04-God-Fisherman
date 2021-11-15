@@ -2,7 +2,6 @@ package com.android04.godfisherman.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
@@ -43,24 +42,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             when(menuItem.itemId) {
                 R.id.navigation_home -> {
                     changeFragment(R.id.fl_fragment_container, HomeFragment())
+                    viewModel.beforeMenuItemId = R.id.navigation_home
                     true
                 }
                 R.id.navigation_feed -> {
                     changeFragment(R.id.fl_fragment_container, FeedFragment())
+                    viewModel.beforeMenuItemId = R.id.navigation_feed
                     true
                 }
                 R.id.navigation_camera -> {
                     startActivity(Intent(this, CameraActivity::class.java))
+                    viewModel.beforeMenuItemId = R.id.navigation_camera
                     true
                 }
                 R.id.navigation_stopwatch -> {
-                    // TODO 플래그를 두고 현재 스톱워치가 동작하는지 여부를 판단
-                    if (true) // 원래는 스톱워치가 동작하고 있지 않은 경우임
-                    changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
+                    if (viewModel.stopwatchOnFlag.value == true) {
+                        binding.container.transitionToEnd()
+                        viewModel.isFromStopwatchFragment = true
+                    } else {
+                        changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
+                    }
                     true
                 }
                 R.id.navigation_my_page -> {
                     changeFragment(R.id.fl_fragment_container, MyPageFragment())
+                    viewModel.beforeMenuItemId = R.id.navigation_my_page
                     true
                 }
                 else -> false
@@ -81,18 +87,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             override fun onTransitionChange(motionLayout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-                Log.d("TAG", "onTransitionCompleted: Test!!!")
                 if (viewModel.isFromInfoFragment) {
-                    Log.d("TAG", "${viewModel.isFromInfoFragment}")
                     supportFragmentManager.beginTransaction().replace(R.id.fl_fragment_container, HomeFragment()).commit()
                     viewModel.isFromInfoFragment = false
                     binding.navView.menu.findItem(R.id.navigation_home).isChecked = true
+                }
+                if (viewModel.isFromStopwatchFragment) {
+                    binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
+                    viewModel.isFromStopwatchFragment = false
                 }
             }
 
             override fun onTransitionTrigger(motionLayout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
 
         })
-
     }
 }
