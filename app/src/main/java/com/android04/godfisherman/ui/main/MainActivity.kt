@@ -36,7 +36,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     changeFragment(R.id.fl_fragment_container, FeedFragment())
                     true
                 }
-                R.id.navigation_notifications -> {
+                R.id.navigation_camera -> {
                     startActivity(Intent(this, CameraActivity::class.java))
                     true
                 }

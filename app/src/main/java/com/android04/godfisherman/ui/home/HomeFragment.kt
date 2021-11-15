@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         val application = requireActivity().application as App
         if (application.exitCameraActivityFlag) {
             requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).menu.apply {
-                findItem(R.id.navigation_notifications).isChecked = false
+                findItem(R.id.navigation_camera).isChecked = false
                 findItem(R.id.navigation_home).isChecked = true
             }
         }
