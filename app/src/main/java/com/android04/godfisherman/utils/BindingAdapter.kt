@@ -1,17 +1,14 @@
 package com.android04.godfisherman.utils
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
-import com.google.android.material.appbar.MaterialToolbar
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
+import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
 
 object BindingAdapter {
@@ -108,5 +105,20 @@ object BindingAdapter {
     @BindingAdapter("setImage")
     fun setImage(view: ImageView, image: Bitmap) {
         view.setImageBitmap(image)
+    }
+
+    @JvmStatic
+    @BindingAdapter("visibilityOnMotion")
+    fun setVisibilityOnMotion(view: View, visible: Boolean) {
+        println("visibility : $visible")
+        if (view.parent is MotionLayout) {
+            val motionLayout = view.parent as MotionLayout
+            val visibility = if (visible) View.VISIBLE else View.GONE
+
+            for (constraintId in motionLayout.constraintSetIds) {
+                val constraintSet = motionLayout.getConstraintSet(constraintId)
+                constraintSet?.setVisibility(view.id, visibility)
+            }
+        }
     }
 }

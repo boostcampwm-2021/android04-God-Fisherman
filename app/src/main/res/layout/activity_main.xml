@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.android04.godfisherman.ui.main.MainViewModel" />
+    </data>
+
+
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -35,6 +42,7 @@
             android:id="@+id/cl_container_stopwatch"
             android:layout_width="0dp"
             android:layout_height="56dp"
+            visibilityOnMotion="@{viewModel.stopwatchOnFlag}"
             app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
