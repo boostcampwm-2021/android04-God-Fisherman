@@ -1,5 +1,7 @@
 package com.android04.godfisherman.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +33,13 @@ class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewA
 
         fun onBind(data : HomeRecommendData) {
             binding.data = data
+            binding.root.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(data.videoUrl)
+                intent.setPackage("com.google.android.youtube")
+
+                binding.root.context.startActivity(intent)
+            }
         }
 
     }

@@ -22,7 +22,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.viewModel = viewModel
 
         setRecyclerView()
+        setObserver()
         updateLocation()
+
+        viewModel.fetchYoutube()
     }
 
     private fun setRecyclerView() {
@@ -48,16 +51,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         )
 
         binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
-        (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(
-            listOf(
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample))
-            )
-        )
+    }
+
+    private fun setObserver() {
+        viewModel.youtubeList.observe(this) {
+            (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
+        }
     }
 
     private fun updateLocation() {
