@@ -1,5 +1,6 @@
 package com.android04.godfisherman.data.datasource.feedDatasource.remote
 
+import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
@@ -14,10 +15,14 @@ import javax.inject.Inject
 class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteDataSource {
     private val database = Firebase.firestore
 
-    override suspend fun fetchFeedDataList(): List<FeedDTO> {
+    override suspend fun fetchFeedDataList(type: Type): List<FeedDTO> {
         val result = mutableListOf<FeedDTO>()
 
-        val feedRef = database.collection("Feed")
+        val feedRef = when (type) {
+            Type.ALL -> database.collection("Feed")
+            Type.PHOTO -> database.collection("Feed").whereEqualTo("isTimeline", false)
+            Type.TIMELINE -> database.collection("Feed").whereEqualTo("isTimeline", true)
+        }
 
         var feedDocs: List<DocumentSnapshot>? = null
         feedRef.get().addOnSuccessListener {

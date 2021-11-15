@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.databinding.FragmentFeedBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchFeedDataList()
+        viewModel.fetchFeedDataList(Type.ALL)
     }
 
     private fun initListener() {

@@ -14,6 +14,7 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
     private val data = mutableListOf<FeedData>()
 
     fun setData(newData: List<FeedData>) {
+        data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
     }
