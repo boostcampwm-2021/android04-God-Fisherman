@@ -18,10 +18,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
   
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setObserver()
+        viewModel.checkConnectivity()
+
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
         StopwatchNotification.createChannel(this)
+    }
+
+    private fun setObserver() {
+        viewModel.isNetworkConnected.observe(this) {
+        }
     }
     
 }

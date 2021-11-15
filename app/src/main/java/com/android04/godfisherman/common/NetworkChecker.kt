@@ -6,7 +6,8 @@ import android.net.NetworkCapabilities
 
 object NetworkChecker {
 
-    fun isConnected (context: Context): Boolean {
+    fun isConnected (): Boolean {
+        val context = App.applicationContext()
         val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val network = manager.activeNetwork ?: return false
