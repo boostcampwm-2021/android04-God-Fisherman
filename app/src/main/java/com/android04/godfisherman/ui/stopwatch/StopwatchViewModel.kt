@@ -59,9 +59,7 @@ class StopwatchViewModel @Inject constructor(
 
     private fun endStopwatch(){
         isTimeLine = false
-        viewModelScope.launch(Dispatchers.IO){
-            saveTimeLineRecord()
-        }
+        saveTimeLineRecord()
         stopwatch.cancel()
         sleep(100)
         time = 0.0
@@ -69,8 +67,12 @@ class StopwatchViewModel @Inject constructor(
         _isStopwatchStarted.value = false
     }
 
-    private suspend fun saveTimeLineRecord(){
-        repository.saveTimeLineRecord(time)
+    private fun saveTimeLineRecord(){
+        if (!_tmpFishingList.value.isNullOrEmpty()){
+            viewModelScope.launch(Dispatchers.IO){
+                repository.saveTimeLineRecord(time)
+            }
+        }
     }
 
     private inner class StopwatchTask() : TimerTask() {

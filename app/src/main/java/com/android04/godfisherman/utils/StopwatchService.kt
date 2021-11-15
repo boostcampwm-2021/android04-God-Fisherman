@@ -10,7 +10,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.ui.stopwatch.StopwatchActivity
+import kotlinx.coroutines.delay
+import java.lang.Thread.sleep
 import java.util.*
+import kotlin.concurrent.thread
 
 class StopwatchService:
     Service() {
@@ -30,7 +33,6 @@ class StopwatchService:
 
     override fun onStartCommand(passedIntent: Intent, flags: Int, startId: Int): Int {
         StopwatchActivity.isStopwatchServiceRunning = true
-
         val intent = Intent(this, StopwatchActivity::class.java)
         intent.action = STOPWATCH_ENTER
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
@@ -48,7 +50,7 @@ class StopwatchService:
             .setContentIntent(pendingIntent)
         saveTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
         startForeground(NOTIFICATION_ID, createNotification())
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 100)
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 1000)
         return START_NOT_STICKY
     }
 
@@ -64,7 +66,8 @@ class StopwatchService:
 
     private inner class StopwatchTask() : TimerTask() {
         override fun run() {
-            saveTime += 10
+            Log.d("StopWatch", saveTime.toString())
+            saveTime += 100
             updateNotification(saveTime)
         }
     }
