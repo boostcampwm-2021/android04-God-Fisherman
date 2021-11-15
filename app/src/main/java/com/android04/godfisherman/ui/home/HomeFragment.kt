@@ -71,10 +71,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
     }
 
-    companion object {
-        const val REQUEST_CODE_LOCATION = 2
-    }
-
     override fun onStart() {
         super.onStart()
         val application = requireActivity().application as App
@@ -85,5 +81,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }
         application.exitCameraActivityFlag = false
+    }
+
+    companion object {
+        const val REQUEST_CODE_LOCATION = 2
     }
 }
