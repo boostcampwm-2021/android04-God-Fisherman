@@ -2,6 +2,7 @@ package com.android04.godfisherman.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
 import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
+import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import com.android04.godfisherman.utils.BindingAdapter
 import com.android04.godfisherman.utils.StopwatchNotification
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,10 +32,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
+                // TODO 수정해야함
                 // 라이브데이터 바인딩이 제대로 되지 않아서 일단 임시 방편으로 바인딩 어댑터를 직접 사용
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
-                binding.container.transitionToEnd()
+                changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
+                binding.container.setTransition(R.id.transition)
+                binding.container.transitionToState(R.id.end)
             }
+        }
+
+        binding.textViewClose.setOnClickListener {
+            binding.container.transitionToState(R.id.end_close)
+            viewModel.stopwatchOnFlag.value = false
         }
     }
 
