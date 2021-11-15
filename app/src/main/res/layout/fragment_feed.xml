@@ -19,11 +19,10 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cg_type"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/Widget.Material3.ChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small"
-            android:visibility="invisible"
             app:checkedChip="@id/cp_type_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +31,6 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cp_type_all"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -40,7 +38,6 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cp_type_photo"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -48,7 +45,6 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cp_type_timeline"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"

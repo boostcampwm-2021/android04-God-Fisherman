@@ -22,9 +22,9 @@
     <color name="disabled_gray">#646464</color>
 
     <!--feed-->
-    <color name="feed_background">#FFFBF7</color>
+    <color name="feed_background">#ECEAE8</color>
     <color name="feed_text_dark_gray">#42474E</color>
     <color name="feed_photo_background">#FCFCFF</color>
     <color name="feed_timeline_background">#E8F1FF</color>
-    <color name="feed_letterbox">#DADADA</color>
+    <color name="feed_letterbox">#FFFFFF</color>
 </resources>
