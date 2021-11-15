@@ -31,11 +31,18 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
     private fun initListener() {
         binding.cgType.setOnCheckedChangeListener { group, checkedId ->
             viewModel.setFilter(checkedId)
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
+
+            binding.lottieLoading.visibility = View.VISIBLE
+            binding.lottieLoading.playAnimation()
         }
     }
 
     private fun setupObserver() {
         viewModel.feedDataList.observe(viewLifecycleOwner) {
+            binding.lottieLoading.visibility = View.GONE
+            binding.lottieLoading.pauseAnimation()
+
             (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
         }
     }
