@@ -82,8 +82,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 else -> false
             }
         }
-
         changeFragment(R.id.fl_fragment_container, HomeFragment())
+        viewModel.beforeMenuItemId = R.id.navigation_home
     }
 
     private fun changeFragment(containerId: Int, fragment: Fragment) {
@@ -109,7 +109,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
 
             override fun onTransitionTrigger(motionLayout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
-
         })
     }
 }
