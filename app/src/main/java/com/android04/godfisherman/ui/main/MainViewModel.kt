@@ -5,4 +5,5 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
+    var isFromInfoFragment: Boolean = false
 }

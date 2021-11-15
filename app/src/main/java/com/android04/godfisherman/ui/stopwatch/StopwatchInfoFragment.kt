@@ -2,15 +2,12 @@ package com.android04.godfisherman.ui.stopwatch
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentStopwatchInfoBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.utils.BindingAdapter
 
 class StopwatchInfoFragment : BaseFragment<FragmentStopwatchInfoBinding, StopwatchInfoViewModel>(R.layout.fragment_stopwatch_info) {
     override val viewModel: StopwatchInfoViewModel by viewModels()
@@ -24,6 +21,7 @@ class StopwatchInfoFragment : BaseFragment<FragmentStopwatchInfoBinding, Stopwat
         binding.btnStart.setOnClickListener {
             val activity = requireActivity() as MainActivity
             activity.viewModel.stopwatchOnFlag.value = true
+            activity.viewModel.isFromInfoFragment = true
         }
     }
 
