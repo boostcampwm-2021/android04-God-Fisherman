@@ -9,12 +9,17 @@ import com.android04.godfisherman.databinding.ItemHomeRankingBinding
 class RankingRecyclerViewAdapter : RecyclerView.Adapter<RankingRecyclerViewAdapter.RankingViewHolder>() {
 
     private val data = mutableListOf<HomeRankingData>()
+    private var limitItemCount: Int? = null
 
     fun setData(newData : List<HomeRankingData>) {
         data.addAll(newData)
         notifyDataSetChanged()
     }
 
+
+    fun setLimitItemCount(limit: Int) {
+        limitItemCount = limit
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingViewHolder {
         val binding = ItemHomeRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RankingViewHolder(binding)
@@ -25,7 +30,8 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RankingRecyclerViewAdapt
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        if (limitItemCount == null) return data.size
+        return if (data.size < limitItemCount!!) data.size else limitItemCount!!
     }
 
     inner class RankingViewHolder(private val binding : ItemHomeRankingBinding) : RecyclerView.ViewHolder(binding.root) {

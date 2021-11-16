@@ -25,31 +25,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         setRecyclerView()
         setObserver()
         updateLocation()
-        viewModel.fetchYoutube()
+        // viewModel.fetchYoutube()
         viewModel.fetchRanking()
     }
 
     private fun setRecyclerView() {
         binding.rvRanking.adapter = RankingRecyclerViewAdapter()
-        (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(
-            listOf(
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                )
-            )
-        )
+        (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setLimitItemCount(5)
 
         binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
     }
@@ -62,6 +44,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             if (!it) {
                 showToast(requireContext(), R.string.home_recommend_fail)
             }
+        }
+        viewModel.rankList.observe(viewLifecycleOwner) {
+            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
     }
 
