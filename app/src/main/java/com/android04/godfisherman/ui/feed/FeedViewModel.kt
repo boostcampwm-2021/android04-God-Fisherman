@@ -22,7 +22,7 @@ class FeedViewModel @Inject constructor(private val repository: FeedRepository) 
     fun fetchFeedDataList(type: Type) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _feedDataList.postValue(repository.fetch(type))
+                _feedDataList.postValue(repository.getFeedDataList(type))
             }
         }
     }
