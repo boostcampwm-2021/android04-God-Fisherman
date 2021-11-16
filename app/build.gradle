@@ -75,13 +75,13 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics-ktx:20.0.0"
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-storage-ktx'
-    
+
     //Lottie
     implementation "com.airbnb.android:lottie:3.0.7"
 
     //Indicator
-    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
-    
+    implementation "com.tbuonomo:dotsindicator:4.2"
+
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
