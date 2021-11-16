@@ -2,10 +2,10 @@ package com.android04.godfisherman.data.datasource.homedatasource.remote
 
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Rank
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
 import com.android04.godfisherman.network.response.YoutubeResponse
+import com.android04.godfisherman.ui.home.HomeRankingData
 import com.android04.godfisherman.utils.RepoResponse
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -47,9 +47,9 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
         })
     }
 
-    override suspend fun fetchRankingList(num: Long): List<Rank>{
+    override suspend fun fetchRankingList(num: Long): List<HomeRankingData>{
         var feedDocs: List<DocumentSnapshot>? = null
-        val rankList: MutableList<Rank> = mutableListOf()
+        val rankList: MutableList<HomeRankingData> = mutableListOf()
 
         database.collectionGroup("fishingRecord")
             .orderBy("fishLength", Query.Direction.DESCENDING)
@@ -64,7 +64,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 val typeInfo = parentDoc.toObject<TypeInfo>()
                 val fishingRecord = doc.toObject<FishingRecord>()
                 if (typeInfo == null || fishingRecord == null) return@addOnSuccessListener
-                rankList.add(Rank(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
+                rankList.add(HomeRankingData(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
             }.await()
         }
         return rankList
