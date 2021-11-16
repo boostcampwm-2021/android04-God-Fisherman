@@ -1,7 +1,9 @@
 package com.android04.godfisherman.ui.camera.upload
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -26,12 +28,18 @@ class UploadActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setOrientation()
         setupObserver()
         setUpBinding()
         setLoadingDialog()
         loadData()
 
         viewModel.fetchFishTypeList()
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private fun setOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun setUpBinding() {
@@ -62,6 +70,7 @@ class UploadActivity :
             when (it) {
                 true -> {
                     showToast(this, R.string.upload_server_success)
+                    CameraActivity.captureImage = null
                     finish()
                 }
                 false -> {

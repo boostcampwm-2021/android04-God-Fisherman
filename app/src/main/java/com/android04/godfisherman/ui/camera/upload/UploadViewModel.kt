@@ -44,7 +44,6 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
         bodySize = roundBodySize(size)
         bodySizeCentiMeter = convertCentiMeter(size)
         fishThumbnail = CameraActivity.captureImage!!
-        CameraActivity.captureImage = null
     }
 
     fun fetchFishTypeList() {

@@ -1,9 +1,11 @@
 package com.android04.godfisherman.ui.stopwatch
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -45,12 +47,19 @@ class StopwatchActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setOrientation()
         binding.viewModel = viewModel
         serviceIntent = Intent(applicationContext, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
         initRecyclerView()
         setObserver()
     }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private fun setOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
     private fun initRecyclerView(){
         viewModel.loadTmpTimeLineRecord()
         val recyclerViewEmptySupport = binding.rvTimeLine
@@ -60,6 +69,7 @@ class StopwatchActivity :
         recyclerViewEmptySupport.setVerticalInterval(50)
 
     }
+
     override fun onResume() {
         super.onResume()
         Log.d("serviceRunning", "$isStopwatchServiceRunning")
