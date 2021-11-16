@@ -5,8 +5,7 @@ import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
 import com.android04.godfisherman.network.response.YoutubeResponse
-import com.android04.godfisherman.ui.home.HomeRankingData
-import com.android04.godfisherman.ui.home.HomeWaitingRankingData
+import com.android04.godfisherman.ui.home.RankingData
 import com.android04.godfisherman.utils.RepoResponse
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -48,9 +47,9 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
         })
     }
 
-    override suspend fun fetchRankingList(num: Long): List<HomeRankingData>{
+    override suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData>{
         var feedDocs: List<DocumentSnapshot>? = null
-        val rankList: MutableList<HomeRankingData> = mutableListOf()
+        val rankList: MutableList<RankingData.HomeRankingData> = mutableListOf()
 
         database.collectionGroup("fishingRecord")
             .orderBy("fishLength", Query.Direction.DESCENDING)
@@ -65,13 +64,13 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 val typeInfo = parentDoc.toObject<TypeInfo>()
                 val fishingRecord = doc.toObject<FishingRecord>()
                 if (typeInfo == null || fishingRecord == null) return@addOnSuccessListener
-                rankList.add(HomeRankingData(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
+                rankList.add(RankingData.HomeRankingData(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
             }.await()
         }
         return rankList
     }
 
-    override suspend fun fetchWaitingRankingList(): List<HomeWaitingRankingData> {
+    override suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData> {
         var feedDocs: List<DocumentSnapshot>? = null
         val rankingMap: HashMap<String, Int> = HashMap()
         database.collection("Feed")
@@ -91,6 +90,6 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 }
             }
         }
-        return rankingMap.map { HomeWaitingRankingData(it.key, it.value) }.sortedByDescending { it.totalTime }
+        return rankingMap.map { RankingData.HomeWaitingRankingData(it.key, it.value) }.sortedByDescending { it.totalTime }
     }
 }

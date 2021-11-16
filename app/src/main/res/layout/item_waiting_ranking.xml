@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.android04.godfisherman.ui.home.RankingData.HomeRankingData" />
+            type="com.android04.godfisherman.ui.home.RankingData.HomeWaitingRankingData" />
 
     </data>
 
@@ -54,19 +54,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space_small"
-            android:text="@{data.type}"
-            android:textSize="@dimen/text_median"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_size"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_size"
-            setSizeText="@{data.size}"
+            android:id="@+id/tv_time"
+            setSizeText="@{data.totalTime}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_median"
