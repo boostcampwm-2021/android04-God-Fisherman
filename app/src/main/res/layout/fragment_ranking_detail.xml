@@ -75,9 +75,10 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_ranking"
                             android:layout_width="match_parent"
-                            android:layout_height="500dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/space_median"
                             android:orientation="vertical"
+                            android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintTop_toBottomOf="@id/tv_ranking_title"
                             tools:listitem="@layout/item_home_ranking" />
