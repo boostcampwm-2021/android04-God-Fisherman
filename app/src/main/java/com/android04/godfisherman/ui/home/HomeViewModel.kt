@@ -51,6 +51,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun fetchWaitingRanking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = homeRepository.fetchWaitingRankingList()
+            Log.d("TAG", "$list")
+        }
+    }
+
     fun fetchYoutube() {
         viewModelScope.launch {
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()

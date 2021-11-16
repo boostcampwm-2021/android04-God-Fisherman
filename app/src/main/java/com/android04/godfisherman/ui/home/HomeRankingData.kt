@@ -5,3 +5,8 @@ data class HomeRankingData(
     val type : String,
     val size : Double
 )
+
+data class HomeWaitingRankingData(
+    val userId: String,
+    val totalTime: Int
+)

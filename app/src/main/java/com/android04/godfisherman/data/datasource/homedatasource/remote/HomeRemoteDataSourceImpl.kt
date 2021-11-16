@@ -6,6 +6,7 @@ import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
 import com.android04.godfisherman.network.response.YoutubeResponse
 import com.android04.godfisherman.ui.home.HomeRankingData
+import com.android04.godfisherman.ui.home.HomeWaitingRankingData
 import com.android04.godfisherman.utils.RepoResponse
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -68,5 +69,28 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
             }.await()
         }
         return rankList
+    }
+
+    override suspend fun fetchWaitingRankingList(): List<HomeWaitingRankingData> {
+        var feedDocs: List<DocumentSnapshot>? = null
+        val rankingMap: HashMap<String, Int> = HashMap()
+        database.collection("Feed")
+            .whereNotEqualTo("fishingTime", 0)
+            .get()
+            .addOnSuccessListener {
+                feedDocs = it.documents
+            }.await()
+
+        feedDocs?.forEach { doc ->
+            val typeInfo = doc.toObject<TypeInfo>()
+            typeInfo?.let {
+                if (rankingMap.containsKey(it.userName)) {
+                    rankingMap.put(it.userName, rankingMap.get(it.userName)!! + it.fishingTime)
+                } else {
+                    rankingMap.put(it.userName, it.fishingTime)
+                }
+            }
+        }
+        return rankingMap.map { HomeWaitingRankingData(it.key, it.value) }.sortedByDescending { it.totalTime }
     }
 }
