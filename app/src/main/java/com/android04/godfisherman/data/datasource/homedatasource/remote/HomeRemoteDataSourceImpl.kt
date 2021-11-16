@@ -12,7 +12,7 @@ import javax.inject.Inject
 class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataSource {
     override suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>) {
         val call = RetrofitClient.youtubeApiService.getYoutubeData(
-            q = "낚시"
+            q = fishingKey.random()
         )
 
         call.enqueue(object : Callback<YoutubeResponse>{
@@ -33,5 +33,9 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 callback.invoke(false, null)
             }
         })
+    }
+
+    companion object {
+        val fishingKey = listOf("민물낚시", "선상낚시", "바다낚시", "매운탕", "회뜨기", "낚시꿀팁", "낚시용품", "낚시대", "낚시터", "낚시명당")
     }
 }
