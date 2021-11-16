@@ -20,13 +20,15 @@ interface WeatherApiService {
     fun getWeatherData(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("apiid") apiKey: String = API_KEY
+        @Query("appid") apiKey: String = API_KEY,
+        @Query("units") units: String = "metric",
+        @Query("lang") lang: String = "kr"
     ): Call<WeatherResponse>
 
     @GET("/data/2.5/weather")
     fun getCurrentWeatherData(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("apiid") apiKey: String = API_KEY
+        @Query("appid") apiKey: String = API_KEY
     ): Call<CurrentWeatherResponse>
 }

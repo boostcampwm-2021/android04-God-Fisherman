@@ -44,10 +44,6 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 call: Call<WeatherResponse>,
                 response: Response<WeatherResponse>
             ) {
-                println(response.code())
-                println(response.message())
-                println(response.body())
-                println(response.raw())
                 if (response.isSuccessful) {
 
                 } else {
@@ -56,7 +52,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                // TODO 오류처리
+                //TODO 오류처리
             }
         })
     }

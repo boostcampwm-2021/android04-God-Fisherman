@@ -10,13 +10,13 @@ data class CurrentWeatherData(
     val sunrise: Float,
     val sunset: Float,
     val temp: Double,
-    val weather: WeatherData
+    val weather: List<WeatherData>
 )
 
 data class HourlyWeatherData(
     val dt: Float,
     val temp: Double,
-    val weather: WeatherData
+    val weather: List<WeatherData>
 )
 
 data class WeatherData(
