@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GodFisherman</string>
+    <string name="app_name">그물잠</string>
     <string name="title_home">홈</string>
     <string name="title_feed">낚시 피드</string>
     <string name="title_camera">촬영</string>
@@ -45,6 +45,7 @@
     <string name="feed_photo">📷사진 타입</string>
     <string name="feed_timeline">⌛️타임라인 타입</string>
     <string name="feed_show_timeline">⌛️타임라인 보기</string>
+    <string name="feed_close_timeline">⌛️타임라인 닫기</string>
     <string name="sample_time">10:10</string>
 
     <!-- Home Fragment -->

@@ -87,13 +87,15 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
         }
 
         private fun setListener() {
-            binding.listener = {
+            binding.timelineClickListener = {
                 if (binding.rvTimeline.visibility == View.GONE) {
                     binding.rvTimeline.visibility = View.VISIBLE
                     binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_up_primary)
+                    binding.tvShowTimeline.setText(R.string.feed_close_timeline)
                 } else {
                     binding.rvTimeline.visibility = View.GONE
                     binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+                    binding.tvShowTimeline.setText(R.string.feed_show_timeline)
                 }
             }
         }
