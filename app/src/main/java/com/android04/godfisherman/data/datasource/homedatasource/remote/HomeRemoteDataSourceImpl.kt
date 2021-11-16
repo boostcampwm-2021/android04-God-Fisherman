@@ -1,15 +1,27 @@
 package com.android04.godfisherman.data.datasource.homedatasource.remote
 
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
+import com.android04.godfisherman.data.entity.FishingRecord
+import com.android04.godfisherman.data.entity.Rank
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
 import com.android04.godfisherman.network.response.YoutubeResponse
 import com.android04.godfisherman.utils.RepoResponse
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
 class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataSource {
+
+    private val database = Firebase.firestore
+
     override suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>) {
         val call = RetrofitClient.youtubeApiService.getYoutubeData(
             q = "낚시"
@@ -33,5 +45,28 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 callback.invoke(false, null)
             }
         })
+    }
+
+    override suspend fun fetchRankingList(num: Long): List<Rank>{
+        var feedDocs: List<DocumentSnapshot>? = null
+        val rankList: MutableList<Rank> = mutableListOf()
+
+        database.collectionGroup("fishingRecord")
+            .orderBy("fishLength", Query.Direction.DESCENDING)
+            .limit(num)
+            .get()
+            .addOnSuccessListener {
+                feedDocs = it.documents
+            }.await()
+
+        feedDocs?.forEach { doc ->
+            doc.reference.parent.parent!!.get().addOnSuccessListener { parentDoc ->
+                val typeInfo = parentDoc.toObject<TypeInfo>()
+                val fishingRecord = doc.toObject<FishingRecord>()
+                if (typeInfo == null || fishingRecord == null) return@addOnSuccessListener
+                rankList.add(Rank(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
+            }.await()
+        }
+        return rankList
     }
 }

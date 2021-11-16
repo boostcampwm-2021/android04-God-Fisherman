@@ -25,8 +25,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         setRecyclerView()
         setObserver()
         updateLocation()
-
         viewModel.fetchYoutube()
+        viewModel.fetchRanking()
     }
 
     private fun setRecyclerView() {

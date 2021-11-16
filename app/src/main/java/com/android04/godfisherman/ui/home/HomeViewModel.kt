@@ -1,5 +1,6 @@
 package com.android04.godfisherman.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,13 @@ class HomeViewModel @Inject constructor(
                 val location = locationHelper.getLocation()
                 _address.postValue(locationRepository.updateLocation(location))
             }
+        }
+    }
+
+    fun fetchRanking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = homeRepository.fetchRankingList()
+            Log.d("TAG", "updateRaking: $list")
         }
     }
 
