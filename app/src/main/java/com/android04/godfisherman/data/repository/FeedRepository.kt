@@ -1,5 +1,6 @@
 package com.android04.godfisherman.data.repository
 
+import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.ui.feed.FeedData
 import com.android04.godfisherman.ui.feed.FeedPhotoData
@@ -12,19 +13,19 @@ class FeedRepository @Inject constructor(
     private val remoteDataSource: FeedDataSource.RemoteDataSource
 ) {
 
-    suspend fun fetch(): List<FeedData> {
+    suspend fun fetch(type: Type): List<FeedData> {
         val list = mutableListOf<FeedData>()
-        remoteDataSource.fetchFeedDataList()?.forEach { feed ->
+        remoteDataSource.fetchFeedDataList(type)?.forEach { feed ->
 
-            when (feed.type.isTimeline) {
+            when (feed.typeInfo.isTimeline) {
                 true -> {
-                    val type = feed.type
+                    val typeInfo = feed.typeInfo
 
                     list.add(
                         FeedTimelineData(
-                            type.userName,
-                            type.location,
-                            type.id.toDate().toString(),
+                            typeInfo.userName,
+                            typeInfo.location,
+                            typeInfo.id.toDate().toString(),
                             feed.fishingRecordList.map { it.imageUrl },
                             feed.fishingRecordList.map {
                                 TimeLineData(
@@ -36,14 +37,14 @@ class FeedRepository @Inject constructor(
                     )
                 }
                 false -> {
-                    val type = feed.type
+                    val typeInfo = feed.typeInfo
                     val photo = feed.fishingRecordList[0]
 
                     list.add(
                         FeedPhotoData(
-                            type.userName,
-                            type.location,
-                            type.id.toDate().toString(),
+                            typeInfo.userName,
+                            typeInfo.location,
+                            typeInfo.id.toDate().toString(),
                             photo.imageUrl,
                             photo.fishType,
                             photo.fishLength

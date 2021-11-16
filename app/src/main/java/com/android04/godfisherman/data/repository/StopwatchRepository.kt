@@ -4,7 +4,7 @@ import android.util.Log
 import com.android04.godfisherman.data.datasource.stopwatchdatasource.StopwatchDataSource
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import com.google.firebase.Timestamp
@@ -28,7 +28,7 @@ class StopwatchRepository @Inject constructor(
             }
         }
         if (list.size == recordList.size){
-            val type = Type(
+            val type = TypeInfo(
                 Timestamp(Date()),
                 true,
                 sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",

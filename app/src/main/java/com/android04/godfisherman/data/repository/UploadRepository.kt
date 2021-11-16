@@ -3,7 +3,7 @@ package com.android04.godfisherman.data.repository
 import android.graphics.Bitmap
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.utils.RepoResponse
 import com.android04.godfisherman.utils.SharedPreferenceManager
@@ -37,7 +37,7 @@ class UploadRepository @Inject constructor(
         val imageUrl = remoteDataSource.getImageUrl(image)
 
         imageUrl?.let {
-            val type = Type(
+            val type = TypeInfo(
                 Timestamp(Date()),
                 false,
                 sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",

@@ -23,4 +23,5 @@
     <color name="feed_text_dark_gray">#42474E</color>
     <color name="feed_photo_background">#FCFCFF</color>
     <color name="feed_timeline_background">#E8F1FF</color>
+    <color name="feed_letterbox">#DADADA</color>
 </resources>

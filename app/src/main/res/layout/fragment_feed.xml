@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <variable
+            name="feedViewModel"
+            type="com.android04.godfisherman.ui.feed.FeedViewModel" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.feed.FeedFragment">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cg_type"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:visibility="invisible"
             app:checkedChip="@id/cp_type_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +34,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/feed_all" />
 
             <com.google.android.material.chip.Chip
@@ -32,6 +42,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/feed_photo" />
 
             <com.google.android.material.chip.Chip
@@ -39,6 +50,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/feed_timeline" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -54,5 +66,16 @@
             app:layout_constraintTop_toBottomOf="@id/cg_type"
             tools:listitem="@layout/item_feed_timeline_type" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_loading"
+            android:layout_width="@dimen/feed_loading_lottie_size"
+            android:layout_height="@dimen/feed_loading_lottie_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottie_loading.json"
+            app:lottie_loop="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

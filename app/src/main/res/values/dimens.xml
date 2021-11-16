@@ -24,4 +24,5 @@
 
     <!-- Feed Fragment -->
     <dimen name="feed_date_text_size">10dp</dimen>
+    <dimen name="feed_loading_lottie_size">100dp</dimen>
 </resources>

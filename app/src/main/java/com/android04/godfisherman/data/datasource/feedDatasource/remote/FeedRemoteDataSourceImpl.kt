@@ -1,9 +1,10 @@
 package com.android04.godfisherman.data.datasource.feedDatasource.remote
 
+import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -14,10 +15,14 @@ import javax.inject.Inject
 class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteDataSource {
     private val database = Firebase.firestore
 
-    override suspend fun fetchFeedDataList(): List<FeedDTO> {
+    override suspend fun fetchFeedDataList(type: Type): List<FeedDTO> {
         val result = mutableListOf<FeedDTO>()
 
-        val feedRef = database.collection("Feed")
+        val feedRef = when (type) {
+            Type.ALL -> database.collection("Feed")
+            Type.PHOTO -> database.collection("Feed").whereEqualTo("isTimeline", false)
+            Type.TIMELINE -> database.collection("Feed").whereEqualTo("isTimeline", true)
+        }
 
         var feedDocs: List<DocumentSnapshot>? = null
         feedRef.get().addOnSuccessListener {
@@ -26,7 +31,7 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
 
         feedDocs?.let { feedList ->
             feedList.forEach { feed ->
-                val feedType: Type? = feed.toObject<Type>()
+                val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
                 feed.reference.collection("fishingRecord").get()
                     .addOnSuccessListener { docs ->
@@ -40,8 +45,8 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
                             }
                         }
 
-                        if (feedType != null && fishingRecordList.isNotEmpty()) {
-                            result.add(FeedDTO(feedType, fishingRecordList.toList()))
+                        if (feedTypeInfo != null && fishingRecordList.isNotEmpty()) {
+                            result.add(FeedDTO(feedTypeInfo, fishingRecordList.toList()))
                         }
 
                     }.addOnFailureListener {

@@ -10,6 +10,7 @@ import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.utils.isGrantedLocationPermission
+import com.android04.godfisherman.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +23,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.viewModel = viewModel
 
         setRecyclerView()
+        setObserver()
         updateLocation()
+
+        viewModel.fetchYoutube()
     }
 
     private fun setRecyclerView() {
@@ -48,16 +52,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         )
 
         binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
-        (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(
-            listOf(
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample)),
-                HomeRecommendData("", getString(R.string.home_recommend_sample))
-            )
-        )
+    }
+
+    private fun setObserver() {
+        viewModel.youtubeList.observe(viewLifecycleOwner) {
+            (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
+        }
+        viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
+            if (!it) {
+                showToast(requireContext(), R.string.home_recommend_fail)
+            }
+        }
     }
 
     private fun updateLocation() {
@@ -72,10 +77,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
     }
 
-    companion object {
-        const val REQUEST_CODE_LOCATION = 2
-    }
-
     override fun onStart() {
         super.onStart()
         val application = requireActivity().application as App
@@ -86,5 +87,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }
         application.exitCameraActivityFlag = false
+    }
+
+    companion object {
+        const val REQUEST_CODE_LOCATION = 2
     }
 }

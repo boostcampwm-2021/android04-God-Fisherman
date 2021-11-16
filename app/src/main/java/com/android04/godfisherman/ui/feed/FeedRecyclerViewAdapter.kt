@@ -18,6 +18,11 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
         notifyDataSetChanged()
     }
 
+    fun clearData() {
+        data.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         return when (viewType) {
             PHOTO_TYPE -> {

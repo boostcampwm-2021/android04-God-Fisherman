@@ -1,6 +1,8 @@
 package com.android04.godfisherman.ui.main
 
 import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -26,6 +28,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
   
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setObserver()
+        viewModel.checkConnectivity()
+
+        setOrientation()
+        
         StopwatchNotification.createChannel(this)
         initBottomNavigation()
         initMotionListener()
@@ -120,6 +127,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             binding.container.transitionToState(R.id.start)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private fun setOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    private fun setObserver() {
+        viewModel.isNetworkConnected.observe(this) {
         }
     }
 }
