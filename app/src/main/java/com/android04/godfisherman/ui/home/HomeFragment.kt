@@ -58,6 +58,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         viewModel.youtubeList.observe(viewLifecycleOwner) {
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
         }
+        viewModel.isYoutubeLoading.observe(viewLifecycleOwner) {
+            if (it == true) {
+                binding.lottieLoading.visibility = View.VISIBLE
+            } else {
+                binding.lottieLoading.visibility = View.INVISIBLE
+            }
+        }
         viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
             if (!it) {
                 showToast(requireContext(), R.string.home_recommend_fail)

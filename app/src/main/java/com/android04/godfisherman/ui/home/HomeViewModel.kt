@@ -27,6 +27,9 @@ class HomeViewModel @Inject constructor(
     private val _youtubeList: MutableLiveData<List<HomeRecommendData>> by lazy { MutableLiveData<List<HomeRecommendData>>() }
     val youtubeList: LiveData<List<HomeRecommendData>> = _youtubeList
 
+    private val _isYoutubeLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isYoutubeLoading: LiveData<Boolean> = _isYoutubeLoading
+
     private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
     
@@ -42,15 +45,18 @@ class HomeViewModel @Inject constructor(
 
     fun fetchYoutube() {
         viewModelScope.launch {
+            _isYoutubeLoading.value = true
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
             repoCallback.addSuccessCallback {
                 _youtubeList.postValue(it)
                 _isYoutubeSuccess.postValue(true)
+                _isYoutubeLoading.postValue(false)
             }
 
             repoCallback.addFailureCallback {
                 _isYoutubeSuccess.postValue(false)
+                _isYoutubeLoading.postValue(false)
             }
 
             homeRepository.fetchYoutubeData(repoCallback)

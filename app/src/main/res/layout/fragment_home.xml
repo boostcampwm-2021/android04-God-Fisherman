@@ -135,7 +135,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginTop="@dimen/space_median"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
@@ -144,6 +144,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_recommend"
                     tools:itemCount="20"
                     tools:listitem="@layout/item_home_recommend" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_loading"
+                    android:layout_width="@dimen/feed_loading_lottie_size"
+                    android:layout_height="@dimen/feed_loading_lottie_size"
+                    app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rv_recommend"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="lottie_loading.json"
+                    app:lottie_loop="true" />
 
                 <TextView
                     android:id="@+id/tv_weather"
