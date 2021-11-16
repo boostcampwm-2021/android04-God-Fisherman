@@ -12,7 +12,7 @@
         android:title="@string/title_feed" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_camera"
         android:icon="@drawable/ic_add_box"
         android:title="@string/title_camera" />
 
