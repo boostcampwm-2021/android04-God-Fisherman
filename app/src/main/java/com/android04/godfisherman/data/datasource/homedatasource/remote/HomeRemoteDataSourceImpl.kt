@@ -2,6 +2,7 @@ package com.android04.godfisherman.data.datasource.homedatasource.remote
 
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.network.RetrofitClient
+import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
 import com.android04.godfisherman.utils.RepoResponse
 import retrofit2.Call
@@ -31,6 +32,31 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
 
             override fun onFailure(call: Call<YoutubeResponse>, t: Throwable) {
                 callback.invoke(false, null)
+            }
+        })
+    }
+
+    override suspend fun fetchWeatherData(lat: Double, lon: Double) {
+        val call = RetrofitClient.weatherApiService.getWeatherData(lat, lon)
+
+        call.enqueue(object : Callback<WeatherResponse>{
+            override fun onResponse(
+                call: Call<WeatherResponse>,
+                response: Response<WeatherResponse>
+            ) {
+                println(response.code())
+                println(response.message())
+                println(response.body())
+                println(response.raw())
+                if (response.isSuccessful) {
+
+                } else {
+                    onFailure(call, Throwable())
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                // TODO 오류처리
             }
         })
     }

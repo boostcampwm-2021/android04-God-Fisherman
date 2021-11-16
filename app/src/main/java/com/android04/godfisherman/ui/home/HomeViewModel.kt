@@ -1,5 +1,6 @@
 package com.android04.godfisherman.ui.home
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,9 @@ class HomeViewModel @Inject constructor(
     private val locationHelper: LocationHelper
 ) : ViewModel() {
 
+    private val _currentLocation: MutableLiveData<Location> by lazy { MutableLiveData<Location>() }
+    val currentLocation: LiveData<Location> = _currentLocation
+
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val address: LiveData<String> = _address
 
@@ -38,6 +42,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val location = locationHelper.getLocation()
+                _currentLocation.postValue(location)
                 _address.postValue(locationRepository.updateLocation(location))
             }
         }
@@ -59,6 +64,16 @@ class HomeViewModel @Inject constructor(
             }
 
             homeRepository.fetchYoutubeData(repoCallback)
+        }
+    }
+
+    fun fetchWeather() {
+        val location = currentLocation.value
+
+        if (location != null) {
+            viewModelScope.launch {
+                homeRepository.fetchWeatherData(location.latitude, location.longitude)
+            }
         }
     }
 }
