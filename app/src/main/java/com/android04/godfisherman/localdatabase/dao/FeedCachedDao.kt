@@ -18,10 +18,10 @@ interface FeedCachedDao {
         insertRecordCachedList(recordCachedList)
     }
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTypeInfoCached(typeInfoCached: TypeInfoCached)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecordCachedList(recordCachedList: List<FishingRecordCached>)
 
     @Transaction
