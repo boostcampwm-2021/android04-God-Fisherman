@@ -6,6 +6,7 @@ import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -25,7 +26,9 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
         }
 
         var feedDocs: List<DocumentSnapshot>? = null
-        feedRef.get().addOnSuccessListener {
+        feedRef.orderBy("id", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener {
             feedDocs = it.documents
         }.await()
 
@@ -33,7 +36,9 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
             feedList.forEach { feed ->
                 val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
-                feed.reference.collection("fishingRecord").get()
+                feed.reference.collection("fishingRecord")
+                    .orderBy("id", Query.Direction.ASCENDING)
+                    .get()
                     .addOnSuccessListener { docs ->
                         val fishingRecordList = mutableListOf<FishingRecord>()
 
