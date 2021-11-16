@@ -25,8 +25,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         setRecyclerView()
         setObserver()
         updateLocation()
+        setListener()
         // viewModel.fetchYoutube()
         viewModel.fetchRanking()
+    }
+
+    private fun setListener() {
+        binding.tvShowAll.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragment_container, RankingDetailFragment())
+                addToBackStack("home")
+                commit()
+            }
+        }
     }
 
     private fun setRecyclerView() {

@@ -23,7 +23,7 @@
     <string name="upload_title">업로드</string>
     <string name="level_error">수평을 맞춰주세요.</string>
     <string name="object_error">물체를 인식해주세요.</string>
-  
+
     <!-- Stopwatch info Fragment -->
     <string name="info_stopwatch_info">스톱워치를 시작한 후\n아래의 촬영 버튼을 클릭해\n낚시 기록을 남겨보세요\n\n낚시 타임라인을 만들 수 있어요</string>
     <string name="description_stopwatch_info">낚시 기록을 시작해 보세요!</string>
