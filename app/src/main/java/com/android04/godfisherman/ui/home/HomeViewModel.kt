@@ -56,7 +56,6 @@ class HomeViewModel @Inject constructor(
 
             repoCallback.addFailureCallback {
                 _isYoutubeSuccess.postValue(false)
-                _isYoutubeLoading.postValue(false)
             }
 
             homeRepository.fetchYoutubeData(repoCallback)
