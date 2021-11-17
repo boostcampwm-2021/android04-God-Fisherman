@@ -20,14 +20,19 @@
         android:theme="@style/Theme.GodFisherman"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.intro.GodFishermanIntro"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:name=".ui.login.LogInActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.intro.GodFishermanIntro"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
         </activity>
         <activity
             android:name=".ui.camera.upload.UploadActivity"
@@ -43,6 +48,7 @@
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name" />
+
         <service android:name=".utils.StopwatchService" />
     </application>
 
