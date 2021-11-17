@@ -135,7 +135,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_marginTop="@dimen/space_median"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
@@ -144,6 +144,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_recommend"
                     tools:itemCount="20"
                     tools:listitem="@layout/item_home_recommend" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_loading"
+                    android:layout_width="@dimen/feed_loading_lottie_size"
+                    android:layout_height="@dimen/feed_loading_lottie_size"
+                    app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rv_recommend"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="lottie_loading.json"
+                    app:lottie_loop="true" />
 
                 <TextView
                     android:id="@+id/tv_weather"
@@ -157,34 +169,56 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_recommend" />
 
-                <TextView
-                    android:id="@+id/tv_location_desc"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/space_x_large"
-                    android:text="@string/home_location_desc"
-                    android:textSize="12dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_weather"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_weather" />
+                    android:layout_margin="@dimen/space_median"
+                    android:backgroundTint="@color/feed_timeline_background"
+                    app:cardElevation="@dimen/feed_card_view_elevation"
+                    app:layout_constraintTop_toBottomOf="@id/tv_weather">
 
-                <TextView
-                    android:id="@+id/tv_test"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:text="@{viewModel.address}"
-                    android:textAlignment="textEnd"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_location_desc"
-                    app:layout_constraintEnd_toStartOf="@id/tv_location_desc"
-                    app:layout_constraintStart_toEndOf="@id/tv_weather"
-                    app:layout_constraintTop_toTopOf="@id/tv_location_desc"
-                    tools:text="주소" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/space_median">
+
+                        <ImageView
+                            android:id="@+id/iv_location_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_small"
+                            android:layout_marginTop="@dimen/space_small"
+                            android:src="@drawable/ic_feed_location"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_location"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_xx_small"
+                            android:layout_marginEnd="@dimen/space_median"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="@{viewModel.address}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_regular"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_location_icon"
+                            app:layout_constraintTop_toTopOf="@id/iv_location_icon" />
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="@dimen/space_median"
+                            app:layout_constraintTop_toBottomOf="@id/iv_location_icon"
+                            app:layout_constraintStart_toStartOf="@id/iv_location_icon"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
