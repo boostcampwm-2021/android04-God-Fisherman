@@ -1,7 +1,11 @@
 package com.android04.godfisherman.ui.login
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityLogInBinding
@@ -21,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layout.activity_log_in) {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private lateinit var loadingDialog: Dialog
 
     override val viewModel: LogInViewModel by viewModels()
 
@@ -30,6 +35,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         setLoginInstance()
         setListener()
         setObserver()
+        setLoadingDialog()
 
         viewModel.fetchLoginData()
     }
@@ -47,6 +53,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
 
     private fun setListener() {
         binding.googleButton.setOnClickListener {
+            viewModel.setLoading(true)
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
@@ -57,6 +64,13 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
             if (it) {
                 showToast(this, "자동 로그인 되었습니다.")
                 moveToIntro()
+            }
+        }
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                showLoadingDialog()
+            } else {
+                cancelLoadingDialog()
             }
         }
     }
@@ -76,6 +90,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
+                viewModel.setLoading(false)
                 showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
             }
         }
@@ -87,13 +102,39 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    viewModel.setLoading(false)
                     showToast(this, "구글 로그인에 성공하였습니다.")
                     viewModel.setLoginData(account.displayName!!, account.email!!)
                     moveToIntro()
                 } else {
+                    viewModel.setLoading(false)
                     showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
                 }
             }
+    }
+
+    private fun setLoadingDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.setContentView(R.layout.dialog_upload_loading)
+
+        loadingDialog = dialog
+    }
+
+    private fun showLoadingDialog() {
+        if (::loadingDialog.isInitialized) {
+            loadingDialog.show()
+        }
+    }
+
+    private fun cancelLoadingDialog() {
+        if (::loadingDialog.isInitialized) {
+            loadingDialog.cancel()
+        }
     }
 
     companion object {
