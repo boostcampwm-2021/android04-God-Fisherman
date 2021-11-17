@@ -13,6 +13,8 @@ class MainViewModel : ViewModel() {
     var isFromInfoFragment: Boolean = false
     var isOpened: Boolean = false
 
+    var lastBackTime = 0L
+
     private val _isNetworkConnected: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
 

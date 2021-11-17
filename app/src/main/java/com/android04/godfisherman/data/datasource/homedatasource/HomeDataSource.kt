@@ -6,5 +6,6 @@ import com.android04.godfisherman.utils.RepoResponse
 interface HomeDataSource {
     interface RemoteDataSource {
         suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>)
+        suspend fun fetchWeatherData(lat: Double, lon: Double, )
     }
 }

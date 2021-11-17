@@ -26,4 +26,14 @@ object RetrofitClient {
     val youtubeApiService: YoutubeApiService by lazy {
         youtubeRetrofit.build().create(YoutubeApiService::class.java)
     }
+
+    private val weatherRetrofit: Retrofit.Builder by lazy {
+        Retrofit.Builder()
+            .baseUrl(WeatherApi.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
+    }
+
+    val weatherApiService: WeatherApiService by lazy {
+        weatherRetrofit.build().create(WeatherApiService::class.java)
+    }
 }
