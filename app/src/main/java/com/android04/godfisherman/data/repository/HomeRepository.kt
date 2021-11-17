@@ -50,7 +50,7 @@ class HomeRepository @Inject constructor(
                     time, sunrise, sunset, temp, desc, iconUrl
                 ))
 
-                val list = it.hourly.map {
+                val list = it.hourly.subList(0, 24).map {
                     val hour = roundTime(timeConvertUTC(it.dt))
                     val hourTemp = it.temp.roundToInt().toString() + "°"
                     val hourIcon = it.weather.first().icon
