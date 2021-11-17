@@ -12,6 +12,8 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
         android:paddingVertical="40dp"
+        android:layout_marginStart="@dimen/space_large"
+        android:layout_marginEnd="@dimen/space_large"
         android:background="@drawable/bg_ranking_round">
 
         <androidx.cardview.widget.CardView
