@@ -15,6 +15,7 @@ interface FeedDataSource {
         )
 
         suspend fun loadFeedDataList(): List<TypeInfoWithFishingRecords>?
+        suspend fun deleteAll()
     }
 
     interface RemoteDataSource {

@@ -59,6 +59,8 @@ class FeedRepository @Inject constructor(
     }
 
     private suspend fun saveFeedListInCache(feedList: List<FeedDTO>) {
+        localDataSource.deleteAll()
+
         feedList.forEach { feed ->
             localDataSource.saveFeed(
                 feed.typeInfo.toTypeInfoCached(),

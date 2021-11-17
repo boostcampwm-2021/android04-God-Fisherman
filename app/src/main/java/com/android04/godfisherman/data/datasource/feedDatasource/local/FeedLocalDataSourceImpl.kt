@@ -22,4 +22,7 @@ class FeedLocalDataSourceImpl @Inject constructor(
         return feedCachedDao.getTypeInfosWithFishingRecords()
     }
 
+    override suspend fun deleteAll() {
+        feedCachedDao.deleteAll()
+    }
 }

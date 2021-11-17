@@ -25,6 +25,10 @@ interface FeedCachedDao {
     suspend fun insertRecordCachedList(recordCachedList: List<FishingRecordCached>)
 
     @Transaction
+    @Query("DELETE FROM TypeInfoCached")
+    suspend fun deleteAll()
+
+    @Transaction
     @Query("SELECT * FROM TypeInfoCached ORDER BY id DESC")
     suspend fun getTypeInfosWithFishingRecords(): List<TypeInfoWithFishingRecords>
 }
