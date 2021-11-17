@@ -35,7 +35,6 @@ class UploadActivity :
         setLoadingDialog()
         loadData()
 
-        viewModel.fetchFishTypeList()
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -63,8 +62,16 @@ class UploadActivity :
             binding.autoCompleteTextviewFishType.setAdapter(adapter)
         }
         viewModel.isFetchSuccess.observe(this) {
-            if (it == false) {
-                showToast(this, R.string.fetch_fail)
+            it?.let {
+                when (it) {
+                    true -> {
+                        binding.toolbarTop.menu.getItem(0).isEnabled = true
+                    }
+                    false -> {
+                        binding.toolbarTop.menu.getItem(0).isEnabled = false
+                        showToast(this, R.string.fetch_fail)
+                    }
+                }
             }
         }
         viewModel.isUploadSuccess.observe(this) {
@@ -78,12 +85,14 @@ class UploadActivity :
                     showToast(this, R.string.upload_server_fail)
                 }
             }
+
         }
         viewModel.isInputCorrect.observe(this) {
             if (it == false) {
                 showToast(this, R.string.upload_input_fail)
             }
         }
+
         viewModel.isLoading.observe(this) {
             when (it) {
                 true -> {
@@ -92,6 +101,12 @@ class UploadActivity :
                 false -> {
                     cancelLoadingDialog()
                 }
+            }
+        }
+
+        viewModel.isNetworkConnected.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.upload_network_disconnected)
             }
         }
     }
@@ -105,6 +120,10 @@ class UploadActivity :
     private fun initListener() {
         binding.toolbarTop.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        binding.autoCompleteTextviewFishType.setOnClickListener {
+            viewModel.fetchFishTypeList()
         }
     }
 
