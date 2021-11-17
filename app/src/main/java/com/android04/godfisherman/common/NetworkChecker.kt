@@ -3,11 +3,13 @@ package com.android04.godfisherman.common
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object NetworkChecker {
+class NetworkChecker(private val context: Context) {
 
-    fun isConnected (): Boolean {
-        val context = App.applicationContext()
+    fun isConnected(): Boolean {
         val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val network = manager.activeNetwork ?: return false
