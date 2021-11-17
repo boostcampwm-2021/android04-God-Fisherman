@@ -18,7 +18,7 @@ class FeedLocalDataSourceImpl @Inject constructor(
         feedCachedDao.insertFeed(typeInfoCached, recordCachedList)
     }
 
-    override suspend fun loadFeedDataList(): List<TypeInfoWithFishingRecords>? {
+    override suspend fun loadFeedDataList(): List<TypeInfoWithFishingRecords> {
         return feedCachedDao.getTypeInfosWithFishingRecords()
     }
 
