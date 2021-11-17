@@ -79,9 +79,10 @@ class HomeViewModel @Inject constructor(
     fun fetchWeather() {
         val location = currentLocation.value
 
-        if (true) {
+        _isWeatherLoading.postValue(true)
+
+        if (location != null) {
             viewModelScope.launch(Dispatchers.IO) {
-                _isWeatherLoading.postValue(true)
                 val currentCallback = RepoResponseImpl<HomeCurrentWeather?>()
 
                 currentCallback.addSuccessCallback {
@@ -98,8 +99,8 @@ class HomeViewModel @Inject constructor(
                         _isWeatherLoading.postValue(false)
                     }
                 }
-//                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
-                homeRepository.fetchWeatherData(35.86569198022046, 128.59379406010206, currentCallback, detailCallback)
+                
+                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
             }
         }
     }
