@@ -22,9 +22,10 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
         viewModel.fetchRanking()
     }
 
-
     private fun setObserver() {
         viewModel.rankList.observe(viewLifecycleOwner) {
+            binding.lottieLoading.visibility = View.GONE
+            binding.lottieLoading.pauseAnimation()
             (binding.vpRanking.adapter as RankingViewPagerAdapter).setData(it)
         }
     }
