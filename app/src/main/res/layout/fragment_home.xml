@@ -362,6 +362,18 @@
                             app:layout_constraintTop_toBottomOf="@id/layout_show_all"
                             tools:listitem="@layout/item_weather_detail" />
 
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_weather_loading"
+                            android:layout_width="@dimen/feed_loading_lottie_size"
+                            android:layout_height="@dimen/feed_loading_lottie_size"
+                            app:layout_constraintTop_toBottomOf="@id/tv_location"
+                            app:layout_constraintBottom_toTopOf="@id/layout_show_all"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:lottie_autoPlay="true"
+                            app:lottie_fileName="lottie_loading.json"
+                            app:lottie_loop="true" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.card.MaterialCardView>

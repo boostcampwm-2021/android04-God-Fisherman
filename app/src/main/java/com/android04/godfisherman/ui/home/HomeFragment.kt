@@ -87,6 +87,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         viewModel.homeDetailWeather.observe(viewLifecycleOwner) {
             (binding.rvWeatherDetail.adapter as WeatherRecyclerViewAdapter).setData(it)
         }
+        viewModel.isWeatherLoading.observe(viewLifecycleOwner) {
+            if (it == true) {
+                binding.lottieWeatherLoading.visibility = View.VISIBLE
+                binding.tvSunriseDesc.visibility = View.INVISIBLE
+                binding.tvSunsetDesc.visibility = View.INVISIBLE
+                binding.ivWeatherIcon.visibility = View.INVISIBLE
+                binding.layoutShowAll.isEnabled = false
+            } else {
+                binding.lottieWeatherLoading.visibility = View.INVISIBLE
+                binding.tvSunriseDesc.visibility = View.VISIBLE
+                binding.tvSunsetDesc.visibility = View.VISIBLE
+                binding.ivWeatherIcon.visibility = View.VISIBLE
+                binding.layoutShowAll.isEnabled = true
+            }
+        }
     }
 
     private fun setListener() {

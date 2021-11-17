@@ -42,6 +42,9 @@ class HomeViewModel @Inject constructor(
 
     private val _homeDetailWeather: MutableLiveData<List<HomeDetailWeather>> by lazy { MutableLiveData<List<HomeDetailWeather>>() }
     val homeDetailWeather: LiveData<List<HomeDetailWeather>> = _homeDetailWeather
+
+    private val _isWeatherLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isWeatherLoading: LiveData<Boolean> = _isWeatherLoading
     
     fun updateLocation() {
         locationHelper.setLocationUpdate()
@@ -78,6 +81,7 @@ class HomeViewModel @Inject constructor(
 
         if (true) {
             viewModelScope.launch(Dispatchers.IO) {
+                _isWeatherLoading.postValue(true)
                 val currentCallback = RepoResponseImpl<HomeCurrentWeather?>()
 
                 currentCallback.addSuccessCallback {
@@ -91,6 +95,7 @@ class HomeViewModel @Inject constructor(
                 detailCallback.addSuccessCallback {
                     if (it != null) {
                         _homeDetailWeather.postValue(it)
+                        _isWeatherLoading.postValue(false)
                     }
                 }
 //                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
