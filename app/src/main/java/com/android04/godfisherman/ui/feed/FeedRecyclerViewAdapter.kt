@@ -82,6 +82,7 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
             val timelineData = data as FeedTimelineData
             binding.data = timelineData
             binding.ivFishPhoto.adapter = TimelineViewPagerAdapter(data.photoUrlList)
+            binding.indicator.setViewPager2(binding.ivFishPhoto)
             binding.rvTimeline.adapter = TimelineRecyclerViewAdapter(data.timeline)
             setListener()
         }

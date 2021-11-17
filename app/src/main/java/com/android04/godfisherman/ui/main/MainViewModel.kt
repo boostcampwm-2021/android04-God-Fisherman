@@ -17,7 +17,7 @@ class MainViewModel : ViewModel() {
     val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
 
     fun checkConnectivity() {
-        _isNetworkConnected.value = NetworkChecker.isConnected()
+        //_isNetworkConnected.value = NetworkChecker.isConnected()
     }
     
 }
