@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
+import com.android04.godfisherman.ui.login.LogInViewModel
 import com.android04.godfisherman.utils.LocationHelper
 import com.android04.godfisherman.utils.RepoResponseImpl
+import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper
+    private val locationHelper: LocationHelper,
+    private val manager: SharedPreferenceManager
 ) : ViewModel() {
 
     private val _currentLocation: MutableLiveData<Location> by lazy { MutableLiveData<Location>() }
@@ -45,6 +48,9 @@ class HomeViewModel @Inject constructor(
 
     private val _isWeatherLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isWeatherLoading: LiveData<Boolean> = _isWeatherLoading
+
+    private val _userName: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val userName: LiveData<String> = _userName
     
     fun updateLocation() {
         locationHelper.setLocationUpdate()
@@ -99,9 +105,13 @@ class HomeViewModel @Inject constructor(
                         _isWeatherLoading.postValue(false)
                     }
                 }
-                
+
                 homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
             }
         }
+    }
+
+    fun fetchUserID() {
+        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
     }
 }

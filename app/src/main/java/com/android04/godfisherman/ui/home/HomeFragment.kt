@@ -8,20 +8,11 @@ import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
-import com.android04.godfisherman.network.RetrofitClient
-import com.android04.godfisherman.network.response.CurrentWeatherResponse
-import retrofit2.Callback
-import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.utils.isGrantedLocationPermission
 import com.android04.godfisherman.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Response
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
@@ -31,12 +22,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        initView()
         setListener()
         setRecyclerView()
         setObserver()
-        updateLocation()
 
+        viewModel.fetchUserID()
         viewModel.fetchYoutube()
+        updateLocation()
+    }
+
+    private fun initView() {
+        binding.tvUserName.isSelected = true
     }
 
     private fun setRecyclerView() {

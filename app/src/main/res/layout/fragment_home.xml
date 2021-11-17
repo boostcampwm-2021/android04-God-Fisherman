@@ -27,33 +27,41 @@
 
             <TextView
                 android:id="@+id/tv_user_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_large"
                 android:layout_marginTop="@dimen/camera_guide_margin"
-                android:text="@string/home_sample_id"
+                android:layout_marginEnd="@dimen/space_median"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                setWelcomeText="@{viewModel.userName}"
                 android:textSize="@dimen/text_x_large"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/lottieAnimationView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_user_ranking"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
-                android:text="@string/home_sample_rank_user"
+                android:layout_marginEnd="@dimen/space_large"
+                setRankID="@{viewModel.userName}"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintStart_toStartOf="@id/tv_user_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
+                app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottieAnimationView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_x_large"
                 app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
-                app:layout_constraintStart_toEndOf="@id/tv_user_name"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:lottie_autoPlay="true"
                 app:lottie_fileName="lottie_home.json"
                 app:lottie_loop="true" />
@@ -366,10 +374,10 @@
                             android:id="@+id/lottie_weather_loading"
                             android:layout_width="@dimen/feed_loading_lottie_size"
                             android:layout_height="@dimen/feed_loading_lottie_size"
-                            app:layout_constraintTop_toBottomOf="@id/tv_location"
                             app:layout_constraintBottom_toTopOf="@id/layout_show_all"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_location"
                             app:lottie_autoPlay="true"
                             app:lottie_fileName="lottie_loading.json"
                             app:lottie_loop="true" />

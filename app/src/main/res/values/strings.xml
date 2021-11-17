@@ -9,7 +9,7 @@
     <string name="navigation_menu_my_page">마이페이지</string>
     <string name="loading">loading...</string>
     <string name="sample_text_short">sample</string>
-    <string name="sample_text_long">sample text sample text</string>
+    <string name="sample_text_long">sample text sample text sample text sample text</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
