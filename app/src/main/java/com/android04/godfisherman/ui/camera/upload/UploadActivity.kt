@@ -29,6 +29,7 @@ class UploadActivity :
         super.onCreate(savedInstanceState)
 
         setOrientation()
+        initListener()
         setupObserver()
         setUpBinding()
         setLoadingDialog()
@@ -99,6 +100,12 @@ class UploadActivity :
         val intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun initListener() {
+        binding.toolbarTop.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setLoadingDialog() {
