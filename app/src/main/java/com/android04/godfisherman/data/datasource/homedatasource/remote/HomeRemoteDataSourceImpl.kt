@@ -10,6 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
+
 class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataSource {
     override suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>) {
         val call = RetrofitClient.youtubeApiService.getYoutubeData(
@@ -36,7 +37,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
         })
     }
 
-    override suspend fun fetchWeatherData(lat: Double, lon: Double) {
+    override suspend fun fetchWeatherData(lat: Double, lon: Double, callback: RepoResponse<WeatherResponse?>) {
         val call = RetrofitClient.weatherApiService.getWeatherData(lat, lon)
 
         call.enqueue(object : Callback<WeatherResponse>{
@@ -45,14 +46,21 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 response: Response<WeatherResponse>
             ) {
                 if (response.isSuccessful) {
+                    val current = response.body()?.current
+                    val hourly = response.body()?.hourly
 
+                    if (current != null && hourly != null) {
+                        callback.invoke(true, response.body()!!)
+                    } else {
+                        onFailure(call, Throwable())
+                    }
                 } else {
                     onFailure(call, Throwable())
                 }
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                //TODO 오류처리
+                callback.invoke(false, null)
             }
         })
     }

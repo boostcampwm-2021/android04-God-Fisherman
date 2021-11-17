@@ -39,7 +39,7 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("setImage")
-    fun setImageWithUrl(view: ImageView, url: String) {
+    fun setImageWithUrl(view: ImageView, url: String?) {
         Glide.with(view.context)
             .load(url)
             .placeholder(R.drawable.bg_loading_skeleton)

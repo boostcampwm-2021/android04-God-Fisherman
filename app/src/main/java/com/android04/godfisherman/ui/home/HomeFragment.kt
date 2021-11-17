@@ -31,6 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        setListener()
         setRecyclerView()
         setObserver()
         updateLocation()
@@ -61,6 +62,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         )
 
         binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
+        binding.rvWeatherDetail.adapter = WeatherRecyclerViewAdapter()
     }
 
     private fun setObserver() {
@@ -81,6 +83,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             viewModel.fetchWeather()
+        }
+        viewModel.homeDetailWeather.observe(viewLifecycleOwner) {
+            (binding.rvWeatherDetail.adapter as WeatherRecyclerViewAdapter).setData(it)
+        }
+    }
+
+    private fun setListener() {
+        binding.detailClickListener = {
+            if (binding.rvWeatherDetail.visibility == View.VISIBLE) {
+                binding.rvWeatherDetail.visibility = View.GONE
+                binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+                binding.tvShowWeather.setText(R.string.home_show_weather)
+
+            } else {
+                binding.rvWeatherDetail.visibility = View.VISIBLE
+                binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_up_primary)
+                binding.tvShowWeather.setText(R.string.home_close_weather)
+            }
         }
     }
 

@@ -36,6 +36,12 @@ class HomeViewModel @Inject constructor(
 
     private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
+
+    private val _homeCurrentWeather: MutableLiveData<HomeCurrentWeather> by lazy { MutableLiveData<HomeCurrentWeather>() }
+    val homeCurrentWeather: LiveData<HomeCurrentWeather> = _homeCurrentWeather
+
+    private val _homeDetailWeather: MutableLiveData<List<HomeDetailWeather>> by lazy { MutableLiveData<List<HomeDetailWeather>>() }
+    val homeDetailWeather: LiveData<List<HomeDetailWeather>> = _homeDetailWeather
     
     fun updateLocation() {
         locationHelper.setLocationUpdate()
@@ -49,8 +55,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchYoutube() {
-        viewModelScope.launch {
-            _isYoutubeLoading.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            _isYoutubeLoading.postValue(true)
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
             repoCallback.addSuccessCallback {
@@ -70,9 +76,25 @@ class HomeViewModel @Inject constructor(
     fun fetchWeather() {
         val location = currentLocation.value
 
-        if (location != null) {
-            viewModelScope.launch {
-                homeRepository.fetchWeatherData(location.latitude, location.longitude)
+        if (true) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val currentCallback = RepoResponseImpl<HomeCurrentWeather?>()
+
+                currentCallback.addSuccessCallback {
+                    if (it != null) {
+                        _homeCurrentWeather.postValue(it)
+                    }
+                }
+
+                val detailCallback = RepoResponseImpl<List<HomeDetailWeather>?>()
+
+                detailCallback.addSuccessCallback {
+                    if (it != null) {
+                        _homeDetailWeather.postValue(it)
+                    }
+                }
+//                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
+                homeRepository.fetchWeatherData(35.86569198022046, 128.59379406010206, currentCallback, detailCallback)
             }
         }
     }

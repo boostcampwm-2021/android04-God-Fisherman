@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.android04.godfisherman.ui.home.HomeDetailWeather" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_x_small"
+        android:paddingEnd="@dimen/space_x_small" >
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@{data.time}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/iv_weather_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            setImage="@{data.iconUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_time"/>
+
+        <TextView
+            android:id="@+id/tv_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_x_small"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/black"
+            android:text="@{data.temp}"
+            app:layout_constraintTop_toBottomOf="@id/iv_weather_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
