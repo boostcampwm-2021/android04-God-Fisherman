@@ -58,6 +58,9 @@
     <string name="home_location_desc">기준</string>
     <string name="home_recommend_sample">주차하고 바로 던지는 우럭 루어낚시! 잘나와도 어쩌고 저쩌고</string>
     <string name="home_recommend_fail">추천 영상 로딩에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+
+    <!-- Ranking Detail Fragment -->
     <string name="ranking_size">크기 랭킹</string>
+    <string name="ranking_time">존버 랭킹</string>
     <string name="ranking">랭킹</string>
 </resources>

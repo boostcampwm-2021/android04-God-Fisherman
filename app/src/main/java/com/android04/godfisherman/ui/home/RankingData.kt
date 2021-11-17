@@ -12,3 +12,10 @@ sealed class RankingData {
         val totalTime: Int
     ) : RankingData()
 }
+
+data class RankingPageData(
+    val rankingType: RankingType,
+    val rankingData: List<RankingData>
+)
+
+enum class RankingType { SIZE, TIME}

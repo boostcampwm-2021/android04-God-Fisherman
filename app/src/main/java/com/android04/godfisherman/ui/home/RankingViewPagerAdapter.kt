@@ -3,13 +3,14 @@ package com.android04.godfisherman.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ItemRankingBinding
 
 class RankingViewPagerAdapter : RecyclerView.Adapter<RankingViewPagerAdapter.RankingPageViewHolder>() {
 
-    private val data = mutableListOf<List<RankingData>>()
+    private val data = mutableListOf<RankingPageData>()
 
-    fun setData(newData : List<List<RankingData>>) {
+    fun setData(newData : List<RankingPageData>) {
         data.addAll(newData)
         notifyDataSetChanged()
     }
@@ -27,9 +28,14 @@ class RankingViewPagerAdapter : RecyclerView.Adapter<RankingViewPagerAdapter.Ran
 
     class RankingPageViewHolder(private val binding: ItemRankingBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(rankingList: List<RankingData>) {
+        fun bind(pageData: RankingPageData) {
+            binding.tvRankingTitle.text =
+                when(pageData.rankingType) {
+                    RankingType.SIZE -> binding.root.context.getText(R.string.ranking_size)
+                    RankingType.TIME -> binding.root.context.getText(R.string.ranking_time)
+                }
             binding.rvRanking.adapter = RankingRecyclerViewAdapter()
-            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(rankingList)
+            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(pageData.rankingData)
         }
     }
 }

@@ -16,10 +16,10 @@ class RankingDetailViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _rankList: MutableLiveData<List<List<RankingData>>> by lazy {
-        MutableLiveData<List<List<RankingData>>>()
+    private val _rankList: MutableLiveData<List<RankingPageData>> by lazy {
+        MutableLiveData<List<RankingPageData>>()
     }
-    val rankList: LiveData<List<List<RankingData>>> = _rankList
+    val rankList: LiveData<List<RankingPageData>> = _rankList
 
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,7 +32,10 @@ class RankingDetailViewModel @Inject constructor(
 
             val sizeRanking = diferredSizeRanking.await()
             val timeRanking = diferredTimeRanking.await()
-            val ranking = listOf(sizeRanking, timeRanking)
+            val ranking = listOf(
+                RankingPageData(RankingType.SIZE, sizeRanking),
+                RankingPageData(RankingType.TIME, timeRanking)
+                )
             _rankList.postValue(ranking)
         }
     }
