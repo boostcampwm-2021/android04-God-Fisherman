@@ -109,14 +109,6 @@ class MainViewModel @Inject constructor(
         _isAfterUpload.value = true
     }
 
-    fun removeTimeLineRecord(){
-        if (!_tmpFishingList.value.isNullOrEmpty()){
-            viewModelScope.launch(Dispatchers.IO){
-                repository.removeTmpTimeLineRecord()
-            }
-        }
-    }
-
     private inner class StopwatchTask() : TimerTask() {
         override fun run() {
             time++

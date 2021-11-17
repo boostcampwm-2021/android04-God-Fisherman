@@ -29,20 +29,10 @@ class TestStopwatchFragment :
     override val viewModel: MainViewModel by activityViewModels()
 
     private var isPlayAnimate = false
-//    private val receiveTime: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context, receiveIntent: Intent) {
-//            val receivedTime = receiveIntent.getDoubleExtra(StopwatchService.SERVICE_DESTROYED, 0.0)
-//            Log.d("receiveFromService", "리시브 실행 : $receivedTime")
-//            viewModel.passedTimeFromService(receivedTime)
-//            NotificationManagerCompat.from(context).cancel(StopwatchService.NOTIFICATION_ID)
-//        }
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-//        serviceIntent = Intent(requireContext(), StopwatchService::class.java)
-//        requireActivity().registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
 
         initRecyclerView()
         setObserver()
@@ -78,18 +68,7 @@ class TestStopwatchFragment :
         recyclerViewEmptySupport.adapter = TimelineListAdapter()
         recyclerViewEmptySupport.setEmptyView(emptyView)
         recyclerViewEmptySupport.setVerticalInterval(50)
-
     }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        Log.d("serviceRunning", "${isStopwatchServiceRunning}")
-//        if (isStopwatchServiceRunning) {
-//            Log.d("serviceRunning", "서비스 종료 실행")
-//            requireActivity().stopService(serviceIntent)
-//            isStopwatchServiceRunning = false
-//        }
-//    }
 
     private fun setObserver() {
         viewModel.isStopwatchStarted.observe(viewLifecycleOwner, Observer {
@@ -119,22 +98,9 @@ class TestStopwatchFragment :
         }
     }
 
-//    private fun passStopwatchToService(time: Double) {
-//        if (viewModel.isStopwatchStarted.value == true) {
-//            viewModel.passStopwatchToService()
-//            serviceIntent.putExtra(StopwatchService.TIME_EXTRA, time)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                startForegroundService(requireContext(), serviceIntent)
-//            } else {
-//                requireActivity().startService(serviceIntent)
-//            }
-//        }
-//    }
-
     override fun onStop() {
         super.onStop()
         isPlayAnimate = false
-//        passStopwatchToService(viewModel.time)
     }
 
 }

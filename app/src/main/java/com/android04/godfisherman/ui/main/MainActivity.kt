@@ -50,10 +50,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         StopwatchNotification.createChannel(this)
         initBottomNavigation()
         initMotionListener()
-//        Log.d("StopWatch", "isFromService : ${MainViewModel.isFromService}")
-//        if (MainViewModel.isFromService) {
-//            viewModel.stopwatchOnFlag.value = true
-//        }
+
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
                 Log.d("MotionLayout", "옵저브 실행")
