@@ -17,12 +17,12 @@ class FeedRepository @Inject constructor(
 
     suspend fun getFeedDataList(type: Type): List<FeedData> {
         return when (networkChecker.isConnected()) {
-            true -> fetch(type)
+            true -> fetchFeedDataList(type)
             false -> loadFeedDataList(type)
         }
     }
 
-    private suspend fun fetch(type: Type): List<FeedData> {
+    private suspend fun fetchFeedDataList(type: Type): List<FeedData> {
         val list = mutableListOf<FeedData>()
         val feedList = remoteDataSource.fetchFeedDataList(type)
 
