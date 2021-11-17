@@ -8,11 +8,20 @@ import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
+import com.android04.godfisherman.network.RetrofitClient
+import com.android04.godfisherman.network.response.CurrentWeatherResponse
+import retrofit2.Callback
+import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.utils.isGrantedLocationPermission
 import com.android04.godfisherman.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Response
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
@@ -51,6 +60,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         viewModel.youtubeList.observe(viewLifecycleOwner) {
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
         }
+        viewModel.isYoutubeLoading.observe(viewLifecycleOwner) {
+            if (it == true) {
+                binding.lottieLoading.visibility = View.VISIBLE
+            } else {
+                binding.lottieLoading.visibility = View.INVISIBLE
+            }
+        }
         viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
             if (!it) {
                 showToast(requireContext(), R.string.home_recommend_fail)
@@ -58,6 +74,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
         viewModel.rankList.observe(viewLifecycleOwner) {
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
+        }
+        
+        viewModel.currentLocation.observe(viewLifecycleOwner) {
+            viewModel.fetchWeather()
         }
     }
 

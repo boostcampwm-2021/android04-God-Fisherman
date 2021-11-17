@@ -34,6 +34,10 @@ class HomeRepository @Inject constructor(
 
     suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData>
     = remoteDataSource.fetchWaitingRankingList()
+    
+    suspend fun fetchWeatherData(lat: Double, lon: Double) {
+        remoteDataSource.fetchWeatherData(lat, lon)
+    }
 
     companion object {
         const val YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v="

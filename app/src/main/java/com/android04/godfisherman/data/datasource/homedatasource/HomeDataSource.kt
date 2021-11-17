@@ -10,5 +10,6 @@ interface HomeDataSource {
         suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>)
         suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData>
         suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData>
+        suspend fun fetchWeatherData(lat: Double, lon: Double, )
     }
 }
