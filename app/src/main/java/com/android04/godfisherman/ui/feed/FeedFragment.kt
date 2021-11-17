@@ -19,6 +19,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         binding.rvFeed.adapter = FeedRecyclerViewAdapter()
         binding.feedViewModel = viewModel
 
+        setRefresh()
         initListener()
         setupObserver()
     }
@@ -26,6 +27,14 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
     override fun onResume() {
         super.onResume()
         viewModel.fetchFeedDataList(Type.ALL)
+    }
+
+    private fun setRefresh(){
+        binding.SRLFeed.setOnRefreshListener {
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
+            viewModel.setFilter(binding.cgType.checkedChipId)
+
+        }
     }
 
     private fun initListener() {
@@ -46,7 +55,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
             binding.lottieLoading.pauseAnimation()
 
             binding.cgType.visibility = View.VISIBLE
-
+            binding.SRLFeed.isRefreshing = false
             (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
         }
     }
