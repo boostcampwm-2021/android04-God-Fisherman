@@ -1,10 +1,9 @@
 package com.android04.godfisherman.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentRankingDetailBinding
 import com.android04.godfisherman.ui.base.BaseFragment
@@ -18,25 +17,20 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setRecyclerView()
+        setViewPager()
         setObserver()
-//        viewModel.fetchRanking()
-        viewModel.fetchWaitingRanking()
+        viewModel.fetchRanking()
     }
+
 
     private fun setObserver() {
         viewModel.rankList.observe(viewLifecycleOwner) {
-            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
-        }
-        viewModel.waitRankList.observe(viewLifecycleOwner) {
-            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
+            (binding.vpRanking.adapter as RankingViewPagerAdapter).setData(it)
         }
     }
 
-
-    private fun setRecyclerView() {
-        binding.rvRanking.adapter = RankingRecyclerViewAdapter()
-        viewModel.rankList.value?.let {
-        }
+    private fun setViewPager() {
+        binding.vpRanking.adapter = RankingViewPagerAdapter()
+        binding.vpRanking.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 }

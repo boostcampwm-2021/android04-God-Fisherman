@@ -1,6 +1,5 @@
 package com.android04.godfisherman.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,25 +16,24 @@ class RankingDetailViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
-    val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
-
-    private val _waitRankList: MutableLiveData<List<RankingData.HomeWaitingRankingData>> by lazy {
-        MutableLiveData<List<RankingData.HomeWaitingRankingData>>()
+    private val _rankList: MutableLiveData<List<List<RankingData>>> by lazy {
+        MutableLiveData<List<List<RankingData>>>()
     }
-    val waitRankList: LiveData<List<RankingData.HomeWaitingRankingData>> = _waitRankList
+    val rankList: LiveData<List<List<RankingData>>> = _rankList
 
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList()
-            _rankList.postValue(list)
-        }
-    }
+            val diferredSizeRanking = async {
+                homeRepository.fetchRankingList()
+            }
+            val diferredTimeRanking = async {
+                homeRepository.fetchWaitingRankingList()
+            }
 
-    fun fetchWaitingRanking() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchWaitingRankingList()
-            _waitRankList.postValue(list)
+            val sizeRanking = diferredSizeRanking.await()
+            val timeRanking = diferredTimeRanking.await()
+            val ranking = listOf(sizeRanking, timeRanking)
+            _rankList.postValue(ranking)
         }
     }
 }
