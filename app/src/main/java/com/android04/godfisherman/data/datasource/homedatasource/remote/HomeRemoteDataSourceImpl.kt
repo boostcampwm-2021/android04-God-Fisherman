@@ -4,6 +4,7 @@ import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
+import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
 import com.android04.godfisherman.ui.home.RankingData
 import com.android04.godfisherman.utils.RepoResponse
@@ -24,7 +25,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
 
     override suspend fun fetchYoutubeData(callback: RepoResponse<YoutubeResponse?>) {
         val call = RetrofitClient.youtubeApiService.getYoutubeData(
-            q = "낚시"
+            q = fishingKey.random()
         )
 
         call.enqueue(object : Callback<YoutubeResponse>{
@@ -91,5 +92,30 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
             }
         }
         return rankingMap.map { RankingData.HomeWaitingRankingData(it.key, it.value) }.sortedByDescending { it.totalTime }
+    }
+}
+    override suspend fun fetchWeatherData(lat: Double, lon: Double) {
+        val call = RetrofitClient.weatherApiService.getWeatherData(lat, lon)
+
+        call.enqueue(object : Callback<WeatherResponse>{
+            override fun onResponse(
+                call: Call<WeatherResponse>,
+                response: Response<WeatherResponse>
+            ) {
+                if (response.isSuccessful) {
+
+                } else {
+                    onFailure(call, Throwable())
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                //TODO 오류처리
+            }
+        })
+    }
+
+    companion object {
+        val fishingKey = listOf("민물낚시", "선상낚시", "바다낚시", "매운탕", "회뜨기", "낚시꿀팁", "낚시용품", "낚시대", "낚시터", "낚시명당")
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import com.android04.godfisherman.utils.BindingAdapter
 import com.android04.godfisherman.utils.StopwatchNotification
+import com.android04.godfisherman.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -122,11 +122,33 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     override fun onBackPressed() {
-        Log.d("TAG", "onBackPressed: Test")
-        if (viewModel.isOpened) {
-            binding.container.transitionToState(R.id.start)
+        when {
+            viewModel.isOpened -> {
+                binding.container.transitionToState(R.id.start)
+            }
+            supportFragmentManager.fragments.last() !is HomeFragment -> {
+                transitionToHome()
+            }
+            supportFragmentManager.fragments.last() is HomeFragment -> {
+                backWithFinish()
+            }
+        }
+    }
+
+    private fun transitionToHome() {
+        changeFragment(R.id.fl_fragment_container, HomeFragment())
+        viewModel.beforeMenuItemId = R.id.navigation_home
+        binding.navView.selectedItemId = R.id.navigation_home
+    }
+
+    private fun backWithFinish() {
+        val currentTime = System.currentTimeMillis()
+
+        if (currentTime > viewModel.lastBackTime + 2000) {
+            showToast(this, "한 번 더 누르면 앱을 종료합니다.")
+            viewModel.lastBackTime = currentTime
         } else {
-            super.onBackPressed()
+            finish()
         }
     }
 
