@@ -4,15 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/pb_loading_anim"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:indeterminateDrawable="@drawable/upload_progress_image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_loading"
+        android:layout_width="@dimen/feed_loading_lottie_size"
+        android:layout_height="@dimen/feed_loading_lottie_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="lottie_loading.json"
+        app:lottie_loop="true" />
 
     <TextView
         android:id="@+id/tv_loading"
@@ -24,6 +26,6 @@
         android:textSize="@dimen/text_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pb_loading_anim" />
+        app:layout_constraintTop_toBottomOf="@id/lottie_loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
