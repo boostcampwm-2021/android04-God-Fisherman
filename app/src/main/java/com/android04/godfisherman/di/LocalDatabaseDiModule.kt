@@ -3,6 +3,7 @@ package com.android04.godfisherman.di
 import android.content.Context
 import androidx.room.Room
 import com.android04.godfisherman.localdatabase.LocalDatabase
+import com.android04.godfisherman.localdatabase.dao.FeedCachedDao
 import com.android04.godfisherman.localdatabase.dao.TmpFishingRecordDao
 import dagger.Module
 import dagger.Provides
@@ -21,8 +22,13 @@ class LocalDatabaseDiModule {
     }
 
     @Provides
+    fun providesFeedCachedDao(localDatabase: LocalDatabase): FeedCachedDao {
+        return localDatabase.feedCachedDao()
+    }
+
+    @Provides
     @Singleton
-    fun providesLocalDatabase(@ApplicationContext context: Context) : LocalDatabase{
+    fun providesLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             LocalDatabase::class.java,

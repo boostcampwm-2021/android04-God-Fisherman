@@ -30,11 +30,13 @@ class MainViewModel @Inject constructor(
     var isOpened: Boolean = false
     var isServiceRequestWithOutCamera = true
 
+    var lastBackTime = 0L
+
     private val _isNetworkConnected: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
 
     fun checkConnectivity() {
-        _isNetworkConnected.value = NetworkChecker.isConnected()
+        //_isNetworkConnected.value = NetworkChecker.isConnected()
     }
 
     private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
