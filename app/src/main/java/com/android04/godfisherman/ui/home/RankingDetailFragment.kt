@@ -20,12 +20,15 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
 
         setRecyclerView()
         setObserver()
-        viewModel.fetchRanking()
+//        viewModel.fetchRanking()
+        viewModel.fetchWaitingRanking()
     }
 
     private fun setObserver() {
         viewModel.rankList.observe(viewLifecycleOwner) {
-            Log.d("TAG", "setObserver: $it")
+            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
+        }
+        viewModel.waitRankList.observe(viewLifecycleOwner) {
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
     }

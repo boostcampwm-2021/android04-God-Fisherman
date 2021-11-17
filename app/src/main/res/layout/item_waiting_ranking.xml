@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/tv_time"
-            setSizeText="@{data.totalTime}"
+            setTimeToMinute="@{data.totalTime}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_median"

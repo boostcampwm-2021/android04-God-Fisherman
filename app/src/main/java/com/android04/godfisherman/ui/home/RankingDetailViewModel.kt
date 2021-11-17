@@ -19,6 +19,11 @@ class RankingDetailViewModel @Inject constructor(
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
 
+    private val _waitRankList: MutableLiveData<List<RankingData.HomeWaitingRankingData>> by lazy {
+        MutableLiveData<List<RankingData.HomeWaitingRankingData>>()
+    }
+    val waitRankList: LiveData<List<RankingData.HomeWaitingRankingData>> = _waitRankList
+
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
             val list = homeRepository.fetchRankingList()
@@ -29,7 +34,7 @@ class RankingDetailViewModel @Inject constructor(
     fun fetchWaitingRanking() {
         viewModelScope.launch(Dispatchers.IO) {
             val list = homeRepository.fetchWaitingRankingList()
-            Log.d("TAG", "$list")
+            _waitRankList.postValue(list)
         }
     }
 }
