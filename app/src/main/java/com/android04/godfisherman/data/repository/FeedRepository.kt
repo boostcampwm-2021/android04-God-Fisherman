@@ -48,7 +48,7 @@ class FeedRepository @Inject constructor(
     private suspend fun loadFeedDataList(type: Type): List<FeedData> {
         val list = mutableListOf<FeedData>()
 
-        localDataSource.loadFeedDataList().forEach { feed ->
+        localDataSource.loadFeedDataList(type).forEach { feed ->
             when (feed.typeInfo.isTimeline) {
                 true -> list.add(feed.toFeedTimeLineData())
                 false -> list.add(feed.toFeedPhotoData())
