@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.UploadRepository
 import com.android04.godfisherman.ui.camera.CameraActivity
-import com.android04.godfisherman.ui.stopwatch.StopwatchViewModel
+import com.android04.godfisherman.ui.main.MainViewModel
 import com.android04.godfisherman.utils.RepoResponseImpl
 import com.android04.godfisherman.utils.convertCentiMeter
 import com.android04.godfisherman.utils.roundBodySize
@@ -68,7 +68,7 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
         if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
             _isInputCorrect.value = true
             _isLoading.value = true
-            if (StopwatchViewModel.isTimeLine) {
+            if (MainViewModel.isTimeLine) {
                 viewModelScope.launch(Dispatchers.IO) {
                     val callback = RepoResponseImpl<Unit>()
 
