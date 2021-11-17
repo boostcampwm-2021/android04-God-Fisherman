@@ -37,6 +37,9 @@ class StopwatchRepository @Inject constructor(
             )
             Log.d("TAG", "saveTimeLineRecord: $recordList")
             remoteDataSource.saveTimeLineType(type, recordList)
+            removeTmpTimeLineRecord()
         }
     }
+
+    suspend fun removeTmpTimeLineRecord() = localDataSource.removeTmpTimeLineRecord()
 }

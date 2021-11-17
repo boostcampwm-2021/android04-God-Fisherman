@@ -26,6 +26,7 @@ import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import com.android04.godfisherman.utils.BindingAdapter
 import com.android04.godfisherman.utils.StopwatchNotification
 import com.android04.godfisherman.utils.StopwatchService
+import com.android04.godfisherman.utils.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,6 +71,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         binding.ivClose.setOnClickListener {
             if (viewModel.isStopwatchStarted.value == true) {
                 binding.container.transitionToState(R.id.end)
+                viewModel.endStopwatch()
+                showDialog()
             } else {
                 binding.container.transitionToState(R.id.end_close)
                 viewModel.stopwatchOnFlag.value = false
@@ -91,6 +94,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             if (it){
                 binding.container.transitionToState(R.id.end_close)
                 viewModel.stopwatchOnFlag.value = false
+                binding.navView.selectedItemId = R.id.navigation_stopwatch
+                changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
                 viewModel.setIsAfterUploadFalse()
             }
         }
@@ -160,7 +165,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     viewModel.isFromStopwatchFragment = false
                 }
                 MainViewModel.isFromService = false
-                viewModel.isOpened = currentId == R.id.end
+                if (currentId == R.id.end) {
+                    viewModel.isOpened = true
+                    viewModel.loadTmpTimeLineRecord()
+                }
             }
 
             override fun onTransitionTrigger(motionLayout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
@@ -224,6 +232,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             viewModel.passedTimeFromService(receivedTime)
             NotificationManagerCompat.from(context).cancel(StopwatchService.NOTIFICATION_ID)
         }
+    }
+
+    private fun showDialog() {
+        val dialog = UploadDialog(this)
+        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
+            override fun onClicked() {
+                Log.d("UploadDialog", "upload")
+                viewModel.saveTimeLineRecord()
+            }
+        })
+        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
+            override fun onClicked() {
+                Log.d("UploadDialog", "back")
+                viewModel.resumeStopwatch()
+            }
+        })
+        dialog.showDialog()
     }
 
 }

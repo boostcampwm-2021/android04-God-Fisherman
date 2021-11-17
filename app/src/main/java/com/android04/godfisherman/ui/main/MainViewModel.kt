@@ -48,15 +48,18 @@ class MainViewModel @Inject constructor(
 
     private lateinit var stopwatch: Timer
     var time = 0.0
+    var resumeTime = 0.0
 
     private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
-    fun startOrStopTimer(){
-        if(isStopwatchStarted.value == true) {
+    fun startOrStopTimer(): Boolean{
+        return if(isStopwatchStarted.value == true) {
             endStopwatch()
+            true
         } else {
             startStopwatch()
+            false
         }
     }
 
@@ -67,28 +70,49 @@ class MainViewModel @Inject constructor(
         _isStopwatchStarted.value = true
     }
 
+    fun resetStopwatch(){
+        time = 0.0
+        _displayTime.postValue(time.toTimeMilliSecond())
+    }
+
     private fun startStopwatch(){
+        Log.d("UploadDialog", "startStopwatch()")
         isTimeLine = true
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
         _isStopwatchStarted.value = true
     }
 
-    private fun endStopwatch(){
+    fun endStopwatch(){
+        Log.d("UploadDialog", "endStopwatch()")
         isTimeLine = false
-        saveTimeLineRecord()
         stopwatch.cancel()
-        Thread.sleep(300)
-        time = 0.0
-        _displayTime.value = time.toTimeMilliSecond()
+        resumeTime = time
         _isStopwatchStarted.value = false
-        _isAfterUpload.value = true
     }
 
-    private fun saveTimeLineRecord(){
+    fun resumeStopwatch(){
+        Log.d("UploadDialog", "resumeStopwatch()")
+        isTimeLine = true
+        stopwatch = Timer()
+        time = resumeTime
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
+        _isStopwatchStarted.value = true
+    }
+
+    fun saveTimeLineRecord(){
         if (!_tmpFishingList.value.isNullOrEmpty()){
             viewModelScope.launch(Dispatchers.IO){
                 repository.saveTimeLineRecord(time)
+            }
+        }
+        _isAfterUpload.value = true
+    }
+
+    fun removeTimeLineRecord(){
+        if (!_tmpFishingList.value.isNullOrEmpty()){
+            viewModelScope.launch(Dispatchers.IO){
+                repository.removeTmpTimeLineRecord()
             }
         }
     }
@@ -98,6 +122,12 @@ class MainViewModel @Inject constructor(
             time++
             Log.d("StopWatch", "로컬에서 타이머 실행 중 $time")
             _displayTime.postValue(time.toTimeMilliSecond())
+        }
+
+        override fun cancel(): Boolean {
+            resumeTime = time
+            time = 0.0
+            return super.cancel()
         }
     }
 

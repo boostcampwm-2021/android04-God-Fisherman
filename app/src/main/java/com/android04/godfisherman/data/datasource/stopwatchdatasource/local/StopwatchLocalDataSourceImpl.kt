@@ -9,5 +9,5 @@ class StopwatchLocalDataSourceImpl @Inject constructor(
     private val tmpFishingRecordDao: TmpFishingRecordDao
 ) : StopwatchDataSource.LocalDataSource {
     override suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord> = tmpFishingRecordDao.getTmpRecords()
-
+    override suspend fun removeTmpTimeLineRecord() = tmpFishingRecordDao.deleteAll()
 }

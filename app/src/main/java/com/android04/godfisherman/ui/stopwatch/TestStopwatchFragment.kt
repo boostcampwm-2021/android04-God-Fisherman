@@ -19,10 +19,12 @@ import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainViewModel
 import com.android04.godfisherman.utils.StopwatchService
+import com.android04.godfisherman.utils.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TestStopwatchFragment : BaseFragment<FragmentStopwatchBinding, MainViewModel>(R.layout.fragment_stopwatch) {
+class TestStopwatchFragment :
+    BaseFragment<FragmentStopwatchBinding, MainViewModel>(R.layout.fragment_stopwatch) {
 
     override val viewModel: MainViewModel by activityViewModels()
 
@@ -44,9 +46,32 @@ class TestStopwatchFragment : BaseFragment<FragmentStopwatchBinding, MainViewMod
 
         initRecyclerView()
         setObserver()
+        binding.viewStartStop.setOnClickListener {
+            if (viewModel.startOrStopTimer()) {
+                showDialog()
+                viewModel.resetStopwatch()
+            }
+        }
     }
 
-    private fun initRecyclerView(){
+    private fun showDialog() {
+        val dialog = UploadDialog(requireContext())
+        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
+            override fun onClicked() {
+                Log.d("UploadDialog", "upload")
+                viewModel.saveTimeLineRecord()
+            }
+        })
+        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
+            override fun onClicked() {
+                Log.d("UploadDialog", "back")
+                viewModel.resumeStopwatch()
+            }
+        })
+        dialog.showDialog()
+    }
+
+    private fun initRecyclerView() {
         viewModel.loadTmpTimeLineRecord()
         val recyclerViewEmptySupport = binding.rvTimeLine
         val emptyView = binding.tvEmptyView
@@ -66,26 +91,23 @@ class TestStopwatchFragment : BaseFragment<FragmentStopwatchBinding, MainViewMod
 //        }
 //    }
 
-    private fun setObserver(){
+    private fun setObserver() {
         viewModel.isStopwatchStarted.observe(viewLifecycleOwner, Observer {
             binding.vShadow.isVisible = it
             isPlayAnimate = it
-            if(it){
-//                StopwatchViewModel.isTimeLine = true
-                lifecycleScope.launchWhenStarted{
+            if (it) {
+                lifecycleScope.launchWhenStarted {
                     animateShadow()
                 }
-            }else{
-//                StopwatchViewModel.isTimeLine = false
             }
         })
-        viewModel.tmpFishingList.observe(viewLifecycleOwner, Observer{
+        viewModel.tmpFishingList.observe(viewLifecycleOwner, Observer {
             binding.rvTimeLine.submitList(it)
         })
     }
 
     private fun animateShadow() {
-        if(isPlayAnimate){
+        if (isPlayAnimate) {
             Log.d("animateShadow", "메소드 실행")
             binding.vShadow.apply {
                 animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).withEndAction {
