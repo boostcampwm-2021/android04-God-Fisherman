@@ -19,7 +19,5 @@ abstract class BaseActivity<T : ViewDataBinding, R : ViewModel>(
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutResID)
         binding.lifecycleOwner = this
-
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 }

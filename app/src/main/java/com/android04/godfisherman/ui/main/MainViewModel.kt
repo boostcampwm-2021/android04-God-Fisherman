@@ -87,7 +87,6 @@ class MainViewModel @Inject constructor(
     }
 
     private fun startStopwatch(){
-        Log.d("UploadDialog", "startStopwatch()")
         isTimeLine = true
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
@@ -95,7 +94,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun endStopwatch(){
-        Log.d("UploadDialog", "endStopwatch()")
         isTimeLine = false
         stopwatch.cancel()
         resumeTime = time
@@ -103,7 +101,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun resumeStopwatch(){
-        Log.d("UploadDialog", "resumeStopwatch()")
         isTimeLine = true
         stopwatch = Timer()
         time = resumeTime
@@ -123,7 +120,6 @@ class MainViewModel @Inject constructor(
     private inner class StopwatchTask() : TimerTask() {
         override fun run() {
             time++
-            Log.d("StopWatch", "로컬에서 타이머 실행 중 $time")
             _displayTime.postValue(time.toTimeMilliSecond())
         }
 
