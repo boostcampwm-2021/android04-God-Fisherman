@@ -73,7 +73,9 @@
     <!-- Ranking Detail Fragment -->
     <string name="ranking_size">크기 랭킹</string>
     <string name="ranking_time">존버 랭킹</string>
-    <string name="ranking">랭킹</string>
+    <string name="ranking_this_week">이주의 랭킹 🏆</string>
+    <string name="ranking_update_description">랭킹은 매주 일요일 24시에 갱신 됩니다.</string>
+    <string name="ranking_page_help">스와이프로 다양한 랭킹을 확인하세요</string>
 
     <!-- Login Activity -->
     <string name="login_auto">자동 로그인 되었습니다.</string>

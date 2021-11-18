@@ -1,6 +1,7 @@
 package com.android04.godfisherman.ui.base
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,5 +19,7 @@ abstract class BaseActivity<T : ViewDataBinding, R : ViewModel>(
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutResID)
         binding.lifecycleOwner = this
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 }
