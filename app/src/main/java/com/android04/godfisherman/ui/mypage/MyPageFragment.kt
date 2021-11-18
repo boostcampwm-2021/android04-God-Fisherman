@@ -44,7 +44,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
 
     private fun logOut() {
         FirebaseAuth.getInstance().signOut()
-        showToast(requireContext(), "로그 아웃하였습니다.")
+        showToast(requireContext(), R.string.logout_success)
         viewModel.doLogout()
         moveToLogIn()
     }
@@ -52,11 +52,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
     private fun signOut() {
         showLoadingDialog()
         FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
-            showToast(requireContext(), "성공적으로 탈퇴하였습니다.")
+            showToast(requireContext(), R.string.signout_success)
             viewModel.doLogout()
             moveToLogIn()
         }?.addOnCompleteListener {
             cancelLoadingDialog()
+        }?.addOnFailureListener {
+            showToast(requireContext(), R.string.signout_fail)
         }
     }
 
