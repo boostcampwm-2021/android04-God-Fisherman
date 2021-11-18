@@ -2,13 +2,16 @@ package com.android04.godfisherman.ui.home
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
+import com.android04.godfisherman.ui.main.MainActivity
 import com.android04.godfisherman.utils.isGrantedLocationPermission
 import com.android04.godfisherman.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,19 +21,29 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
 
     override val viewModel: HomeViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        setLocationSavedListener()
+        loadLocation()
         initView()
         setListener()
         setRecyclerView()
         setObserver()
 
         viewModel.fetchUserID()
-        viewModel.fetchYoutube()
+//        viewModel.fetchYoutube()
         viewModel.fetchRanking()
-        updateLocation()
+    }
+
+    private fun setLocationSavedListener(){
+        parentFragmentManager.setFragmentResultListener(LOCATION_UPDATED, viewLifecycleOwner) { key, bundle ->
+            val isSaved = bundle.getBoolean(MainActivity.DEFAULT_BUNDLE)
+            Log.d("LocationUpdate", "통신 완료 : $isSaved")
+            if (isSaved) viewModel.loadLocation()
+        }
     }
 
     private fun initView() {
@@ -62,10 +75,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }
         viewModel.rankList.observe(viewLifecycleOwner) {
+            binding.lottieRankingLoading.visibility = View.GONE
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
         
-        viewModel.currentLocation.observe(viewLifecycleOwner) {
+        viewModel.address.observe(viewLifecycleOwner) {
             viewModel.fetchWeather()
         }
         viewModel.homeDetailWeather.observe(viewLifecycleOwner) {
@@ -110,18 +124,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
     }
 
-    private fun updateLocation() {
-        if (isGrantedLocationPermission(requireContext())) {
-            viewModel.updateLocation()
-        } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE_LOCATION
-            )
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         val application = requireActivity().application as App
@@ -134,7 +136,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         application.exitCameraActivityFlag = false
     }
 
+    private fun loadLocation(){
+        viewModel.loadLocation()
+    }
+
     companion object {
-        const val REQUEST_CODE_LOCATION = 2
+        const val LOCATION_UPDATED = "locationUpdated"
     }
 }

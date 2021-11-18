@@ -4,8 +4,11 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.Window
+import android.view.WindowInsets
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityLogInBinding
@@ -32,12 +35,21 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setFullScreen()
         setLoginInstance()
         setListener()
         setObserver()
         setLoadingDialog()
 
         viewModel.fetchLoginData()
+    }
+
+    private fun setFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
     }
 
     private fun setLoginInstance() {
@@ -62,7 +74,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
     private fun setObserver() {
         viewModel.isLogin.observe(this) {
             if (it) {
-                showToast(this, "자동 로그인 되었습니다.")
+                showToast(this, R.string.login_auto)
                 moveToIntro()
             }
         }
@@ -91,7 +103,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 viewModel.setLoading(false)
-                showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                showToast(this, R.string.login_google_fail)
             }
         }
     }
@@ -103,12 +115,12 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     viewModel.setLoading(false)
-                    showToast(this, "구글 로그인에 성공하였습니다.")
-                    viewModel.setLoginData(account.displayName!!, account.email!!)
+                    showToast(this, R.string.login_success)
+                    viewModel.setLoginData(account.displayName!!, account.email!!, account.photoUrl!!.toString())
                     moveToIntro()
                 } else {
                     viewModel.setLoading(false)
-                    showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                    showToast(this, R.string.login_server_fail)
                 }
             }
     }

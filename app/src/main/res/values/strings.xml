@@ -52,7 +52,7 @@
     <!-- Home Fragment -->
     <string name="home_sample_id">안녕하세요 구전김박님!</string>
     <string name="home_sample_rank_user">이번 주 구전김박님의 전체 순위는 10위입니다</string>
-    <string name="home_this_week_rank">이번 주 전체 랭킹</string>
+    <string name="home_this_week_rank">🐟이번 주 물고기 랭킹🐟</string>
     <string name="home_show_all">더보기</string>
     <string name="home_recommend">추천 영상</string>
     <string name="home_today_weather">현재 날씨</string>
@@ -76,5 +76,20 @@
     <string name="ranking_this_week">이주의 랭킹 🏆</string>
     <string name="ranking_update_description">랭킹은 매주 일요일 24시에 갱신 됩니다.</string>
     <string name="ranking_page_help">스와이프로 다양한 랭킹을 확인하세요</string>
+
+    <!-- Login Activity -->
+    <string name="login_auto">자동 로그인 되었습니다.</string>
+    <string name="login_google_fail">구글 인증에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="login_success">로그인에 성공하였습니다.</string>
+    <string name="login_server_fail">로그인에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="social_login">소셜 로그인</string>
+    <string name="app_name_sub">- 그 물고기에 잠이 오냐</string>
+
+    <!-- MyPage Activity -->
+    <string name="logout_success">로그 아웃하였습니다.</string>
+    <string name="signout_success">성공적으로 탈퇴하였습니다.</string>
+    <string name="signout_fail">탈퇴에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="notification">공지사항</string>
+    <string name="mypage">마이 페이지</string>
 
 </resources>

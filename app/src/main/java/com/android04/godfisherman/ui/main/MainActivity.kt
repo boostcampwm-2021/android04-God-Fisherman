@@ -1,5 +1,6 @@
 package com.android04.godfisherman.ui.main
 
+import android.Manifest
 import android.content.Intent
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -9,10 +10,12 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityMainBinding
@@ -23,11 +26,7 @@ import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
 import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
-import com.android04.godfisherman.utils.BindingAdapter
-import com.android04.godfisherman.utils.StopwatchNotification
-import com.android04.godfisherman.utils.StopwatchService
-import com.android04.godfisherman.utils.UploadDialog
-import com.android04.godfisherman.utils.showToast
+import com.android04.godfisherman.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     override val viewModel: MainViewModel by viewModels()
 
     companion object {
+        const val DEFAULT_BUNDLE = "defaultKey"
         var isStopwatchServiceRunning = false
     }
     private lateinit var serviceIntent: Intent
@@ -47,10 +47,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         viewModel.checkConnectivity()
         binding.viewModel = viewModel
         setOrientation()
-        
+        checkLocationPermission()
         StopwatchNotification.createChannel(this)
         initBottomNavigation()
         initMotionListener()
+
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
@@ -95,6 +96,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 binding.navView.selectedItemId = R.id.navigation_stopwatch
                 changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
                 viewModel.setIsAfterUploadFalse()
+            }
+        }
+
+        viewModel.currentLocation.observe(this) {
+            if (it != null) {
+                supportFragmentManager.setFragmentResult(HomeFragment.LOCATION_UPDATED, bundleOf(
+                    DEFAULT_BUNDLE to true))
             }
         }
 
@@ -269,6 +277,34 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
         })
         dialog.showDialog()
+    }
+
+    private fun checkLocationPermission(){
+        if (isGrantedLocationPermission(this)) {
+            Log.d("LocationUpdate", "권한 true")
+            viewModel.requestLocation()
+        } else {
+            requestLocationPermission()
+            Log.d("LocationUpdate", "권한 false")
+        }
+    }
+
+    private fun requestLocationPermission(){
+        var permissionCount = 0
+        val permissionManager = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions(
+            )) { permissions ->
+            permissions.entries.forEach{
+                if (it.value) permissionCount++
+            }
+            if (permissionCount == 2) {
+                Log.d("LocationUpdate", "권한 false -> true")
+                viewModel.requestLocation()
+            } else {
+                Log.d("LocationUpdate", "권한 false -> false")
+            }
+        }
+        permissionManager.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     }
 
 }
