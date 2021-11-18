@@ -30,4 +30,5 @@
     <dimen name="home_ranking_recyclerview_height">200dp</dimen>
     <dimen name="item_ranking_rank_textview_width">48dp</dimen>
     <dimen name="item_ranking_length_textview_width">72dp</dimen>
+    <dimen name="home_lottie_loading_size">80dp</dimen>
 </resources>
