@@ -1,6 +1,5 @@
 package com.android04.godfisherman.ui.home
 
-import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.ui.login.LogInViewModel
-import com.android04.godfisherman.utils.LocationHelper
 import com.android04.godfisherman.utils.RepoResponseImpl
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,12 +19,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper,
     private val manager: SharedPreferenceManager
 ) : ViewModel() {
-
-    private val _currentLocation: MutableLiveData<Location> by lazy { MutableLiveData<Location>() }
-    val currentLocation: LiveData<Location> = _currentLocation
 
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val address: LiveData<String> = _address
@@ -55,16 +49,7 @@ class HomeViewModel @Inject constructor(
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
     
-    fun updateLocation() {
-        locationHelper.setLocationUpdate()
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val location = locationHelper.getLocation()
-                _currentLocation.postValue(location)
-                _address.postValue(locationRepository.updateLocation(location))
-            }
-        }
-    }
+
 
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -93,7 +78,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchWeather() {
-        val location = currentLocation.value
+        val location = locationRepository.loadLocation()
 
         _isWeatherLoading.postValue(true)
 
@@ -124,4 +109,17 @@ class HomeViewModel @Inject constructor(
     fun fetchUserID() {
         _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
     }
+
+    fun loadLocation() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val location = locationRepository.loadLocation()
+                if (location != null){
+                    val newAddress = locationRepository.updateAddress()
+                    _address.postValue(newAddress)
+                }
+            }
+        }
+    }
+
 }
