@@ -75,6 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }
         viewModel.rankList.observe(viewLifecycleOwner) {
+            binding.lottieRankingLoading.visibility = View.GONE
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
         

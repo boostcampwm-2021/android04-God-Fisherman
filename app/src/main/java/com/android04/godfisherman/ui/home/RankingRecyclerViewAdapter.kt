@@ -12,7 +12,7 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     private val data = mutableListOf<RankingData>()
     private var limitItemCount: Int? = null
 
-    fun setData(newData : List<RankingData>) {
+    fun setData(newData: List<RankingData>) {
         data.addAll(newData)
         notifyDataSetChanged()
     }
@@ -23,10 +23,15 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == TYPE_SIZE) {
-            val binding = ItemHomeRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding =
+                ItemHomeRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return RankingViewHolder(binding)
         } else {
-            val binding = ItemWaitingRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemWaitingRankingBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             return WaitingRankingViewHolder(binding)
         }
     }
@@ -45,16 +50,23 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     override fun getItemViewType(position: Int): Int =
-        when(data[position]) {
+        when (data[position]) {
             is RankingData.HomeRankingData -> TYPE_SIZE
             is RankingData.HomeWaitingRankingData -> TYPE_WAITING
         }
 
-    inner class RankingViewHolder(private val binding : ItemHomeRankingBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RankingViewHolder(private val binding: ItemHomeRankingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data : RankingData.HomeRankingData) {
+        fun onBind(data: RankingData.HomeRankingData) {
             binding.data = data
-            binding.rank = (adapterPosition + 1).toString() + "위"
+            binding.rank = when (adapterPosition + 1) {
+                1 -> "🥇 "
+                2 -> "🥈 "
+                3 -> "🥉 "
+                else -> ""
+            } + "${adapterPosition + 1}위"
+
             setLastView()
         }
 
@@ -67,11 +79,18 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    inner class WaitingRankingViewHolder(private val binding : ItemWaitingRankingBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class WaitingRankingViewHolder(private val binding: ItemWaitingRankingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data : RankingData.HomeWaitingRankingData) {
+        fun onBind(data: RankingData.HomeWaitingRankingData) {
             binding.data = data
-            binding.rank = (adapterPosition + 1).toString() + "위"
+            binding.rank = when (adapterPosition + 1) {
+                1 -> "🥇 "
+                2 -> "🥈 "
+                3 -> "🥉 "
+                else -> ""
+            } + "${adapterPosition + 1}위"
+
             setLastView()
         }
 
