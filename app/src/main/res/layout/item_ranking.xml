@@ -28,8 +28,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="@dimen/space_median"
-                android:paddingEnd="@dimen/space_median"
+                android:paddingStart="@dimen/space_x_small"
+                android:paddingEnd="@dimen/space_x_small"
                 android:paddingBottom="@dimen/space_small">
 
                 <TextView

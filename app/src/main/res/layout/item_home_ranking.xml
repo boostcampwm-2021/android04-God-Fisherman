@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,7 +17,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/space_median"
@@ -32,26 +34,32 @@
 
         <TextView
             android:id="@+id/tv_rank"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_x_small"
             android:text="@{rank}"
             android:textSize="@dimen/text_median"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_medal"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10위"/>
 
         <TextView
             android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_median"
             android:text="@{data.userId}"
             android:textSize="@dimen/text_median"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:lines="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_rank"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/tv_type"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/space_small"
+            tools:text="구전김박짱짱"/>
 
         <TextView
             android:id="@+id/tv_type"
@@ -59,20 +67,22 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/space_small"
             android:text="@{data.type}"
-            android:textSize="@dimen/text_median"
+            android:textSize="@dimen/text_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_size"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="메갈로돈"/>
 
         <TextView
             android:id="@+id/tv_size"
             setSizeText="@{data.size}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_median"
+            android:textSize="@dimen/text_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="544.7cm"/>
 
         <View
             android:id="@+id/v_line"
