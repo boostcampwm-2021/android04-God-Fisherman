@@ -27,6 +27,7 @@
 
             <TextView
                 android:id="@+id/tv_user_name"
+                setWelcomeText="@{viewModel.userName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_large"
@@ -36,32 +37,33 @@
                 android:focusable="true"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
-                setWelcomeText="@{viewModel.userName}"
                 android:textSize="@dimen/text_x_large"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/lottieAnimationView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_user_ranking"
+                setRankID="@{viewModel.userName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
                 android:layout_marginEnd="@dimen/space_large"
-                setRankID="@{viewModel.userName}"
                 android:textSize="@dimen/text_median"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_user_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_user_name"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottieAnimationView"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="@dimen/space_x_large"
-                app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/space_large"
+                app:layout_constraintBottom_toTopOf="@id/v_background"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="true"
                 app:lottie_fileName="lottie_home.json"
                 app:lottie_loop="true" />
@@ -70,35 +72,37 @@
                 android:id="@+id/v_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/space_xxx_large"
                 android:background="@drawable/bg_home_round_top"
-                android:paddingTop="40dp"
+                android:backgroundTint="@color/primary99"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_user_ranking">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_ranking_card"
+                    style="@style/Widget.Material3.CardView.Elevated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_x_large"
-                    android:layout_marginEnd="@dimen/space_x_large"
-                    android:elevation="10dp"
+                    android:layout_marginHorizontal="@dimen/space_x_large"
+                    android:layout_marginTop="@dimen/space_xxx_large"
+                    app:cardBackgroundColor="?attr/colorOnPrimary"
+                    app:cardCornerRadius="@dimen/space_large"
+                    app:cardElevation="@dimen/home_ranking_card_view_elevation"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingStart="@dimen/space_median"
-                        android:paddingEnd="@dimen/space_median"
-                        android:paddingBottom="@dimen/space_small">
+                        android:paddingHorizontal="@dimen/space_small"
+                        android:paddingTop="@dimen/space_median"
+                        android:paddingBottom="@dimen/space_x_small">
 
                         <TextView
                             android:id="@+id/tv_this_week_ranking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_median"
                             android:text="@string/home_this_week_rank"
-                            android:textSize="@dimen/text_x_large"
+                            android:textSize="@dimen/text_large"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -107,8 +111,8 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_ranking"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_median"
+                            android:layout_height="@dimen/home_ranking_recyclerview_height"
+                            android:layout_marginTop="@dimen/space_small"
                             android:orientation="vertical"
                             android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -116,21 +120,20 @@
                             tools:itemCount="5"
                             tools:listitem="@layout/item_home_ranking" />
 
-                        <TextView
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/tv_show_all"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/space_small"
                             android:text="@string/home_show_all"
                             android:textColor="@color/primary"
-                            android:textSize="@dimen/text_median"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_ranking" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/tv_recommend"

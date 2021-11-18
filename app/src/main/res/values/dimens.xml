@@ -17,7 +17,7 @@
     <dimen name="text_x_large">24dp</dimen>
     <dimen name="text_xxxx_large">36dp</dimen>
 
-    <dimen name="camera_guide_margin">60dp</dimen>
+    <dimen name="camera_guide_margin">44dp</dimen>
     <dimen name="upload_thumbnail_height">240dp</dimen>
     <dimen name="upload_iv_length_title_margin_top">36dp</dimen>
     <dimen name="upload_text_input_layout_height">60dp</dimen>
@@ -26,4 +26,8 @@
     <!-- Feed Fragment -->
     <dimen name="feed_loading_lottie_size">100dp</dimen>
     <dimen name="feed_card_view_elevation">6dp</dimen>
+    <dimen name="home_ranking_card_view_elevation">4dp</dimen>
+    <dimen name="home_ranking_recyclerview_height">200dp</dimen>
+    <dimen name="item_ranking_rank_textview_width">48dp</dimen>
+    <dimen name="item_ranking_length_textview_width">72dp</dimen>
 </resources>
