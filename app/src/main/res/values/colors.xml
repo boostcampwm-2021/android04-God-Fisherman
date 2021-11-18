@@ -18,9 +18,15 @@
     <color name="decoration_time_line">#FFE16F</color>
     <color name="location_time_line">#0062A2</color>
     <color name="fish_yellow">#FFE16F</color>
-    <color name="money_red">#FF8066</color>
+    <color name="money_red">#D16FB6</color>
     <color name="disabled_gray">#646464</color>
+
+    <!--feed-->
     <color name="feed_text_dark_gray">#42474E</color>
-    <color name="feed_photo_background">#FCFCFF</color>
+    <color name="feed_photo_background">#FFFEFB</color>
     <color name="feed_timeline_background">#E8F1FF</color>
+    <color name="feed_letterbox">#FFFFFF</color>
+    <color name="background_home">#CFE4FF</color>
+    <color name="primary99">#FCFCFF</color>
+    <color name="home_weather_card_background">#FAF7EB</color>
 </resources>

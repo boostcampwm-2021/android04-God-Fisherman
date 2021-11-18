@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="data"
             type="com.android04.godfisherman.ui.feed.FeedTimelineData" />
 
         <variable
-            name="listener"
+            name="timelineClickListener"
             type="kotlin.jvm.functions.Function0" />
 
     </data>
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="@dimen/space_x_small"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/feed_timeline_background">
+        android:layout_marginHorizontal="@dimen/space_median"
+        android:layout_marginVertical="@dimen/space_x_small"
+        android:backgroundTint="@color/feed_timeline_background"
+        app:cardElevation="@dimen/feed_card_view_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/space_small">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_user_name"
@@ -75,70 +75,78 @@
                 android:layout_marginEnd="@dimen/space_median"
                 android:text="@{data.date}"
                 android:textColor="@color/feed_text_dark_gray"
-                android:textSize="@dimen/feed_date_text_size"
+                android:textSize="@dimen/text_small"
                 app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/iv_fish_photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/space_small"
+                android:background="@color/white"
                 android:orientation="horizontal"
+                app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
 
-            <com.rd.PageIndicatorView
+            <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
                 android:id="@+id/indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
+                android:visibility="@{(data.photoUrlList.size > 1) ? View.VISIBLE : View.GONE }"
+                app:dotsColor="@color/secondary"
+                app:dotsStrokeColor="@color/secondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_fish_photo"
-                app:piv_dynamicCount="true"
-                app:piv_selectedColor="@color/primary"
-                app:piv_unselectedColor="@color/fish_yellow"
-                app:piv_interactiveAnimation="true"
-                app:piv_viewPager="@id/iv_fish_photo"
-                app:piv_animationType="color" />
+                app:layout_constraintTop_toBottomOf="@id/iv_fish_photo" />
 
-            <ImageView
-                android:id="@+id/iv_show_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
+            <LinearLayout
+                android:id="@+id/ll_dropdown_show_timeline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/space_small"
-                android:onClickListener="@{()->listener.invoke()}"
-                android:src="@drawable/ic_baseline_arrow_drop_down_primary"
+                android:background="?attr/selectableItemBackground"
+                android:onClickListener="@{()->timelineClickListener.invoke()}"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/space_small"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/indicator" />
+                app:layout_constraintTop_toBottomOf="@id/indicator">
 
-            <TextView
-                android:id="@+id/tv_fish_type"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_xx_small"
-                android:layout_marginEnd="@dimen/space_small"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="@string/feed_show_timeline"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_regular"
-                app:layout_constraintBottom_toBottomOf="@id/iv_show_all"
-                app:layout_constraintStart_toEndOf="@id/iv_show_all"
-                app:layout_constraintTop_toTopOf="@id/iv_show_all" />
+                <ImageView
+                    android:id="@+id/iv_show_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:src="@drawable/ic_baseline_arrow_drop_down_primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/indicator" />
+
+                <TextView
+                    android:id="@+id/tv_show_timeline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/space_xx_small"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/feed_show_timeline"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_regular" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_timeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_small"
                 android:layout_marginEnd="@dimen/space_median"
-                android:orientation="vertical"
+                android:paddingBottom="@dimen/space_small"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/iv_show_all"
+                app:layout_constraintTop_toBottomOf="@id/ll_dropdown_show_timeline"
                 tools:listitem="@layout/item_timeline" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

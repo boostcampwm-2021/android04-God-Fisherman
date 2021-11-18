@@ -18,6 +18,11 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
         notifyDataSetChanged()
     }
 
+    fun clearData() {
+        data.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         return when (viewType) {
             PHOTO_TYPE -> {
@@ -77,18 +82,21 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Fee
             val timelineData = data as FeedTimelineData
             binding.data = timelineData
             binding.ivFishPhoto.adapter = TimelineViewPagerAdapter(data.photoUrlList)
+            binding.indicator.setViewPager2(binding.ivFishPhoto)
             binding.rvTimeline.adapter = TimelineRecyclerViewAdapter(data.timeline)
             setListener()
         }
 
         private fun setListener() {
-            binding.listener = {
+            binding.timelineClickListener = {
                 if (binding.rvTimeline.visibility == View.GONE) {
                     binding.rvTimeline.visibility = View.VISIBLE
                     binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_up_primary)
+                    binding.tvShowTimeline.setText(R.string.feed_close_timeline)
                 } else {
                     binding.rvTimeline.visibility = View.GONE
                     binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+                    binding.tvShowTimeline.setText(R.string.feed_show_timeline)
                 }
             }
         }

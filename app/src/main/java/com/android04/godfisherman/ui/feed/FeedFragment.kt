@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.databinding.FragmentFeedBinding
 import com.android04.godfisherman.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.fragment_feed) {
     override val viewModel: FeedViewModel by viewModels()
 
@@ -14,48 +17,43 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvFeed.adapter = FeedRecyclerViewAdapter()
-        (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(
-            listOf(
-                FeedPhotoData(
-                    "Test Name1",
-                    "Test Location1",
-                    "Test Date1",
-                    "https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4",
-                    "Test Type1",
-                    130.9
-                ),
-                FeedTimelineData(
-                    "Test Name2",
-                    "Test Location2",
-                    "Test Data2",
-                    listOf("https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4", "https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_222819.jpg?alt=media&token=5ff06326-e49d-47d0-92eb-49cc8e08a035", "https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_222802.jpg?alt=media&token=04a9765b-b6bd-4409-b892-751a32e06db0"),
-                    listOf(TimeLineData("Sample1", 123.0, "10:00"),
-                        TimeLineData("Sample2", 123.0, "11:00"),
-                        TimeLineData("Sample3", 123.0, "12:00"))
-                ),
-                FeedPhotoData(
-                    "Test Name3",
-                    "Test Location3",
-                    "Test Date3",
-                    "https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4",
-                    "Test Type3",
-                    130.9
-                ),
-                FeedTimelineData(
-                    "Test Name4",
-                    "Test Location4",
-                    "Test Data4",
-                    listOf("https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4"),
-                    listOf(TimeLineData("Sample1", 123.0, "10:00"))
-                ),
-                FeedTimelineData(
-                    "Test Name5",
-                    "Test Location5",
-                    "Test Data5",
-                    listOf("https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4", "https://firebasestorage.googleapis.com/v0/b/god-fisherman.appspot.com/o/images%2FIMAGE_20211110_113728.jpg?alt=media&token=a266df02-cd13-4d9b-abe4-daf040e14df4"),
-                    listOf(TimeLineData("Sample1", 123.0, "10:00"), TimeLineData("Sample1", 123.0, "11:00"))
-                )
-            )
-        )
+        binding.feedViewModel = viewModel
+
+        setRefresh()
+        initListener()
+        setupObserver()
+
+        viewModel.fetchFeedDataList(Type.ALL)
+    }
+
+    private fun setRefresh(){
+        binding.SRLFeed.setOnRefreshListener {
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
+            viewModel.setFilter(binding.cgType.checkedChipId)
+
+        }
+    }
+
+    private fun initListener() {
+        binding.cgType.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.setFilter(checkedId)
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
+
+            binding.lottieLoading.visibility = View.VISIBLE
+            binding.lottieLoading.playAnimation()
+
+            binding.cgType.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setupObserver() {
+        viewModel.feedDataList.observe(viewLifecycleOwner) {
+            binding.lottieLoading.visibility = View.GONE
+            binding.lottieLoading.pauseAnimation()
+
+            binding.cgType.visibility = View.VISIBLE
+            binding.SRLFeed.isRefreshing = false
+            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
+        }
     }
 }

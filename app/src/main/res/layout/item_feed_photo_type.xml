@@ -14,11 +14,10 @@
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="@dimen/space_x_small"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/feed_photo_background">
+        android:layout_marginHorizontal="@dimen/space_median"
+        android:layout_marginVertical="@dimen/space_x_small"
+        android:backgroundTint="@color/feed_photo_background"
+        app:cardElevation="@dimen/feed_card_view_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,17 +68,19 @@
                 android:layout_marginEnd="@dimen/space_median"
                 android:text="@{data.date}"
                 android:textColor="@color/feed_text_dark_gray"
-                android:textSize="@dimen/feed_date_text_size"
+                android:textSize="@dimen/text_small"
                 app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_fish_photo"
+                setImage="@{data.photoUrl}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/space_small"
                 android:adjustViewBounds="true"
-                setImage="@{data.photoUrl}"
+                android:background="@color/feed_letterbox"
+                app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
 
             <ImageView

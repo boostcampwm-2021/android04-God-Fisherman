@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rank"
+            type="String" />
+
+        <variable
+            name="data"
+            type="com.android04.godfisherman.ui.home.RankingData.HomeWaitingRankingData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/space_x_small">
+
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="@dimen/item_ranking_rank_textview_width"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@{rank}"
+            android:textSize="@dimen/text_median"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_median"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{data.userId}"
+            android:textSize="@dimen/text_median"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_time"
+            app:layout_constraintStart_toEndOf="@id/tv_rank"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            setTimeToMinute="@{data.totalTime}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_x_small"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textSize="@dimen/text_median"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_user_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/space_x_small"
+            android:background="@color/disabled_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_rank" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

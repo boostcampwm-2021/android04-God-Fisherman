@@ -6,6 +6,7 @@ interface StopwatchDataSource {
 
     interface LocalDataSource{
         suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord>
+        suspend fun removeTmpTimeLineRecord()
     }
 
     interface RemoteDataSource{}

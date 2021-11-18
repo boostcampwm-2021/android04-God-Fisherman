@@ -5,19 +5,19 @@
     <data>
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.stopwatch.StopwatchViewModel" />
+            type="com.android04.godfisherman.ui.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.stopwatch.StopwatchActivity2">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -27,20 +27,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="282dp"
                     android:background="@drawable/bg_gradient_main"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_fishing_time"
                     android:layout_width="269dp"
                     android:layout_height="269dp"
-                    android:outlineSpotShadowColor="@color/decoration_time_line"
-                    android:elevation="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="150dp"
-                    android:background="@drawable/bg_circle_stopwatch">
+                    android:background="@drawable/bg_circle_stopwatch"
+                    android:elevation="20dp"
+                    android:outlineSpotShadowColor="@color/decoration_time_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/tv_fishing_time"
@@ -70,17 +70,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <View
+                <ImageButton
                     android:id="@+id/view_start_stop"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
+                    android:layout_marginTop="@dimen/space_xxx_large"
+                    android:background="@null"
                     android:clickable="true"
-                    android:background="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop : @drawable/btn_start}"
-                    android:onClick="@{()->viewModel.startOrStopTimer()}"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:elevation="10dp"
+                    android:src="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop_with_ripple : @drawable/btn_start}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_fishing_time"
-                    android:layout_marginTop="@dimen/space_xxx_large" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_fishing_time" />
 
                 <TextView
                     android:id="@+id/tv_title_time_line"
@@ -99,26 +100,25 @@
                     android:id="@+id/rv_time_line"
                     android:layout_width="0dp"
                     android:layout_height="500dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="vertical"
-                    tools:listitem="@layout/item_time_line_in_stop_watch"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginHorizontal="@dimen/space_large"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
-                    android:layout_marginTop="@dimen/space_median" />
+                    tools:listitem="@layout/item_time_line_in_stop_watch" />
 
                 <TextView
                     android:id="@+id/tv_empty_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xxx_large"
                     android:text="@string/no_fish_yet"
                     android:textSize="@dimen/text_large"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
-                    android:layout_marginTop="@dimen/space_xxx_large"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

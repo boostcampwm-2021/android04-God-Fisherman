@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.RankingDetailFragment"
+        android:background="@color/background_home">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_ranking_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_large"
+                android:layout_marginTop="@dimen/space_xxx_large"
+                android:text="@string/ranking_this_week"
+                android:textSize="@dimen/text_x_large"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_ranking_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ranking_update_description"
+                android:textSize="@dimen/text_median"
+                app:layout_constraintStart_toStartOf="@+id/tv_ranking_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ranking_title"
+                android:layout_marginTop="@dimen/space_small"
+                />
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ranking_description"/>
+
+            <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+                android:id="@+id/indicator_ranking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
+                android:layout_marginBottom="@dimen/space_median"
+                android:visibility="invisible"
+                app:dotsColor="@color/secondary"
+                app:dotsStrokeColor="@color/secondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_ranking" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_loading"
+                android:layout_width="@dimen/feed_loading_lottie_size"
+                android:layout_height="@dimen/feed_loading_lottie_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="lottie_loading.json"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:id="@+id/tv_ranking_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ranking_page_help"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_median"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/lottie_loading"
+                app:layout_constraintEnd_toEndOf="@+id/lottie_loading"
+                app:layout_constraintTop_toBottomOf="@id/lottie_loading"
+                android:layout_marginTop="@dimen/space_large"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

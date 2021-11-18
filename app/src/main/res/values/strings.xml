@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">GodFisherman</string>
+    <string name="app_name">그물잠</string>
     <string name="title_home">홈</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_feed">낚시 피드</string>
     <string name="title_camera">촬영</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="navigation_menu_stopwatch">낚시시작</string>
+    <string name="navigation_menu_stopwatch">낚시타임</string>
     <string name="navigation_menu_my_page">마이페이지</string>
     <string name="loading">loading...</string>
     <string name="sample_text_short">sample</string>
-    <string name="sample_text_long">sample text sample text</string>
+    <string name="sample_text_long">sample text sample text sample text sample text</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
@@ -23,7 +23,7 @@
     <string name="upload_title">업로드</string>
     <string name="level_error">수평을 맞춰주세요.</string>
     <string name="object_error">물체를 인식해주세요.</string>
-  
+
     <!-- Stopwatch info Fragment -->
     <string name="info_stopwatch_info">스톱워치를 시작한 후\n아래의 촬영 버튼을 클릭해\n낚시 기록을 남겨보세요\n\n낚시 타임라인을 만들 수 있어요</string>
     <string name="description_stopwatch_info">낚시 기록을 시작해 보세요!</string>
@@ -31,25 +31,65 @@
 
     <!-- Upload Activity -->
     <string name="upload_complete">완료</string>
-    
+    <string name="fetch_fail">어종 타입을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="upload_server_success">업로드가 완료되었습니다.</string>
+    <string name="upload_server_fail">업로드에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="upload_input_fail">업로드에 실패했습니다. 입력한 정보를 확인해주세요.</string>
+    <string name="upload_network_disconnected">네트워크가 연결되어 있지 않습니다. 다시 시도해주세요.</string>
+
     <!-- StopWatch Activity -->
     <string name="time_line">타임라인</string>
     <string name="no_fish_yet">아직 잡은 물고기가 한마리도 없어요!</string>
 
     <!-- Feed Fragment -->
     <string name="feed_all">전체</string>
-    <string name="feed_photo">📷사진 타입</string>
+    <string name="feed_photo">📷️️️️ 사진 타입</string>
     <string name="feed_timeline">⌛️타임라인 타입</string>
     <string name="feed_show_timeline">⌛️타임라인 보기</string>
+    <string name="feed_close_timeline">⌛️타임라인 닫기</string>
     <string name="sample_time">10:10</string>
 
     <!-- Home Fragment -->
     <string name="home_sample_id">안녕하세요 구전김박님!</string>
     <string name="home_sample_rank_user">이번 주 구전김박님의 전체 순위는 10위입니다</string>
-    <string name="home_this_week_rank">이번 주 전체 랭킹</string>
+    <string name="home_this_week_rank">🐟이번 주 물고기 랭킹🐟</string>
     <string name="home_show_all">더보기</string>
     <string name="home_recommend">추천 영상</string>
     <string name="home_today_weather">현재 날씨</string>
     <string name="home_location_desc">기준</string>
     <string name="home_recommend_sample">주차하고 바로 던지는 우럭 루어낚시! 잘나와도 어쩌고 저쩌고</string>
+    <string name="home_recommend_fail">추천 영상 로딩에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="home_show_weather">🌤상세 날씨 보기</string>
+    <string name="home_close_weather">🌤상세 날씨 닫기</string>
+    <string name="home_sunset">일몰</string>
+    <string name="home_sunrise">일출</string>
+
+    <!-- Upload Dialog -->
+    <string name="upload_dialog_btn_upload">업로드</string>
+    <string name="upload_dialog_back">취소</string>
+    <string name="upload_dialog_title">낚시타임 종료</string>
+    <string name="upload_dialog_detail">낚시기록을 업로드 하시겠습니까?\n(기록이 없을 경우 업로드되지 않습니다)</string>
+
+    <!-- Ranking Detail Fragment -->
+    <string name="ranking_size">크기 랭킹</string>
+    <string name="ranking_time">존버 랭킹</string>
+    <string name="ranking_this_week">이주의 랭킹 🏆</string>
+    <string name="ranking_update_description">랭킹은 매주 일요일 24시에 갱신 됩니다.</string>
+    <string name="ranking_page_help">스와이프로 다양한 랭킹을 확인하세요</string>
+
+    <!-- Login Activity -->
+    <string name="login_auto">자동 로그인 되었습니다.</string>
+    <string name="login_google_fail">구글 인증에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="login_success">로그인에 성공하였습니다.</string>
+    <string name="login_server_fail">로그인에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="social_login">소셜 로그인</string>
+    <string name="app_name_sub">- 그 물고기에 잠이 오냐</string>
+
+    <!-- MyPage Activity -->
+    <string name="logout_success">로그 아웃하였습니다.</string>
+    <string name="signout_success">성공적으로 탈퇴하였습니다.</string>
+    <string name="signout_fail">탈퇴에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="notification">공지사항</string>
+    <string name="mypage">마이 페이지</string>
+
 </resources>

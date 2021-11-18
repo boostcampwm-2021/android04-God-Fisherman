@@ -9,7 +9,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android04.godfisherman.R
-import com.android04.godfisherman.ui.stopwatch.StopwatchActivity
+import com.android04.godfisherman.ui.main.MainActivity
+import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import java.util.*
 
 class StopwatchService:
@@ -18,6 +19,7 @@ class StopwatchService:
     companion object {
         const val TIME_EXTRA = "timeExtra"
         const val TIME_SAVED = "timeSaved"
+        const val FROM_SERVICE = "fromService"
         const val SERVICE_DESTROYED = "serviceDestroyed"
         const val STOPWATCH_ENTER = "timeEnter"
         const val NOTIFICATION_ID = 10
@@ -29,13 +31,13 @@ class StopwatchService:
     override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onStartCommand(passedIntent: Intent, flags: Int, startId: Int): Int {
-        StopwatchActivity.isStopwatchServiceRunning = true
-
-        val intent = Intent(this, StopwatchActivity::class.java)
+        Log.d("StopWatch", "서비스 실행")
+        MainActivity.isStopwatchServiceRunning = true
+        val intent = Intent(this, MainActivity::class.java)
         intent.action = STOPWATCH_ENTER
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TASK
-        intent.putExtra(TIME_SAVED, saveTime)
+        intent.putExtra(FROM_SERVICE, true)
         val pendingIntent = PendingIntent
             .getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
@@ -48,7 +50,7 @@ class StopwatchService:
             .setContentIntent(pendingIntent)
         saveTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
         startForeground(NOTIFICATION_ID, createNotification())
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 100)
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 1000)
         return START_NOT_STICKY
     }
 
@@ -64,7 +66,8 @@ class StopwatchService:
 
     private inner class StopwatchTask() : TimerTask() {
         override fun run() {
-            saveTime += 10
+            Log.d("StopWatch", saveTime.toString())
+            saveTime += 100
             updateNotification(saveTime)
         }
     }

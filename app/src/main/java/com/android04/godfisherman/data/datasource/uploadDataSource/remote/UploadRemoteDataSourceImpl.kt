@@ -3,7 +3,7 @@ package com.android04.godfisherman.data.datasource.uploadDataSource.remote
 import android.graphics.Bitmap
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.Type
+import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -60,10 +60,10 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         return imageUrl
     }
 
-    override suspend fun saveImageType(type: Type, fishingRecord: FishingRecord) {
+    override suspend fun saveImageType(typeInfo: TypeInfo, fishingRecord: FishingRecord) {
         val newImageTypeRef = database.collection("Feed")
 
-        newImageTypeRef.add(type).continueWithTask { task ->
+        newImageTypeRef.add(typeInfo).continueWithTask { task ->
             if (!task.isSuccessful) {
                 task.exception?.let {
                     throw it
@@ -76,14 +76,16 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         }
     }
 
-    override suspend fun saveTimeLineType(type: Type, fishingRecordList: List<FishingRecord>) {
+    override suspend fun saveTimeLineType(typeInfo: TypeInfo, fishingRecordList: List<FishingRecord>) {
         val newTimeLineTypeRef = database.collection("Feed")
-        newTimeLineTypeRef.add(type).addOnSuccessListener {
+        newTimeLineTypeRef.add(typeInfo).addOnSuccessListener {
             it.collection("fishingRecord").apply{
                 fishingRecordList.forEach{ record ->
                     add(record)
                 }
             }
+        }.addOnFailureListener {
+            throw it
         }
     }
 }

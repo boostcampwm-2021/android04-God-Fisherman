@@ -9,16 +9,16 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class CameraViewModel : ViewModel() {
-    private val _isLevelOk = MutableLiveData<Boolean>(false)
+    private val _isLevelOk: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isLevelOk: LiveData<Boolean> = _isLevelOk
 
-    private val _fishRect = MutableLiveData<List<Int>?>()
+    private val _fishRect: MutableLiveData<List<Int>?> by lazy { MutableLiveData<List<Int>?>() }
     val fishRect : LiveData<List<Int>?> = _fishRect
 
-    private val _moneyRect = MutableLiveData<List<Int>?>()
+    private val _moneyRect: MutableLiveData<List<Int>?> by lazy { MutableLiveData<List<Int>?>() }
     val moneyRect : LiveData<List<Int>?> = _moneyRect
 
-    private val _bodySize = MutableLiveData<Double?>()
+    private val _bodySize: MutableLiveData<Double?> by lazy { MutableLiveData<Double?>() }
     val bodySize : LiveData<Double?> = _bodySize
 
     fun setRect(list: List<List<Int>>) {

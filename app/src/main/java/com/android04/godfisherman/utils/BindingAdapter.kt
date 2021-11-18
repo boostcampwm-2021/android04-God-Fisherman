@@ -1,18 +1,16 @@
 package com.android04.godfisherman.utils
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.BindingAdapter
 import com.android04.godfisherman.R
-import com.google.android.material.appbar.MaterialToolbar
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
+import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
+import kotlin.math.roundToInt
 
 object BindingAdapter {
     @JvmStatic
@@ -42,7 +40,7 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("setImage")
-    fun setImageWithUrl(view: ImageView, url: String) {
+    fun setImageWithUrl(view: ImageView, url: String?) {
         Glide.with(view.context)
             .load(url)
             .placeholder(R.drawable.bg_loading_skeleton)
@@ -102,5 +100,48 @@ object BindingAdapter {
     @BindingAdapter("setDate")
     fun setSizeTextWithDouble(view: TextView, date: Date) {
         view.text = date.toDateString()
+    }
+
+    @JvmStatic
+    @BindingAdapter("setTimeToMinute")
+    fun setTimeWithDouble(view: TextView, millisecond: Double) {
+        val time = millisecond.roundToInt() % 8640000
+        val hour = time / 360000
+        val min = time % 3600000 / 6000
+
+        view.text = if (hour == 0) "$min 분" else "$hour 시간 $min 분"
+    }
+
+    @JvmStatic
+    @BindingAdapter("setImage")
+    fun setImage(view: ImageView, image: Bitmap) {
+        view.setImageBitmap(image)
+    }
+
+    @JvmStatic
+    @BindingAdapter("visibilityOnMotion")
+    fun setVisibilityOnMotion(view: View, visible: Boolean) {
+        println("visibility : $visible")
+        if (view.parent is MotionLayout) {
+            val motionLayout = view.parent as MotionLayout
+            val visibility = if (visible) View.VISIBLE else View.GONE
+
+            for (constraintId in motionLayout.constraintSetIds) {
+                val constraintSet = motionLayout.getConstraintSet(constraintId)
+                constraintSet?.setVisibility(view.id, visibility)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setWelcomeText")
+    fun setWelcomeTextWithID(view: TextView, id: String) {
+        view.text = "안녕하세요 ${id}님!"
+    }
+
+    @JvmStatic
+    @BindingAdapter("setRankID")
+    fun setRankingTextWithIDAndRank(view: TextView, id: String) {
+        view.text = "이번 주 ${id}님의 전체 순위는 10위 입니다."
     }
 }

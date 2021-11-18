@@ -1,7 +1,9 @@
 package com.android04.godfisherman.ui.camera.upload
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -26,12 +28,18 @@ class UploadActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setOrientation()
+        initListener()
         setupObserver()
         setUpBinding()
         setLoadingDialog()
         loadData()
 
-        viewModel.fetchFishTypeList()
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private fun setOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun setUpBinding() {
@@ -53,17 +61,38 @@ class UploadActivity :
 
             binding.autoCompleteTextviewFishType.setAdapter(adapter)
         }
-        viewModel.isUploadSuccess.observe(this) {
-            when (it) {
-                true -> {
-                    showToast(this, "업로드가 완료되었습니다.")
-                    finish()
-                }
-                false -> {
-                    showToast(this, "업로드에 실패했습니다. 입력한 정보를 확인해주세요.")
+        viewModel.isFetchSuccess.observe(this) {
+            it?.let {
+                when (it) {
+                    true -> {
+                        binding.toolbarTop.menu.getItem(0).isEnabled = true
+                    }
+                    false -> {
+                        binding.toolbarTop.menu.getItem(0).isEnabled = false
+                        showToast(this, R.string.fetch_fail)
+                    }
                 }
             }
         }
+        viewModel.isUploadSuccess.observe(this) {
+            when (it) {
+                true -> {
+                    showToast(this, R.string.upload_server_success)
+                    CameraActivity.captureImage = null
+                    finish()
+                }
+                false -> {
+                    showToast(this, R.string.upload_server_fail)
+                }
+            }
+
+        }
+        viewModel.isInputCorrect.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.upload_input_fail)
+            }
+        }
+
         viewModel.isLoading.observe(this) {
             when (it) {
                 true -> {
@@ -74,12 +103,28 @@ class UploadActivity :
                 }
             }
         }
+
+        viewModel.isNetworkConnected.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.upload_network_disconnected)
+            }
+        }
     }
 
     override fun onBackPressed() {
         val intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun initListener() {
+        binding.toolbarTop.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        binding.autoCompleteTextviewFishType.setOnClickListener {
+            viewModel.fetchFishTypeList()
+        }
     }
 
     private fun setLoadingDialog() {

@@ -1,6 +1,7 @@
 package com.android04.godfisherman.ui.base
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
