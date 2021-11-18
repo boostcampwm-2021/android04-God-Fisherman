@@ -86,6 +86,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
+    // SwipeRefresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
     implementation "com.github.paolorotolo:appintro:4.1.0"
 
     implementation 'androidx.core:core-ktx:1.6.0'
