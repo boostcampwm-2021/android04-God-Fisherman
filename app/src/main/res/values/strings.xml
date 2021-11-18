@@ -9,7 +9,7 @@
     <string name="navigation_menu_my_page">마이페이지</string>
     <string name="loading">loading...</string>
     <string name="sample_text_short">sample</string>
-    <string name="sample_text_long">sample text sample text</string>
+    <string name="sample_text_long">sample text sample text sample text sample text</string>
 
     <!-- Camera Activity -->
     <string name="camera_1000_won_text">1000원</string>
@@ -59,6 +59,10 @@
     <string name="home_location_desc">기준</string>
     <string name="home_recommend_sample">주차하고 바로 던지는 우럭 루어낚시! 잘나와도 어쩌고 저쩌고</string>
     <string name="home_recommend_fail">추천 영상 로딩에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="home_show_weather">🌤상세 날씨 보기</string>
+    <string name="home_close_weather">🌤상세 날씨 닫기</string>
+    <string name="home_sunset">일몰</string>
+    <string name="home_sunrise">일출</string>
 
     <!-- Upload Dialog -->
     <string name="upload_dialog_btn_upload">업로드</string>

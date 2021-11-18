@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
+import com.android04.godfisherman.ui.login.LogInViewModel
 import com.android04.godfisherman.utils.LocationHelper
 import com.android04.godfisherman.utils.RepoResponseImpl
+import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper
+    private val locationHelper: LocationHelper,
+    private val manager: SharedPreferenceManager
 ) : ViewModel() {
 
     private val _currentLocation: MutableLiveData<Location> by lazy { MutableLiveData<Location>() }
@@ -36,6 +39,18 @@ class HomeViewModel @Inject constructor(
 
     private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
+
+    private val _homeCurrentWeather: MutableLiveData<HomeCurrentWeather> by lazy { MutableLiveData<HomeCurrentWeather>() }
+    val homeCurrentWeather: LiveData<HomeCurrentWeather> = _homeCurrentWeather
+
+    private val _homeDetailWeather: MutableLiveData<List<HomeDetailWeather>> by lazy { MutableLiveData<List<HomeDetailWeather>>() }
+    val homeDetailWeather: LiveData<List<HomeDetailWeather>> = _homeDetailWeather
+
+    private val _isWeatherLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isWeatherLoading: LiveData<Boolean> = _isWeatherLoading
+
+    private val _userName: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val userName: LiveData<String> = _userName
 
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
@@ -59,8 +74,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchYoutube() {
-        viewModelScope.launch {
-            _isYoutubeLoading.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            _isYoutubeLoading.postValue(true)
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
             repoCallback.addSuccessCallback {
@@ -80,10 +95,33 @@ class HomeViewModel @Inject constructor(
     fun fetchWeather() {
         val location = currentLocation.value
 
+        _isWeatherLoading.postValue(true)
+
         if (location != null) {
-            viewModelScope.launch {
-                homeRepository.fetchWeatherData(location.latitude, location.longitude)
+            viewModelScope.launch(Dispatchers.IO) {
+                val currentCallback = RepoResponseImpl<HomeCurrentWeather?>()
+
+                currentCallback.addSuccessCallback {
+                    if (it != null) {
+                        _homeCurrentWeather.postValue(it)
+                    }
+                }
+
+                val detailCallback = RepoResponseImpl<List<HomeDetailWeather>?>()
+
+                detailCallback.addSuccessCallback {
+                    if (it != null) {
+                        _homeDetailWeather.postValue(it)
+                        _isWeatherLoading.postValue(false)
+                    }
+                }
+
+                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
             }
         }
+    }
+
+    fun fetchUserID() {
+        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
     }
 }
