@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/chiyoon/Desktop/boostcamp2021/keypath/Untitled')
+            storePassword 'godfisherman'
+            keyAlias 'godfishermankey'
+            keyPassword 'godfisherman'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
@@ -23,6 +31,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            debuggable true
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
