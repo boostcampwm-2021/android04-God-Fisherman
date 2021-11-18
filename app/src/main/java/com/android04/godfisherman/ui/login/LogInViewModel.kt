@@ -21,10 +21,6 @@ class LogInViewModel @Inject constructor(private val manager: SharedPreferenceMa
         val email = manager.getString(LOGIN_EMAIL)
         val img = manager.getString(LOGIN_IMG)
 
-        println(name)
-        println(email)
-        println(img)
-
         _isLogin.value = name != "" && email != "" && img != null
     }
 
