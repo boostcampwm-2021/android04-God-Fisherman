@@ -21,18 +21,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_large"
             android:layout_marginTop="@dimen/camera_guide_margin"
-            android:text="마이 페이지"
+            android:text="@string/mypage"
             android:textSize="@dimen/text_x_large"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_user_profile"
             style="@style/Widget.Material3.CardView.Elevated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:layout_marginHorizontal="@dimen/space_x_large"
+            android:layout_marginTop="40dp"
             android:backgroundTint="@color/feed_photo_background"
             app:cardElevation="@dimen/feed_card_view_elevation"
             app:layout_constraintTop_toBottomOf="@id/tv_my_page">
@@ -81,12 +82,12 @@
                     android:id="@+id/bt_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="로그아웃"
-                    android:layout_marginBottom="@dimen/space_x_large"
                     android:layout_marginTop="@dimen/space_x_large"
+                    android:layout_marginBottom="@dimen/space_x_large"
+                    android:text="로그아웃"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/bt_sign_out"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_user_icon" />
 
                 <com.google.android.material.button.MaterialButton
@@ -101,6 +102,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_large"
+            android:layout_marginTop="40dp"
+            android:text="@string/notification"
+            android:textSize="@dimen/text_x_large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_user_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
