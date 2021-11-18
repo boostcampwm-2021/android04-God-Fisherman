@@ -1,6 +1,5 @@
 package com.android04.godfisherman.data.repository
 
-import android.util.Log
 import com.android04.godfisherman.data.datasource.stopwatchdatasource.StopwatchDataSource
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
@@ -16,27 +15,41 @@ class StopwatchRepository @Inject constructor(
     private val remoteDataSource: UploadDataSource.RemoteDataSource,
     private val sharedPreferenceManager: SharedPreferenceManager
 ) {
-    suspend fun loadTmpTimeLineRecord():List<TmpFishingRecord> = localDataSource.loadTmpTimeLineRecord()
+    suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord> =
+        localDataSource.loadTmpTimeLineRecord()
 
-    suspend fun saveTimeLineRecord(time:Double) {
-        val recordList = mutableListOf<FishingRecord>()
+    suspend fun saveTimeLineRecord(time: Double) {
         val list = loadTmpTimeLineRecord()
-        list.forEach {
-            val imageUrl = remoteDataSource.getImageUrl(it.image)
-            if (imageUrl != null){
-                recordList.add(FishingRecord(0, imageUrl, Date(), it.fishLength, it.fishType))
+        val recordList = mutableListOf<FishingRecord>()
+
+        list.forEachIndexed { index, record ->
+            val imageUrl = remoteDataSource.getImageUrl(record.image)
+            if (imageUrl != null) {
+                recordList.add(
+                    FishingRecord(
+                        index,
+                        imageUrl,
+                        Date(),
+                        record.fishLength,
+                        record.fishType
+                    )
+                )
             }
         }
-        if (list.size == recordList.size){
+        if (list.size == recordList.size) {
             val type = TypeInfo(
                 Timestamp(Date()),
                 true,
-                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",
+                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)
+                    ?: "위치 정보 없음",
                 time.toInt(),
                 "user1"
             )
-            Log.d("TAG", "saveTimeLineRecord: $recordList")
+
             remoteDataSource.saveTimeLineType(type, recordList)
+            removeTmpTimeLineRecord()
         }
     }
+
+    suspend fun removeTmpTimeLineRecord() = localDataSource.removeTmpTimeLineRecord()
 }

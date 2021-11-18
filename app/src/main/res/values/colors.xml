@@ -26,4 +26,5 @@
     <color name="feed_photo_background">#FFFEFB</color>
     <color name="feed_timeline_background">#E8F1FF</color>
     <color name="feed_letterbox">#FFFFFF</color>
+    <color name="background_home">#CFE4FF</color>
 </resources>

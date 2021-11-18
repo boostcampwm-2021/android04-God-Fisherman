@@ -10,6 +10,7 @@ import com.android04.godfisherman.R
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
+import kotlin.math.roundToInt
 
 object BindingAdapter {
     @JvmStatic
@@ -99,6 +100,16 @@ object BindingAdapter {
     @BindingAdapter("setDate")
     fun setSizeTextWithDouble(view: TextView, date: Date) {
         view.text = date.toDateString()
+    }
+
+    @JvmStatic
+    @BindingAdapter("setTimeToMinute")
+    fun setTimeWithDouble(view: TextView, millisecond: Double) {
+        val time = millisecond.roundToInt() % 8640000
+        val hour = time / 360000
+        val min = time % 3600000 / 6000
+
+        view.text = if (hour == 0) "$min 분" else "$hour 시간 $min 분"
     }
 
     @JvmStatic

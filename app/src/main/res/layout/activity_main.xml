@@ -42,7 +42,6 @@
             android:id="@+id/cl_container_stopwatch"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            visibilityOnMotion="@{viewModel.stopwatchOnFlag}"
             app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -59,11 +58,11 @@
             app:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch">
 
             <TextView
-                android:id="@+id/view_stopwatch_small"
+                android:id="@+id/tv_stopwatch_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="00 : 00 : 00"
+                android:textAlignment="center"
+                android:text="@{viewModel.displayTime}"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -92,7 +91,7 @@
             android:alpha="0"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_stopwatch_small"
+            app:layout_constraintTop_toBottomOf="@+id/tv_stopwatch_small"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

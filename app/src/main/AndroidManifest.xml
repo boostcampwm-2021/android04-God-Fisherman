@@ -38,9 +38,6 @@
             android:name=".ui.camera.upload.UploadActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.stopwatch.StopwatchActivity"
-            android:exported="true" />
-        <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false"
             android:screenOrientation="landscape" />

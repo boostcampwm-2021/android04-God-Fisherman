@@ -29,6 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
         viewModel.fetchUserID()
         viewModel.fetchYoutube()
+        viewModel.fetchRanking()
         updateLocation()
     }
 
@@ -36,27 +37,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.tvUserName.isSelected = true
     }
 
+    private fun setListener() {
+        binding.tvShowAll.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragment_container, RankingDetailFragment())
+                addToBackStack("home")
+                commit()
+            }
+        }
+    }
+
     private fun setRecyclerView() {
         binding.rvRanking.adapter = RankingRecyclerViewAdapter()
-        (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(
-            listOf(
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                ),
-                HomeRankingData(
-                    "아이비", "물개", 140.5
-                )
-            )
-        )
+        (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setLimitItemCount(5)
 
         binding.rvRecommend.adapter = RecommendRecyclerViewAdapter()
         binding.rvWeatherDetail.adapter = WeatherRecyclerViewAdapter()
@@ -78,6 +71,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                 showToast(requireContext(), R.string.home_recommend_fail)
             }
         }
+        viewModel.rankList.observe(viewLifecycleOwner) {
+            (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
+        }
+        
         viewModel.currentLocation.observe(viewLifecycleOwner) {
             viewModel.fetchWeather()
         }

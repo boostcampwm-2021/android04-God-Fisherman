@@ -14,7 +14,8 @@ interface FeedDataSource {
             recordCachedList: List<FishingRecordCached>
         )
 
-        suspend fun loadFeedDataList(): List<TypeInfoWithFishingRecords>?
+        suspend fun loadFeedDataList(type: Type): List<TypeInfoWithFishingRecords>
+        suspend fun deleteAll()
     }
 
     interface RemoteDataSource {

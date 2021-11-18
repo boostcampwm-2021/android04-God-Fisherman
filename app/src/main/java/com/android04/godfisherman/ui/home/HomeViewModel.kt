@@ -39,6 +39,9 @@ class HomeViewModel @Inject constructor(
 
     private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
+  
+    private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
+    val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
 
     private val _homeCurrentWeather: MutableLiveData<HomeCurrentWeather> by lazy { MutableLiveData<HomeCurrentWeather>() }
     val homeCurrentWeather: LiveData<HomeCurrentWeather> = _homeCurrentWeather
@@ -60,6 +63,13 @@ class HomeViewModel @Inject constructor(
                 _currentLocation.postValue(location)
                 _address.postValue(locationRepository.updateLocation(location))
             }
+        }
+    }
+
+    fun fetchRanking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = homeRepository.fetchRankingList()
+            _rankList.postValue(list)
         }
     }
 
