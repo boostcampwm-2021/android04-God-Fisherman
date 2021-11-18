@@ -80,6 +80,8 @@
     <string name="login_google_fail">구글 인증에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="login_success">로그인에 성공하였습니다.</string>
     <string name="login_server_fail">로그인에 실패했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="social_login">소셜 로그인</string>
+    <string name="app_name_sub">- 그 물고기에 잠이 오냐</string>
 
     <!-- MyPage Activity -->
     <string name="logout_success">로그 아웃하였습니다.</string>
