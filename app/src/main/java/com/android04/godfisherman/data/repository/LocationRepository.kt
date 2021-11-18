@@ -1,6 +1,7 @@
 package com.android04.godfisherman.data.repository
 
 import android.location.Location
+import com.android04.godfisherman.data.DTO.Gps
 import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSource
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import javax.inject.Inject
@@ -10,7 +11,8 @@ class LocationRepository @Inject constructor(
     private val preferenceManager: SharedPreferenceManager
 ) {
 
-    suspend fun updateLocation(location: Location?): String {
+    suspend fun updateAddress(): String {
+        val location = preferenceManager.getGps()
         if (location != null) {
             val currentAddress =
                 remoteDataSource.fetchAddress(location.latitude, location.longitude)
@@ -28,4 +30,11 @@ class LocationRepository @Inject constructor(
         return preferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)
             ?: "위치를 불러올 수 없습니다"
     }
+
+    fun saveLocation(location: Location?){
+        if(location != null) preferenceManager.saveGps(Gps(location.longitude, location.latitude))
+    }
+
+    fun loadLocation() = preferenceManager.getGps()
+
 }

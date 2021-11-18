@@ -1,23 +1,29 @@
 package com.android04.godfisherman.ui.main
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.NetworkChecker
+import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.utils.LocationHelper
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: StopwatchRepository
+    private val repository: StopwatchRepository,
+    private val locationRepository: LocationRepository,
+    private val locationHelper: LocationHelper,
 ) : ViewModel() {
     companion object{
         var isTimeLine = false
@@ -38,6 +44,9 @@ class MainViewModel @Inject constructor(
     fun checkConnectivity() {
         //_isNetworkConnected.value = NetworkChecker.isConnected()
     }
+
+    private val _currentLocation: MutableLiveData<Location?> by lazy { MutableLiveData<Location?>(null) }
+    val currentLocation: LiveData<Location?> = _currentLocation
 
     private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
@@ -138,6 +147,22 @@ class MainViewModel @Inject constructor(
 
     fun setIsAfterUploadFalse(){
         _isAfterUpload.value = false
+    }
+
+    private fun updateLocation() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val location = locationHelper.getLocation()
+                locationRepository.saveLocation(location)
+                _currentLocation.postValue(location)
+//                _address.postValue(locationRepository.updateLocation(location))
+            }
+        }
+    }
+
+    fun requestLocation(){
+        Log.d("LocationUpdate", "requestLocation() 실행")
+        locationHelper.setLocationUpdate { updateLocation() }
     }
 
 }
