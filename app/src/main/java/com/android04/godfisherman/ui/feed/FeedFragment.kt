@@ -21,10 +21,7 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
 
         initListener()
         setupObserver()
-    }
 
-    override fun onResume() {
-        super.onResume()
         viewModel.fetchFeedDataList(Type.ALL)
     }
 
