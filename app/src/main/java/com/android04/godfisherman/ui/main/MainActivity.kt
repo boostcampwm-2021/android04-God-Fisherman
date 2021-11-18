@@ -14,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
@@ -83,9 +82,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
         val flag = intent.getBooleanExtra(StopwatchService.FROM_SERVICE, false)
         MainViewModel.isFromService = flag
-        Log.d("StopWatch", "받은 데이터 : $flag")
+
         if (flag) {
-            Log.d("StopWatch", "받은 메소드 실행")
             viewModel.stopwatchOnFlag.value = true
         }
 
@@ -96,6 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 binding.navView.selectedItemId = R.id.navigation_stopwatch
                 changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
                 viewModel.setIsAfterUploadFalse()
+                viewModel.isOpened = false
             }
         }
 
@@ -182,14 +181,24 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     override fun onBackPressed() {
+        var isHome = false
+        supportFragmentManager.fragments.forEach {
+            if (it is HomeFragment) {
+                isHome = true
+            }
+        }
+
+        println(supportFragmentManager.fragments)
+
         when {
             viewModel.isOpened -> {
                 binding.container.transitionToState(R.id.start)
+                viewModel.isOpened = false
             }
-            supportFragmentManager.fragments.last() !is HomeFragment -> {
+            !isHome -> {
                 transitionToHome()
             }
-            supportFragmentManager.fragments.last() is HomeFragment -> {
+            isHome -> {
                 backWithFinish()
             }
         }
