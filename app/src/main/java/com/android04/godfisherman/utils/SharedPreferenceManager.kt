@@ -19,6 +19,11 @@ class SharedPreferenceManager @Inject constructor(
         editor.putString(key, value).apply()
     }
 
+    fun deleteString(key: String) {
+        val editor = sharedPref.edit()
+        editor.remove(key).apply()
+    }
+
     fun getString(key: String) = sharedPref.getString(key, "")
 
     companion object {

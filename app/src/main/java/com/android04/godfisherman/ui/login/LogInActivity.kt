@@ -105,6 +105,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                     viewModel.setLoading(false)
                     showToast(this, "구글 로그인에 성공하였습니다.")
                     viewModel.setLoginData(account.displayName!!, account.email!!, account.photoUrl!!.toString())
+                    println(auth.currentUser)
                     moveToIntro()
                 } else {
                     viewModel.setLoading(false)
