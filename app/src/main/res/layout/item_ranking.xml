@@ -16,19 +16,12 @@
         android:layout_marginEnd="@dimen/space_large"
         android:background="@drawable/bg_ranking_round">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_ranking_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/space_x_large"
-            android:layout_marginEnd="@dimen/space_x_large"
-            android:elevation="10dp"
-            app:layout_constraintTop_toTopOf="parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="@dimen/space_x_small"
+                android:layout_marginStart="@dimen/space_x_large"
+                android:layout_marginEnd="@dimen/space_x_large"
                 android:paddingEnd="@dimen/space_x_small"
                 android:paddingBottom="@dimen/space_small">
 
@@ -56,8 +49,6 @@
                     tools:listitem="@layout/item_home_ranking" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

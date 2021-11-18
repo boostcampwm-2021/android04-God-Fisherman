@@ -27,6 +27,7 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
             binding.lottieLoading.visibility = View.GONE
             binding.lottieLoading.pauseAnimation()
             binding.tvRankingHelp.visibility = View.GONE
+            binding.indicatorRanking.visibility = View.VISIBLE
             (binding.vpRanking.adapter as RankingViewPagerAdapter).setData(it)
         }
     }
@@ -34,5 +35,6 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
     private fun setViewPager() {
         binding.vpRanking.adapter = RankingViewPagerAdapter()
         binding.vpRanking.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.indicatorRanking.setViewPager2(binding.vpRanking)
     }
 }
