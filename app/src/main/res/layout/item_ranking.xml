@@ -9,8 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="@dimen/space_xxx_large"
+        android:layout_marginBottom="@dimen/space_xxx_large"
         android:paddingVertical="40dp"
         android:layout_marginStart="@dimen/space_large"
         android:layout_marginEnd="@dimen/space_large"

@@ -22,23 +22,34 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_ranking_select"
+                    android:id="@+id/tv_ranking_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_large"
-                    android:layout_marginTop="@dimen/camera_guide_margin"
-                    android:text="@string/ranking"
+                    android:layout_marginTop="@dimen/space_xxx_large"
+                    android:text="@string/ranking_this_week"
                     android:textSize="@dimen/text_x_large"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_ranking_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ranking_update_description"
+                    android:textSize="@dimen/text_median"
+                    app:layout_constraintStart_toStartOf="@+id/tv_ranking_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_ranking_title"
+                    android:layout_marginTop="@dimen/space_small"
+                    />
 
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_ranking"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ranking_select"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_ranking_description"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -55,6 +66,20 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="lottie_loading.json"
             app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/tv_ranking_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ranking_page_help"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_median"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/lottie_loading"
+            app:layout_constraintEnd_toEndOf="@+id/lottie_loading"
+            app:layout_constraintTop_toBottomOf="@id/lottie_loading"
+            android:layout_marginTop="@dimen/space_large"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

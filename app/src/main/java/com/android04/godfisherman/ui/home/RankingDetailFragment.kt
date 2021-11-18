@@ -26,6 +26,7 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
         viewModel.rankList.observe(viewLifecycleOwner) {
             binding.lottieLoading.visibility = View.GONE
             binding.lottieLoading.pauseAnimation()
+            binding.tvRankingHelp.visibility = View.GONE
             (binding.vpRanking.adapter as RankingViewPagerAdapter).setData(it)
         }
     }
