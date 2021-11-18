@@ -62,7 +62,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
     private fun setObserver() {
         viewModel.isLogin.observe(this) {
             if (it) {
-                showToast(this, "자동 로그인 되었습니다.")
+                showToast(this, R.string.login_auto)
                 moveToIntro()
             }
         }
@@ -91,7 +91,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 viewModel.setLoading(false)
-                showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                showToast(this, R.string.login_google_fail)
             }
         }
     }
@@ -103,13 +103,12 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     viewModel.setLoading(false)
-                    showToast(this, "구글 로그인에 성공하였습니다.")
+                    showToast(this, R.string.login_success)
                     viewModel.setLoginData(account.displayName!!, account.email!!, account.photoUrl!!.toString())
-                    println(auth.currentUser)
                     moveToIntro()
                 } else {
                     viewModel.setLoading(false)
-                    showToast(this, "인증에 실패했습니다. 잠시 후 다시 시도해주세요.")
+                    showToast(this, R.string.login_server_fail)
                 }
             }
     }
