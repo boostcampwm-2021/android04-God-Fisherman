@@ -290,17 +290,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun requestLocationPermission(){
+        var permissionCount = 0
         val permissionManager = registerForActivityResult(
-            ActivityResultContracts.RequestPermission(
-            )) {
-            if (it) {
+            ActivityResultContracts.RequestMultiplePermissions(
+            )) { permissions ->
+            permissions.entries.forEach{
+                if (it.value) permissionCount++
+            }
+            if (permissionCount == 2) {
                 Log.d("LocationUpdate", "권한 false -> true")
                 viewModel.requestLocation()
             } else {
                 Log.d("LocationUpdate", "권한 false -> false")
             }
         }
-        permissionManager.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissionManager.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     }
 
 }

@@ -55,5 +55,5 @@ class LocationHelper @Inject constructor(
         Log.d("LocationChanged", "위치갱신 종료")
         locationManager.removeUpdates(this)
     }
-    
+
 }
