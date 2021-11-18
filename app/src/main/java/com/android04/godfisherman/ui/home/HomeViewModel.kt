@@ -51,6 +51,9 @@ class HomeViewModel @Inject constructor(
 
     private val _userName: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val userName: LiveData<String> = _userName
+
+    private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
+    val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
     
     fun updateLocation() {
         locationHelper.setLocationUpdate()
@@ -60,6 +63,13 @@ class HomeViewModel @Inject constructor(
                 _currentLocation.postValue(location)
                 _address.postValue(locationRepository.updateLocation(location))
             }
+        }
+    }
+
+    fun fetchRanking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = homeRepository.fetchRankingList()
+            _rankList.postValue(list)
         }
     }
 

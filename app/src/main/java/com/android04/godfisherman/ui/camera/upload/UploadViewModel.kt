@@ -6,9 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.data.repository.UploadRepository
 import com.android04.godfisherman.ui.camera.CameraActivity
-import com.android04.godfisherman.ui.stopwatch.StopwatchViewModel
+import com.android04.godfisherman.ui.main.MainViewModel
 import com.android04.godfisherman.utils.RepoResponseImpl
 import com.android04.godfisherman.utils.convertCentiMeter
 import com.android04.godfisherman.utils.roundBodySize
@@ -19,7 +20,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class UploadViewModel @Inject constructor(private val repository: UploadRepository) : ViewModel() {
+class UploadViewModel @Inject constructor(
+    private val repository: UploadRepository,
+    private val networkChecker: NetworkChecker
+) : ViewModel() {
     private val _fishTypeList: MutableLiveData<List<String>> by lazy { MutableLiveData<List<String>>() }
     val fishTypeList: LiveData<List<String>> = _fishTypeList
 
@@ -35,9 +39,16 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading: MutableLiveData<Boolean?> = _isLoading
 
+    private val _isNetworkConnected: MutableLiveData<Boolean?> by lazy {
+        MutableLiveData<Boolean?>(
+            true
+        )
+    }
+    val isNetworkConnected: MutableLiveData<Boolean?> = _isNetworkConnected
+
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
-    var bodySizeCentiMeter : String? = null
+    var bodySizeCentiMeter: String? = null
     lateinit var fishThumbnail: Bitmap
 
     fun fetchInitData(size: Double) {
@@ -47,15 +58,23 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     }
 
     fun fetchFishTypeList() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val callback = RepoResponseImpl<Unit>()
+        when (networkChecker.isConnected()) {
+            true -> {
+                viewModelScope.launch {
+                    withContext(Dispatchers.IO) {
+                        val callback = RepoResponseImpl<Unit>()
 
-                callback.addFailureCallback {
-                    _isFetchSuccess.postValue(false)
+                        callback.addFailureCallback {
+                            _isFetchSuccess.postValue(false)
+                        }
+
+                        _isFetchSuccess.postValue(true)
+                        _fishTypeList.postValue(repository.fetchFishTypeList(callback))
+                    }
                 }
-
-                _fishTypeList.postValue(repository.fetchFishTypeList(callback))
+            }
+            false -> {
+                _isFetchSuccess.value = false
             }
         }
     }
@@ -65,10 +84,15 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
     }
 
     fun saveFishingRecord() {
+        if (!networkChecker.isConnected()) {
+            _isNetworkConnected.value = false
+            return
+        }
+
         if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
             _isInputCorrect.value = true
             _isLoading.value = true
-            if (StopwatchViewModel.isTimeLine) {
+            if (MainViewModel.isTimeLine) {
                 viewModelScope.launch(Dispatchers.IO) {
                     val callback = RepoResponseImpl<Unit>()
 
@@ -103,7 +127,12 @@ class UploadViewModel @Inject constructor(private val repository: UploadReposito
                         _isLoading.postValue(false)
                     }
 
-                    repository.saveImageType(fishThumbnail, bodySize!!, fishTypeSelected!!, callback)
+                    repository.saveImageType(
+                        fishThumbnail,
+                        bodySize!!,
+                        fishTypeSelected!!,
+                        callback
+                    )
                 }
             }
         } else {

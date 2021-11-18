@@ -7,12 +7,12 @@ import com.android04.godfisherman.ui.home.HomeCurrentWeather
 import com.android04.godfisherman.ui.home.HomeDetailWeather
 import com.android04.godfisherman.ui.home.HomeRecommendData
 import com.android04.godfisherman.utils.*
-import com.android04.godfisherman.utils.timeConvertUTC
+import com.android04.godfisherman.ui.home.RankingData
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class HomeRepository @Inject constructor(
-    private val remoteDataSource: HomeDataSource.RemoteDataSource,
+    private val remoteDataSource: HomeDataSource.RemoteDataSource
 ) {
     suspend fun fetchYoutubeData(repoCallback: RepoResponseImpl<List<HomeRecommendData>>) {
         val callback = RepoResponseImpl<YoutubeResponse?>()
@@ -70,7 +70,13 @@ class HomeRepository @Inject constructor(
 
         remoteDataSource.fetchWeatherData(lat, lon, callback)
     }
+    
+    suspend fun fetchRankingList(): List<RankingData.HomeRankingData>
+    = remoteDataSource.fetchRankingList(10)
 
+    suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData>
+    = remoteDataSource.fetchWaitingRankingList()
+   
     private fun getWeatherIconUrl(icon: String) = WEATHER_IMAGE_URL_PREFIX + icon + WEATHER_IMAGE_URL_SUFFIX
 
     companion object {

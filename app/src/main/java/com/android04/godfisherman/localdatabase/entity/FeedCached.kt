@@ -1,9 +1,6 @@
 package com.android04.godfisherman.localdatabase.entity
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Relation
+import androidx.room.*
 import java.util.*
 
 @Entity
@@ -16,7 +13,17 @@ data class TypeInfoCached(
 )
 
 
-@Entity(primaryKeys = ["typeId", "id"])
+@Entity(
+    primaryKeys = ["typeId", "id"],
+    foreignKeys = [
+        ForeignKey(
+            entity = TypeInfoCached::class,
+            parentColumns = ["id"],
+            childColumns = ["typeId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class FishingRecordCached(
     val typeId: Date,
     val id: Int,

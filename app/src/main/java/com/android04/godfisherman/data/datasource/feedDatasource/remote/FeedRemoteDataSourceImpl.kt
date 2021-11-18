@@ -19,18 +19,21 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
     override suspend fun fetchFeedDataList(type: Type): List<FeedDTO> {
         val result = mutableListOf<FeedDTO>()
 
-        val feedRef = when (type) {
-            Type.ALL -> database.collection("Feed")
-            Type.PHOTO -> database.collection("Feed").whereEqualTo("isTimeline", false)
-            Type.TIMELINE -> database.collection("Feed").whereEqualTo("isTimeline", true)
+        val feedRef = database.collection("Feed").run {
+            when (type) {
+                Type.PHOTO -> whereEqualTo("isTimeline", false)
+                Type.TIMELINE -> whereEqualTo("isTimeline", true)
+                Type.ALL -> this
+            }
         }
 
         var feedDocs: List<DocumentSnapshot>? = null
         feedRef.orderBy("id", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
-            feedDocs = it.documents
-        }.await()
+                feedDocs = it.documents
+            }
+            .await()
 
         feedDocs?.let { feedList ->
             feedList.forEach { feed ->
