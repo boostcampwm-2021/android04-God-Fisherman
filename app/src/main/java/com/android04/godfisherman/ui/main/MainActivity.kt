@@ -316,4 +316,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         permissionManager.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     }
 
+    fun setMotionSwipeAreaVisibility(visibility: Int) {
+        val constraintSet = binding.container.getConstraintSet(R.id.end)
+        val swipeArea = constraintSet.getConstraint(R.id.cl_container_stopwatch)
+        swipeArea.propertySet.visibility = visibility
+    }
+
 }

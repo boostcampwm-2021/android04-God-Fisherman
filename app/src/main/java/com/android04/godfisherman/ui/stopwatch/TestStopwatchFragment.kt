@@ -1,24 +1,18 @@
 package com.android04.godfisherman.ui.stopwatch
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startForegroundService
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
+import com.android04.godfisherman.ui.main.MainActivity
 import com.android04.godfisherman.ui.main.MainViewModel
-import com.android04.godfisherman.utils.StopwatchService
 import com.android04.godfisherman.utils.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,10 +30,22 @@ class TestStopwatchFragment :
 
         initRecyclerView()
         setObserver()
+
         binding.viewStartStop.setOnClickListener {
             if (viewModel.startOrStopTimer()) {
                 showDialog()
                 viewModel.resetStopwatch()
+            }
+        }
+
+        binding.nsvStopwatch.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                Log.i("TAG", "Scroll DOWN")
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
+            }
+            if (scrollY == 0) {
+                Log.i("TAG", "TOP SCROLL")
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
             }
         }
     }
