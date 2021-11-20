@@ -29,25 +29,8 @@ class TestStopwatchFragment :
         binding.viewModel = viewModel
 
         initRecyclerView()
-        setObserver()
-
-        binding.viewStartStop.setOnClickListener {
-            if (viewModel.startOrStopTimer()) {
-                showDialog()
-                viewModel.resetStopwatch()
-            }
-        }
-
-        binding.nsvStopwatch.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
-            if (scrollY > oldScrollY) {
-                Log.i("TAG", "Scroll DOWN")
-                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
-            }
-            if (scrollY == 0) {
-                Log.i("TAG", "TOP SCROLL")
-                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
-            }
-        }
+        setupListener()
+        setupObserver()
     }
 
     private fun showDialog() {
@@ -76,8 +59,8 @@ class TestStopwatchFragment :
         recyclerViewEmptySupport.setVerticalInterval(50)
     }
 
-    private fun setObserver() {
-        viewModel.isStopwatchStarted.observe(viewLifecycleOwner, Observer {
+    private fun setupObserver() {
+        viewModel.isStopwatchStarted.observe(viewLifecycleOwner, {
             binding.vShadow.isVisible = it
             isPlayAnimate = it
             if (it) {
@@ -86,9 +69,30 @@ class TestStopwatchFragment :
                 }
             }
         })
-        viewModel.tmpFishingList.observe(viewLifecycleOwner, Observer {
+        viewModel.tmpFishingList.observe(viewLifecycleOwner, {
             binding.rvTimeLine.submitList(it)
         })
+    }
+
+    private fun setupListener() {
+
+        binding.viewStartStop.setOnClickListener {
+            if (viewModel.startOrStopTimer()) {
+                showDialog()
+                viewModel.resetStopwatch()
+            }
+        }
+
+        binding.nsvStopwatch.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                Log.i("TAG", "Scroll DOWN")
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
+            }
+            if (scrollY == 0) {
+                Log.i("TAG", "TOP SCROLL")
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
+            }
+        }
     }
 
     private fun animateShadow() {
