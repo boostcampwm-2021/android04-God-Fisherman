@@ -27,6 +27,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
+        setStatusBarColor(R.color.background_home)
         setLoadingDialog()
         setListener()
 

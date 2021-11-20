@@ -163,7 +163,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
 
-
                 if (viewModel.isFromInfoFragment) {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_fragment_container, HomeFragment()).commit()
                     viewModel.isFromInfoFragment = false
