@@ -31,4 +31,7 @@
     <dimen name="item_ranking_rank_textview_width">48dp</dimen>
     <dimen name="item_ranking_length_textview_width">72dp</dimen>
     <dimen name="home_lottie_loading_size">80dp</dimen>
+
+    <!-- Main Activity -->
+    <dimen name="stopwatch_view_height_small">56dp</dimen>
 </resources>

@@ -27,6 +27,7 @@ import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import com.android04.godfisherman.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
@@ -61,8 +62,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
                 binding.container.setTransition(R.id.transition)
                 binding.container.transitionToState(R.id.end)
+                val marginInPx = resources.getDimension(R.dimen.stopwatch_view_height_small)
+                setMarginBottomInMotion(marginInPx)
             } else {
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
+                setMarginBottomInMotion(0f)
             }
         }
 
@@ -322,4 +326,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         swipeArea.propertySet.visibility = visibility
     }
 
+    private fun setMarginBottomInMotion(marginInPx: Float) {
+        val constraintSet = binding.container.getConstraintSet(R.id.start)
+        val frameLayoutConstraint = constraintSet.getConstraint(R.id.fl_fragment_container)
+        frameLayoutConstraint.layout.bottomMargin = marginInPx.roundToInt()
+    }
 }
