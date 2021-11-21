@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
                 android:visibility="invisible"
+                app:selectionRequired="true"
                 app:checkedChip="@id/cp_type_all"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
