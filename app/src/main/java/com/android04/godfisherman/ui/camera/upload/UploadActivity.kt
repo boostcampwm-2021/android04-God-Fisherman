@@ -121,10 +121,6 @@ class UploadActivity :
         binding.toolbarTop.setNavigationOnClickListener {
             onBackPressed()
         }
-
-        binding.autoCompleteTextviewFishType.setOnClickListener {
-            viewModel.fetchFishTypeList()
-        }
     }
 
     private fun setLoadingDialog() {

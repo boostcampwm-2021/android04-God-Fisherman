@@ -62,6 +62,8 @@ class UploadViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _address.postValue(repository.getAddress())
         }
+
+        fetchFishTypeList()
     }
 
     fun fetchFishTypeList() {
