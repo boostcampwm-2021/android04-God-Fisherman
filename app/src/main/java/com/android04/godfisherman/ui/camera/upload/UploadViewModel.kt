@@ -46,6 +46,9 @@ class UploadViewModel @Inject constructor(
     }
     val isNetworkConnected: MutableLiveData<Boolean?> = _isNetworkConnected
 
+    private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val address: LiveData<String> get() = _address
+
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
     var bodySizeCentiMeter: String? = null
@@ -55,6 +58,10 @@ class UploadViewModel @Inject constructor(
         bodySize = roundBodySize(size)
         bodySizeCentiMeter = convertCentiMeter(size)
         fishThumbnail = CameraActivity.captureImage!!
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _address.postValue(repository.getAddress())
+        }
     }
 
     fun fetchFishTypeList() {
