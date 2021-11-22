@@ -121,7 +121,6 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("visibilityOnMotion")
     fun setVisibilityOnMotion(view: View, visible: Boolean) {
-        println("visibility : $visible")
         if (view.parent is MotionLayout) {
             val motionLayout = view.parent as MotionLayout
             val visibility = if (visible) View.VISIBLE else View.GONE
@@ -148,7 +147,6 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("setVisible")
     fun setVisibleWithBoolean(view: View, isVisible: Boolean?) {
-        println(isVisible)
         if (isVisible == true) {
             view.visibility = View.VISIBLE
         } else {
