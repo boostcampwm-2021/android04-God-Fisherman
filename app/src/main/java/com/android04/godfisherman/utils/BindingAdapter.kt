@@ -138,10 +138,4 @@ object BindingAdapter {
     fun setWelcomeTextWithID(view: TextView, id: String) {
         view.text = "안녕하세요 ${id}님!"
     }
-
-    @JvmStatic
-    @BindingAdapter("setRankID")
-    fun setRankingTextWithIDAndRank(view: TextView, id: String) {
-        view.text = "이번 주 ${id}님의 전체 순위는 10위 입니다."
-    }
 }

@@ -51,6 +51,7 @@
 
     <!-- Home Fragment -->
     <string name="home_sample_id">안녕하세요 구전김박님!</string>
+    <string name="welcome_help">오늘도 그물잠과 함께 낚시를 즐겨보세요!</string>
     <string name="home_sample_rank_user">이번 주 구전김박님의 전체 순위는 10위입니다</string>
     <string name="home_this_week_rank">🐟이번 주 물고기 랭킹🐟</string>
     <string name="home_show_all">더보기</string>

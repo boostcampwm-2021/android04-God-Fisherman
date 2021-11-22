@@ -45,11 +45,11 @@
 
             <TextView
                 android:id="@+id/tv_user_ranking"
-                setRankID="@{viewModel.userName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
                 android:layout_marginEnd="@dimen/space_large"
+                android:text="@string/welcome_help"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_user_name"
