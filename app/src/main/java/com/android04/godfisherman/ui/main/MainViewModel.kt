@@ -115,6 +115,7 @@ class MainViewModel @Inject constructor(
             }
         }
         _isAfterUpload.value = true
+        resetStopwatch()
     }
 
     private inner class StopwatchTask() : TimerTask() {
