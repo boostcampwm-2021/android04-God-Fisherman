@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.NetworkChecker
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
@@ -111,7 +112,14 @@ class MainViewModel @Inject constructor(
     fun saveTimeLineRecord(){
         if (!_tmpFishingList.value.isNullOrEmpty()){
             viewModelScope.launch(Dispatchers.IO){
-                repository.saveTimeLineRecord(time)
+                when (repository.saveTimeLineRecord(time)) {
+                    is Result.Success -> {
+                        //todo
+                    }
+                    is Result.Fail -> {
+                        //todo
+                    }
+                }
             }
         }
         _isAfterUpload.value = true
