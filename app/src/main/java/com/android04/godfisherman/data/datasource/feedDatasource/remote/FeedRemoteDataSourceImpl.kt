@@ -5,6 +5,7 @@ import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -16,32 +17,30 @@ import javax.inject.Inject
 class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteDataSource {
     private val database = Firebase.firestore
 
-    override suspend fun fetchFeedDataList(type: Type): List<FeedDTO> {
-        val result = mutableListOf<FeedDTO>()
-
-        val feedRef = database.collection("Feed").run {
-            when (type) {
-                Type.PHOTO -> whereEqualTo("isTimeline", false)
-                Type.TIMELINE -> whereEqualTo("isTimeline", true)
-                Type.ALL -> this
-            }
+    override suspend fun fetchSnapshotList(type: Type, startTimeStamp: Timestamp): List<DocumentSnapshot>? {
+        var feedRef = when (type) {
+            Type.ALL -> database.collection("Feed")
+            Type.PHOTO -> database.collection("Feed").whereEqualTo("isTimeline", false)
+            Type.TIMELINE -> database.collection("Feed").whereEqualTo("isTimeline", true)
         }
 
+        feedRef = feedRef.orderBy("id", Query.Direction.DESCENDING).whereLessThan("id",
+            startTimeStamp
+        ).limit(5)
         var feedDocs: List<DocumentSnapshot>? = null
-        feedRef.orderBy("id", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                feedDocs = it.documents
-            }
-            .await()
+        feedRef.get().addOnSuccessListener {
+            feedDocs = it.documents
+        }.await()
+        return feedDocs
+    }
 
+    override suspend fun fetchFeedDataList(feedDocs: List<DocumentSnapshot>?): List<FeedDTO> {
+        val result = mutableListOf<FeedDTO>()
         feedDocs?.let { feedList ->
             feedList.forEach { feed ->
                 val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
-                feed.reference.collection("fishingRecord")
-                    .orderBy("id", Query.Direction.ASCENDING)
-                    .get()
+                feed.reference.collection("fishingRecord").get()
                     .addOnSuccessListener { docs ->
                         val fishingRecordList = mutableListOf<FishingRecord>()
 
@@ -63,7 +62,6 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
                     .await()
             }
         }
-
         return result
     }
 }
