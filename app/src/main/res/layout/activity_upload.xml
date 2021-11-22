@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_xx_small"
-                    android:text="상주은모래비치"
+                    android:text="@{uploadViewModel.address}"
                     android:textSize="@dimen/text_regular"
                     app:layout_constraintBottom_toBottomOf="@id/iv_location_title"
                     app:layout_constraintStart_toEndOf="@id/iv_location_title"

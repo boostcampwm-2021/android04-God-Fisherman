@@ -5,6 +5,7 @@ import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSou
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.ui.login.LogInViewModel
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import com.google.firebase.Timestamp
 import java.util.*
@@ -29,7 +30,7 @@ class StopwatchRepository @Inject constructor(
                     FishingRecord(
                         index,
                         imageUrl,
-                        Date(),
+                        record.date,
                         record.fishLength,
                         record.fishType
                     )
@@ -43,7 +44,7 @@ class StopwatchRepository @Inject constructor(
                 sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)
                     ?: "위치 정보 없음",
                 time.toInt(),
-                "user1"
+                sharedPreferenceManager.getString(LogInViewModel.LOGIN_NAME) ?: "유저 이름 없음"
             )
 
             remoteDataSource.saveTimeLineType(type, recordList)

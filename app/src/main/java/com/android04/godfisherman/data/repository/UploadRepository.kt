@@ -33,14 +33,19 @@ class UploadRepository @Inject constructor(
         return ret
     }
 
-    suspend fun saveImageType(image: Bitmap, fishLength: Double, fishType: String, callback: RepoResponse<Unit>) {
+    suspend fun saveImageType(
+        image: Bitmap,
+        fishLength: Double,
+        fishType: String,
+        callback: RepoResponse<Unit>
+    ) {
         val imageUrl = remoteDataSource.getImageUrl(image)
 
         imageUrl?.let {
             val type = TypeInfo(
                 Timestamp(Date()),
                 false,
-                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",
+                getAddress(),
                 0,
                 "user1"
             )
@@ -57,7 +62,12 @@ class UploadRepository @Inject constructor(
         }
     }
 
-    suspend fun saveTmpTimeLineRecord(image: Bitmap, fishLength: Double, fishType: String, callback: RepoResponse<Unit>){
+    suspend fun saveTmpTimeLineRecord(
+        image: Bitmap,
+        fishLength: Double,
+        fishType: String,
+        callback: RepoResponse<Unit>
+    ) {
         val fishingRecord = TmpFishingRecord(image, Date(), fishLength, fishType)
         var isSuccess = true
 
@@ -69,4 +79,7 @@ class UploadRepository @Inject constructor(
             callback.invoke(isSuccess, Unit)
         }
     }
+
+    fun getAddress(): String =
+        sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: ""
 }
