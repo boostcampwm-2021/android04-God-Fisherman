@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -17,6 +18,10 @@ abstract class BaseFragment<T : ViewDataBinding, R : ViewModel>(@LayoutRes priva
     protected val binding get() = _binding!!
 
     abstract val viewModel: R
+
+    fun setStatusBarColor(colorId: Int) {
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), colorId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

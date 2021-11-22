@@ -3,6 +3,7 @@ package com.android04.godfisherman.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
@@ -22,6 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        setStatusBarColor(R.color.background_home)
         setLocationSavedListener()
         loadLocation()
         initView()
@@ -32,6 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         viewModel.fetchUserID()
         viewModel.fetchYoutube()
         viewModel.fetchRanking()
+
     }
 
     private fun setLocationSavedListener(){

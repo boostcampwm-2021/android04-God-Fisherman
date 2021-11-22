@@ -41,7 +41,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_container_stopwatch"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/stopwatch_view_height_small"
             app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
