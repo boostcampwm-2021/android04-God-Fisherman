@@ -22,7 +22,8 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
 
         binding.rvFeed.adapter = FeedAdapter()
         binding.feedViewModel = viewModel
-
+        setStatusBarColor(R.color.basic)
+        
         setupObserver()
         setRefresh()
         initListener()
