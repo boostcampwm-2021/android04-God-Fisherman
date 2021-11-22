@@ -144,4 +144,15 @@ object BindingAdapter {
     fun setRankingTextWithIDAndRank(view: TextView, id: String) {
         view.text = "이번 주 ${id}님의 전체 순위는 10위 입니다."
     }
+
+    @JvmStatic
+    @BindingAdapter("setVisible")
+    fun setVisibleWithBoolean(view: View, isVisible: Boolean?) {
+        println(isVisible)
+        if (isVisible == true) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.INVISIBLE
+        }
+    }
 }
