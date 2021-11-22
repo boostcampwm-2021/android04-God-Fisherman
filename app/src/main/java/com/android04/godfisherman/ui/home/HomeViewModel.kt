@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.common.Event
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.ui.login.LogInViewModel
@@ -12,7 +14,6 @@ import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,8 +49,9 @@ class HomeViewModel @Inject constructor(
 
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
-    
 
+    private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
+    val error: LiveData<Event<String>> = _error
 
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -101,7 +103,12 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
-                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
+                homeRepository.fetchWeatherData(
+                    location.latitude,
+                    location.longitude,
+                    currentCallback,
+                    detailCallback
+                )
             }
         }
     }
@@ -111,15 +118,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadLocation() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val location = locationRepository.loadLocation()
-                if (location != null){
-                    val newAddress = locationRepository.updateAddress()
-                    _address.postValue(newAddress)
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = locationRepository.updateAddress()) {
+                is Result.Success -> _address.postValue(result.data)
+                is Result.Fail -> _error.postValue(Event(result.description))
             }
         }
     }
-
 }

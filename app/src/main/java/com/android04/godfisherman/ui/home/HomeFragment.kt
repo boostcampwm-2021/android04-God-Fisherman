@@ -3,10 +3,10 @@ package com.android04.godfisherman.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
+import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
@@ -29,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         initView()
         setListener()
         setRecyclerView()
-        setObserver()
+        setupObserver()
 
         viewModel.fetchUserID()
         viewModel.fetchYoutube()
@@ -37,8 +37,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     }
 
-    private fun setLocationSavedListener(){
-        parentFragmentManager.setFragmentResultListener(LOCATION_UPDATED, viewLifecycleOwner) { key, bundle ->
+    private fun setLocationSavedListener() {
+        parentFragmentManager.setFragmentResultListener(
+            LOCATION_UPDATED,
+            viewLifecycleOwner
+        ) { key, bundle ->
             val isSaved = bundle.getBoolean(MainActivity.DEFAULT_BUNDLE)
             Log.d("LocationUpdate", "통신 완료 : $isSaved")
             if (isSaved) viewModel.loadLocation()
@@ -57,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.rvWeatherDetail.adapter = WeatherRecyclerViewAdapter()
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.youtubeList.observe(viewLifecycleOwner) {
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
         }
@@ -77,7 +80,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             binding.lottieRankingLoading.visibility = View.GONE
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
-        
+
         viewModel.address.observe(viewLifecycleOwner) {
             viewModel.fetchWeather()
         }
@@ -99,6 +102,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                 binding.layoutShowAll.isEnabled = true
             }
         }
+
+        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
+            showToast(requireContext(), message)
+        })
     }
 
     private fun setListener() {
@@ -135,7 +142,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         application.exitCameraActivityFlag = false
     }
 
-    private fun loadLocation(){
+    private fun loadLocation() {
         viewModel.loadLocation()
     }
 
