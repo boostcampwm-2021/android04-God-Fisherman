@@ -124,9 +124,4 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("onCLeared()생명주기", "콜콜콜")
-    }
-
 }
