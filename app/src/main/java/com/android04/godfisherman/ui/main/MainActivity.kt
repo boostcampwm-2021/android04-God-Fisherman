@@ -231,7 +231,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         super.onStop()
         if (viewModel.isServiceRequestWithOutCamera) {
             Log.d("StopWatch", "서비스 실행 요청")
-            passStopwatchToService(viewModel.time)
+            passStopwatchToService(viewModel.stopwatch.getTime())
         }
     }
 
