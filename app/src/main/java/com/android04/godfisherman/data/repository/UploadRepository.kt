@@ -5,6 +5,7 @@ import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSou
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_NAME
 import com.android04.godfisherman.utils.RepoResponse
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import com.google.firebase.Timestamp
@@ -47,7 +48,7 @@ class UploadRepository @Inject constructor(
                 false,
                 getAddress(),
                 0,
-                "user1"
+                sharedPreferenceManager.getString(LOGIN_NAME) ?: "USER1"
             )
             val fishingRecord = FishingRecord(0, imageUrl, Date(), fishLength, fishType)
             var isSuccess = true
