@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android04.godfisherman.common.NetworkChecker
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
@@ -23,12 +23,13 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: StopwatchRepository,
     private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper,
+    private val locationHelper: LocationHelper
 ) : ViewModel() {
-    companion object{
+    companion object {
         var isTimeLine = false
         var isFromService = false
     }
+
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
     var beforeMenuItemId: Int = 0
     var isFromStopwatchFragment: Boolean = false
@@ -45,16 +46,24 @@ class MainViewModel @Inject constructor(
         //_isNetworkConnected.value = NetworkChecker.isConnected()
     }
 
-    private val _currentLocation: MutableLiveData<Location?> by lazy { MutableLiveData<Location?>(null) }
+    private val _currentLocation: MutableLiveData<Location?> by lazy {
+        MutableLiveData<Location?>(
+            null
+        )
+    }
     val currentLocation: LiveData<Location?> = _currentLocation
 
-    private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
+    private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(
+            false
+        )
+    }
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
 
     private val _isAfterUpload: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isAfterUpload: LiveData<Boolean> = _isAfterUpload
 
-    private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy{ MutableLiveData<List<TmpFishingRecord>>() }
+    private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy { MutableLiveData<List<TmpFishingRecord>>() }
     val tmpFishingList: LiveData<List<TmpFishingRecord>> = _tmpFishingList
 
     private lateinit var stopwatch: Timer
@@ -64,8 +73,8 @@ class MainViewModel @Inject constructor(
     private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
-    fun startOrStopTimer(): Boolean{
-        return if(isStopwatchStarted.value == true) {
+    fun startOrStopTimer(): Boolean {
+        return if (isStopwatchStarted.value == true) {
             endStopwatch()
             true
         } else {
@@ -74,33 +83,33 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun passedTimeFromService(passedTime: Double){
+    fun passedTimeFromService(passedTime: Double) {
         time = passedTime
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
         _isStopwatchStarted.value = true
     }
 
-    fun resetStopwatch(){
+    fun resetStopwatch() {
         time = 0.0
         _displayTime.postValue(time.toTimeMilliSecond())
     }
 
-    private fun startStopwatch(){
+    private fun startStopwatch() {
         isTimeLine = true
         stopwatch = Timer()
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
         _isStopwatchStarted.value = true
     }
 
-    fun endStopwatch(){
+    fun endStopwatch() {
         isTimeLine = false
         stopwatch.cancel()
         resumeTime = time
         _isStopwatchStarted.value = false
     }
 
-    fun resumeStopwatch(){
+    fun resumeStopwatch() {
         isTimeLine = true
         stopwatch = Timer()
         time = resumeTime
@@ -108,10 +117,17 @@ class MainViewModel @Inject constructor(
         _isStopwatchStarted.value = true
     }
 
-    fun saveTimeLineRecord(){
-        if (!_tmpFishingList.value.isNullOrEmpty()){
-            viewModelScope.launch(Dispatchers.IO){
-                repository.saveTimeLineRecord(time)
+    fun saveTimeLineRecord() {
+        if (!_tmpFishingList.value.isNullOrEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                when (repository.saveTimeLineRecord(time)) {
+                    is Result.Success -> {
+                        //todo
+                    }
+                    is Result.Fail -> {
+                        //todo
+                    }
+                }
             }
         }
         _isAfterUpload.value = true
@@ -131,24 +147,24 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun loadTmpTimeLineRecord(){
+    fun loadTmpTimeLineRecord() {
         viewModelScope.launch(Dispatchers.IO) {
             _tmpFishingList.postValue(repository.loadTmpTimeLineRecord())
         }
     }
 
-    fun passStopwatchToService(){
+    fun passStopwatchToService() {
         _isStopwatchStarted.value = false
         stopwatch.cancel()
     }
 
-    fun setIsAfterUploadFalse(){
+    fun setIsAfterUploadFalse() {
         _isAfterUpload.value = false
     }
 
     private fun updateLocation() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 val location = locationHelper.getLocation()
                 locationRepository.saveLocation(location)
                 _currentLocation.postValue(location)
@@ -157,7 +173,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun requestLocation(){
+    fun requestLocation() {
         Log.d("LocationUpdate", "requestLocation() 실행")
         locationHelper.setLocationUpdate { updateLocation() }
     }
