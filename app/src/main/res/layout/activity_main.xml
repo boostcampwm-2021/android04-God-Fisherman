@@ -6,6 +6,9 @@
         <variable
             name="viewModel"
             type="com.android04.godfisherman.ui.main.MainViewModel" />
+        <variable
+            name="activity"
+            type="com.android04.godfisherman.ui.main.MainActivity" />
     </data>
 
 
@@ -75,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close_24"
                 android:textStyle="bold"
+                android:onClick="@{()->activity.closeContainer()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

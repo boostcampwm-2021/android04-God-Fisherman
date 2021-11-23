@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
@@ -85,7 +84,6 @@ class TestStopwatchFragment :
 
     private fun animateShadow() {
         if (isPlayAnimate) {
-            Log.d("animateShadow", "메소드 실행")
             binding.vShadow.apply {
                 animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).withEndAction {
                     animate().scaleX(1f).scaleY(1f).setDuration(1000).withEndAction {

@@ -6,7 +6,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import com.android04.godfisherman.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -21,9 +20,7 @@ class LocationHelper @Inject constructor(
         updateCallback = callback
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 5f, this)
-
         } else {
-            Log.d("LocationUpdate", "위치 센서 접근 불가")
             showToast(context, "위치 센서 접근 불가")
         }
     }
@@ -34,7 +31,6 @@ class LocationHelper @Inject constructor(
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             bestLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
         } else {
-            Log.d("LocationUpdate", "위치 센서 접근 불가")
             showToast(context, "위치 센서 접근 불가")
         }
         Log.d("LocationUpdate", "getLocation() : $bestLocation")
@@ -42,13 +38,11 @@ class LocationHelper @Inject constructor(
     }
 
     override fun onLocationChanged(location: Location) {
-        Log.d("LocationUpdate", "위치갱신 : $location")
         updateCallback()
         stopLocationUpdate()
     }
 
     private fun stopLocationUpdate(){
-        Log.d("LocationChanged", "위치갱신 종료")
         locationManager.removeUpdates(this)
     }
 
