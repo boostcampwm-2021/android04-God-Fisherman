@@ -34,19 +34,8 @@ class TestStopwatchFragment :
     }
 
     private fun showDialog() {
-        val dialog = UploadDialog(requireContext())
-        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "upload")
-                viewModel.saveTimeLineRecord()
-            }
-        })
-        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "back")
-                viewModel.resumeStopwatch()
-            }
-        })
+        val dialog = UploadDialog(requireContext(), { viewModel.saveTimeLineRecord() },
+            { viewModel.resumeStopwatch() })
         dialog.showDialog()
     }
 

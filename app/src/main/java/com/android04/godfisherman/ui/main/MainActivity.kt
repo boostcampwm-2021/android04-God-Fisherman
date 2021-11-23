@@ -268,19 +268,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun showDialog() {
-        val dialog = UploadDialog(this)
-        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "upload")
-                viewModel.saveTimeLineRecord()
-            }
-        })
-        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "back")
-                viewModel.resumeStopwatch()
-            }
-        })
+        val dialog = UploadDialog(this, { viewModel.saveTimeLineRecord() },
+            { viewModel.resumeStopwatch() })
         dialog.showDialog()
     }
 
