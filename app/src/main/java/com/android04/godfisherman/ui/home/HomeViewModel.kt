@@ -48,13 +48,16 @@ class HomeViewModel @Inject constructor(
 
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
-    
 
+    private val _isRankLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isRankLoading: LiveData<Boolean> = _isRankLoading
 
     fun fetchRanking() {
+        _isRankLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val list = homeRepository.fetchRankingList()
             _rankList.postValue(list)
+            _isRankLoading.postValue(false)
         }
     }
 
@@ -99,6 +102,10 @@ class HomeViewModel @Inject constructor(
                         _homeDetailWeather.postValue(it)
                         _isWeatherLoading.postValue(false)
                     }
+                }
+
+                detailCallback.addFailureCallback {
+                    _isWeatherLoading.postValue(false)
                 }
 
                 homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)

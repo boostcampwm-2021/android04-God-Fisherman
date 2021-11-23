@@ -15,395 +15,415 @@
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_home"
-            tools:context=".ui.home.HomeFragment">
-
-            <TextView
-                android:id="@+id/tv_user_name"
-                setWelcomeText="@{viewModel.userName}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_large"
-                android:layout_marginTop="@dimen/camera_guide_margin"
-                android:layout_marginEnd="@dimen/space_median"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:textSize="@dimen/text_x_large"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_user_ranking"
-                setRankID="@{viewModel.userName}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_small"
-                android:layout_marginEnd="@dimen/space_large"
-                android:textSize="@dimen/text_median"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_user_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lottieAnimationView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/space_large"
-                app:layout_constraintBottom_toTopOf="@id/v_background"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="lottie_home.json"
-                app:lottie_loop="true" />
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/v_background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xxx_large"
-                android:background="@drawable/bg_home_round_top"
-                android:backgroundTint="@color/primary99"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_user_ranking">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_ranking_card"
-                    style="@style/Widget.Material3.CardView.Elevated"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/space_x_large"
-                    android:layout_marginTop="@dimen/space_xxx_large"
-                    app:cardBackgroundColor="?attr/colorOnPrimary"
-                    app:cardCornerRadius="@dimen/space_large"
-                    app:cardElevation="@dimen/home_ranking_card_view_elevation"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingHorizontal="@dimen/space_small"
-                        android:paddingTop="@dimen/space_median"
-                        android:paddingBottom="@dimen/space_x_small">
-
-                        <TextView
-                            android:id="@+id/tv_this_week_ranking"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/home_this_week_rank"
-                            android:textSize="@dimen/text_large"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_ranking"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/home_ranking_recyclerview_height"
-                            android:layout_marginTop="@dimen/space_small"
-                            android:orientation="vertical"
-                            android:overScrollMode="never"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintTop_toBottomOf="@id/tv_this_week_ranking"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/item_home_ranking" />
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_ranking_loading"
-                            android:layout_width="@dimen/home_lottie_loading_size"
-                            android:layout_height="@dimen/home_lottie_loading_size"
-                            app:layout_constraintBottom_toBottomOf="@id/rv_ranking"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/rv_ranking"
-                            app:lottie_autoPlay="true"
-                            app:lottie_fileName="lottie_loading.json"
-                            app:lottie_loop="true" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/tv_show_all"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/home_show_all"
-                            android:textColor="@color/primary"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_ranking" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                android:layout_height="match_parent"
+                android:background="@color/background_home"
+                tools:context=".ui.home.HomeFragment">
 
                 <TextView
-                    android:id="@+id/tv_recommend"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_user_name"
+                    setWelcomeText="@{viewModel.userName}"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_x_large"
-                    android:layout_marginTop="@dimen/space_x_large"
-                    android:text="@string/home_recommend"
+                    android:layout_marginStart="@dimen/space_large"
+                    android:layout_marginTop="@dimen/camera_guide_margin"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
                     android:textSize="@dimen/text_x_large"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cv_ranking_card" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recommend"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="@dimen/space_median"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:paddingStart="24dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_recommend"
-                    tools:itemCount="20"
-                    tools:listitem="@layout/item_home_recommend" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/lottie_loading"
-                    android:layout_width="@dimen/home_lottie_loading_size"
-                    android:layout_height="@dimen/home_lottie_loading_size"
-                    app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/rv_recommend"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="lottie_loading.json"
-                    app:lottie_loop="true" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_weather"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_user_ranking"
+                    setRankID="@{viewModel.userName}"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_x_large"
-                    android:layout_marginTop="@dimen/space_x_large"
-                    android:text="@string/home_today_weather"
-                    android:textSize="@dimen/text_x_large"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_recommend" />
+                    android:layout_marginTop="@dimen/space_small"
+                    android:layout_marginEnd="@dimen/space_large"
+                    android:textSize="@dimen/text_median"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_user_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
 
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Elevated"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottieAnimationView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/space_large"
+                    app:layout_constraintBottom_toTopOf="@id/v_background"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="lottie_home.json"
+                    app:lottie_loop="true" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/v_background"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/space_median"
-                    android:layout_marginTop="@dimen/space_median"
-                    app:cardBackgroundColor="@color/home_weather_card_background"
-                    android:layout_marginBottom="@dimen/space_xxx_large"
+                    android:layout_marginTop="@dimen/space_xxx_large"
+                    android:background="@drawable/bg_home_round_top"
+                    android:backgroundTint="@color/primary99"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_weather">
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_ranking">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_ranking_card"
+                        style="@style/Widget.Material3.CardView.Elevated"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/iv_location_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_small"
-                            android:layout_marginTop="@dimen/space_small"
-                            android:src="@drawable/ic_feed_location"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_location"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_xx_small"
-                            android:layout_marginEnd="@dimen/space_median"
-                            android:ellipsize="end"
-                            android:lines="1"
-                            android:text="@{viewModel.address}"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_regular"
-                            app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/iv_location_icon"
-                            app:layout_constraintTop_toTopOf="@id/iv_location_icon" />
-
-                        <TextView
-                            android:id="@+id/tv_current_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_x_small"
-                            android:text="@{viewModel.homeCurrentWeather.time}"
-                            android:textColor="@color/feed_text_dark_gray"
-                            android:textSize="@dimen/text_small"
-                            app:layout_constraintStart_toStartOf="@id/iv_location_icon"
-                            app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
-
-                        <ImageView
-                            android:id="@+id/iv_weather_icon"
-                            setImage="@{viewModel.homeCurrentWeather.iconUrl}"
-                            android:layout_width="100dp"
-                            android:layout_height="56dp"
-                            android:layout_marginTop="@dimen/space_median"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_current_time" />
-
-                        <TextView
-                            android:id="@+id/tv_weather_desc"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@{viewModel.homeCurrentWeather.desc}"
-                            android:textAlignment="center"
-                            android:textColor="@color/feed_text_dark_gray"
-                            app:layout_constraintEnd_toEndOf="@id/iv_weather_icon"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_weather_icon" />
-
-                        <TextView
-                            android:id="@+id/tv_temp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:padding="0dp"
-                            android:text="@{viewModel.homeCurrentWeather.temp}"
-                            android:textSize="45dp"
-                            app:layout_constraintBottom_toBottomOf="@id/iv_weather_icon"
-                            app:layout_constraintStart_toEndOf="@id/iv_weather_icon"
-                            app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
-
-                        <TextView
-                            android:id="@+id/tv_sunrise_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_x_small"
-                            android:text="@string/home_sunrise"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_small"
-                            app:layout_constraintEnd_toStartOf="@id/tv_sunrise"
-                            app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
-
-                        <TextView
-                            android:id="@+id/tv_sunrise"
-                            android:layout_width="36dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_median"
-                            android:lines="1"
-                            android:text="@{viewModel.homeCurrentWeather.sunrise}"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_small"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
-
-                        <TextView
-                            android:id="@+id/tv_sunset_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_xx_small"
-                            android:layout_marginEnd="@dimen/space_x_small"
-                            android:text="@string/home_sunset"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_small"
-                            app:layout_constraintEnd_toStartOf="@id/tv_sunrise"
-                            app:layout_constraintTop_toBottomOf="@id/tv_sunrise_desc" />
-
-                        <TextView
-                            android:id="@+id/tv_sunset"
-                            android:layout_width="36dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_median"
-                            android:lines="1"
-                            android:text="@{viewModel.homeCurrentWeather.sunset}"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_small"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_sunset_desc" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/space_x_large"
+                        android:layout_marginTop="@dimen/space_xxx_large"
+                        app:cardBackgroundColor="?attr/colorOnPrimary"
+                        app:cardCornerRadius="@dimen/space_large"
+                        app:cardElevation="@dimen/home_ranking_card_view_elevation"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/layout_show_all"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_median"
-                            android:background="?attr/selectableItemBackground"
-                            android:onClick="@{()->detailClickListener.invoke()}"
-                            android:paddingTop="@dimen/space_xx_small"
-                            android:paddingBottom="@dimen/space_x_small"
-                            app:layout_constraintTop_toBottomOf="@id/tv_weather_desc">
+                            android:layout_height="match_parent"
+                            android:paddingHorizontal="@dimen/space_small"
+                            android:paddingTop="@dimen/space_median"
+                            android:paddingBottom="@dimen/space_x_small">
 
-                            <ImageView
-                                android:id="@+id/iv_show_all"
+                            <TextView
+                                android:id="@+id/tv_this_week_ranking"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/space_median"
-                                android:src="@drawable/ic_baseline_arrow_drop_down_primary"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:text="@string/home_this_week_rank"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_ranking"
+                                setVisible="@{!viewModel.isRankLoading()}"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/home_ranking_recyclerview_height"
+                                android:layout_marginTop="@dimen/space_small"
+                                android:orientation="vertical"
+                                android:overScrollMode="never"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintTop_toBottomOf="@id/tv_this_week_ranking"
+                                tools:itemCount="5"
+                                tools:listitem="@layout/item_home_ranking" />
+
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@+id/lottie_ranking_loading"
+                                setVisible="@{viewModel.isRankLoading()}"
+                                android:layout_width="@dimen/home_lottie_loading_size"
+                                android:layout_height="@dimen/home_lottie_loading_size"
+                                app:layout_constraintBottom_toBottomOf="@id/rv_ranking"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/rv_ranking"
+                                app:lottie_autoPlay="true"
+                                app:lottie_fileName="lottie_loading.json"
+                                app:lottie_loop="true" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/tv_show_all"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/home_show_all"
+                                android:textColor="@color/primary"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rv_ranking" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tv_recommend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_x_large"
+                        android:layout_marginTop="@dimen/space_x_large"
+                        android:text="@string/home_recommend"
+                        android:textSize="@dimen/text_x_large"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cv_ranking_card" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recommend"
+                        setVisible="@{!viewModel.isYoutubeLoading()}"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="@dimen/space_median"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingStart="24dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/tv_recommend"
+                        tools:itemCount="20"
+                        tools:listitem="@layout/item_home_recommend" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_loading"
+                        setVisible="@{viewModel.isYoutubeLoading()}"
+                        android:layout_width="@dimen/home_lottie_loading_size"
+                        android:layout_height="@dimen/home_lottie_loading_size"
+                        app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/rv_recommend"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="lottie_loading.json"
+                        app:lottie_loop="true" />
+
+                    <TextView
+                        android:id="@+id/tv_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_x_large"
+                        android:layout_marginTop="@dimen/space_x_large"
+                        android:text="@string/home_today_weather"
+                        android:textSize="@dimen/text_x_large"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rv_recommend" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        style="@style/Widget.Material3.CardView.Elevated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/space_median"
+                        android:layout_marginTop="@dimen/space_median"
+                        android:layout_marginBottom="@dimen/space_xxx_large"
+                        app:cardBackgroundColor="@color/home_weather_card_background"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_weather">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/iv_location_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_small"
+                                android:layout_marginTop="@dimen/space_small"
+                                android:src="@drawable/ic_feed_location"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/tv_show_weather"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/tv_location"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:layout_marginStart="@dimen/space_xx_small"
+                                android:layout_marginEnd="@dimen/space_median"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                android:text="@string/home_show_weather"
+                                android:text="@{viewModel.address}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_regular"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/iv_show_all"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/iv_location_icon"
+                                app:layout_constraintTop_toTopOf="@id/iv_location_icon" />
+
+                            <TextView
+                                android:id="@+id/tv_current_time"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_x_small"
+                                android:text="@{viewModel.homeCurrentWeather.time}"
+                                android:textColor="@color/feed_text_dark_gray"
+                                android:textSize="@dimen/text_small"
+                                app:layout_constraintStart_toStartOf="@id/iv_location_icon"
+                                app:layout_constraintTop_toBottomOf="@id/iv_location_icon" />
+
+                            <ImageView
+                                android:id="@+id/iv_weather_icon"
+                                setImage="@{viewModel.homeCurrentWeather.iconUrl}"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="100dp"
+                                android:layout_height="56dp"
+                                android:layout_marginTop="@dimen/space_median"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_current_time" />
+
+                            <TextView
+                                android:id="@+id/tv_weather_desc"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.homeCurrentWeather.desc}"
+                                android:textAlignment="center"
+                                android:textColor="@color/feed_text_dark_gray"
+                                app:layout_constraintEnd_toEndOf="@id/iv_weather_icon"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/iv_weather_icon" />
+
+                            <TextView
+                                android:id="@+id/tv_temp"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:padding="0dp"
+                                android:text="@{viewModel.homeCurrentWeather.temp}"
+                                android:textSize="45dp"
+                                app:layout_constraintBottom_toBottomOf="@id/iv_weather_icon"
+                                app:layout_constraintStart_toEndOf="@id/iv_weather_icon"
+                                app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
+
+                            <TextView
+                                android:id="@+id/tv_sunrise_desc"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/space_x_small"
+                                android:text="@string/home_sunrise"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_small"
+                                app:layout_constraintEnd_toStartOf="@id/tv_sunrise"
+                                app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
+
+                            <TextView
+                                android:id="@+id/tv_sunrise"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="36dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/space_median"
+                                android:lines="1"
+                                android:text="@{viewModel.homeCurrentWeather.sunrise}"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_small"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/iv_weather_icon" />
+
+                            <TextView
+                                android:id="@+id/tv_sunset_desc"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_xx_small"
+                                android:layout_marginEnd="@dimen/space_x_small"
+                                android:text="@string/home_sunset"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_small"
+                                app:layout_constraintEnd_toStartOf="@id/tv_sunrise"
+                                app:layout_constraintTop_toBottomOf="@id/tv_sunrise_desc" />
+
+                            <TextView
+                                android:id="@+id/tv_sunset"
+                                setVisible="@{!viewModel.isWeatherLoading()}"
+                                android:layout_width="36dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/space_median"
+                                android:lines="1"
+                                android:text="@{viewModel.homeCurrentWeather.sunset}"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_small"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_sunset_desc" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layout_show_all"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/space_median"
+                                android:background="?attr/selectableItemBackground"
+                                android:onClick="@{()->detailClickListener.invoke()}"
+                                android:paddingTop="@dimen/space_xx_small"
+                                android:paddingBottom="@dimen/space_x_small"
+                                app:layout_constraintTop_toBottomOf="@id/tv_weather_desc">
+
+                                <ImageView
+                                    android:id="@+id/iv_show_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/space_median"
+                                    android:src="@drawable/ic_baseline_arrow_drop_down_primary"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tv_show_weather"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/space_xx_small"
+                                    android:ellipsize="end"
+                                    android:lines="1"
+                                    android:text="@string/home_show_weather"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/text_regular"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/iv_show_all"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_weather_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/space_median"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal"
+                                android:paddingStart="@dimen/space_x_small"
+                                android:paddingTop="@dimen/space_median"
+                                android:paddingEnd="@dimen/space_x_small"
+                                android:paddingBottom="@dimen/space_large"
+                                android:visibility="gone"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintTop_toBottomOf="@id/layout_show_all"
+                                tools:listitem="@layout/item_weather_detail" />
+
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@+id/lottie_weather_loading"
+                                setVisible="@{viewModel.isWeatherLoading()}"
+                                android:layout_width="@dimen/home_lottie_loading_size"
+                                android:layout_height="@dimen/home_lottie_loading_size"
+                                app:layout_constraintBottom_toTopOf="@id/layout_show_all"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_location"
+                                app:lottie_autoPlay="true"
+                                app:lottie_fileName="lottie_loading.json"
+                                app:lottie_loop="true" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_weather_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/space_median"
-                            android:clipToPadding="false"
-                            android:orientation="horizontal"
-                            android:paddingStart="@dimen/space_x_small"
-                            android:paddingTop="@dimen/space_median"
-                            android:paddingEnd="@dimen/space_x_small"
-                            android:paddingBottom="@dimen/space_large"
-                            android:visibility="gone"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintTop_toBottomOf="@id/layout_show_all"
-                            tools:listitem="@layout/item_weather_detail" />
+                    </com.google.android.material.card.MaterialCardView>
 
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_weather_loading"
-                            android:layout_width="@dimen/home_lottie_loading_size"
-                            android:layout_height="@dimen/home_lottie_loading_size"
-                            app:layout_constraintBottom_toTopOf="@id/layout_show_all"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_location"
-                            app:lottie_autoPlay="true"
-                            app:lottie_fileName="lottie_loading.json"
-                            app:lottie_loop="true" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

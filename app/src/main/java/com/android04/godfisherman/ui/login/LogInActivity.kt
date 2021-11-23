@@ -116,7 +116,12 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                 if (task.isSuccessful) {
                     viewModel.setLoading(false)
                     showToast(this, R.string.login_success)
-                    viewModel.setLoginData(account.displayName!!, account.email!!, account.photoUrl!!.toString())
+                    viewModel.setLoginData(
+                        account.idToken!!,
+                        account.displayName!!,
+                        account.email!!,
+                        account.photoUrl!!.toString()
+                    )
                     moveToIntro()
                 } else {
                     viewModel.setLoading(false)
