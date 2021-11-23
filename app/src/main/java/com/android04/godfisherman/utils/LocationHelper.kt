@@ -6,6 +6,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
+import com.android04.godfisherman.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -18,35 +19,30 @@ class LocationHelper @Inject constructor(
     @SuppressLint("MissingPermission")
     fun setLocationUpdate(callback: () -> (Unit)) {
         updateCallback = callback
-        if (isGrantedLocationPermission(context)) {
-            val providers = locationManager.getProviders(true)
-            for (provider in providers) {
-                if (locationManager.isProviderEnabled(provider)) {
-                    locationManager.requestLocationUpdates(provider, 100, 5f, this)
-                }
-            }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 5f, this)
+
+        } else {
+            Log.d("LocationUpdate", "위치 센서 접근 불가")
+            showToast(context, "위치 센서 접근 불가")
         }
     }
 
     @SuppressLint("MissingPermission")
     fun getLocation(): Location? {
         var bestLocation: Location? = null
-        if (isGrantedLocationPermission(context)) {
-            val providers = locationManager.getProviders(true)
-            for (provider in providers) {
-                if (locationManager.isProviderEnabled(provider)) {
-                    val currentLocation = locationManager.getLastKnownLocation(provider) ?: continue
-                    if (bestLocation == null || currentLocation.accuracy < bestLocation.accuracy) {
-                        bestLocation = currentLocation
-                    }
-                }
-            }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            bestLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        } else {
+            Log.d("LocationUpdate", "위치 센서 접근 불가")
+            showToast(context, "위치 센서 접근 불가")
         }
+        Log.d("LocationUpdate", "getLocation() : $bestLocation")
         return bestLocation
     }
 
-    override fun onLocationChanged(p0: Location) {
-        Log.d("LocationUpdate", "위치갱신")
+    override fun onLocationChanged(location: Location) {
+        Log.d("LocationUpdate", "위치갱신 : $location")
         updateCallback()
         stopLocationUpdate()
     }

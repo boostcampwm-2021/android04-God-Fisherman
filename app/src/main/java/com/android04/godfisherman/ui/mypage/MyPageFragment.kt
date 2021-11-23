@@ -30,8 +30,25 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         setStatusBarColor(R.color.background_home)
         setLoadingDialog()
         setListener()
+        setObserver()
 
         viewModel.fetchUserData()
+    }
+
+    private fun setObserver() {
+        viewModel.isSignOutSuccess.observe(viewLifecycleOwner) {
+            when(it) {
+                true -> {
+                    showToast(requireContext(), R.string.signout_success)
+                    viewModel.doLogout()
+                    moveToLogIn()
+                }
+                false -> {
+                    showToast(requireContext(), R.string.signout_fail)
+                }
+            }
+            cancelLoadingDialog()
+        }
     }
 
     private fun setListener() {
@@ -52,15 +69,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
 
     private fun signOut() {
         showLoadingDialog()
-        FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
-            showToast(requireContext(), R.string.signout_success)
-            viewModel.doLogout()
-            moveToLogIn()
-        }?.addOnCompleteListener {
-            cancelLoadingDialog()
-        }?.addOnFailureListener {
-            showToast(requireContext(), R.string.signout_fail)
-        }
+        viewModel.doSignOut()
     }
 
     private fun moveToLogIn() {
