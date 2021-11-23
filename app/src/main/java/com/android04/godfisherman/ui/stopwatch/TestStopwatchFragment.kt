@@ -2,10 +2,8 @@ package com.android04.godfisherman.ui.stopwatch
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
@@ -44,13 +42,11 @@ class TestStopwatchFragment :
         val dialog = UploadDialog(requireContext())
         dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
             override fun onClicked() {
-                Log.d("UploadDialog", "upload")
                 viewModel.saveTimeLineRecord()
             }
         })
         dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
             override fun onClicked() {
-                Log.d("UploadDialog", "back")
                 viewModel.resumeStopwatch()
             }
         })
@@ -93,11 +89,9 @@ class TestStopwatchFragment :
 
         binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
-                Log.i("TAG", "Scroll DOWN")
                 (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
             }
             if (scrollY == 0) {
-                Log.i("TAG", "TOP SCROLL")
                 (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
             }
         }
@@ -105,7 +99,6 @@ class TestStopwatchFragment :
 
     private fun animateShadow() {
         if (isPlayAnimate) {
-            Log.d("animateShadow", "메소드 실행")
             binding.vShadow.apply {
                 animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).withEndAction {
                     animate().scaleX(1f).scaleY(1f).setDuration(1000).withEndAction {
