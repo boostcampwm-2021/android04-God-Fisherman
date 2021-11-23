@@ -2,6 +2,8 @@ package com.android04.godfisherman.data.datasource.homedatasource.remote
 
 import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
@@ -54,8 +56,8 @@ class HomeRemoteDataSourceImpl @Inject constructor() : HomeDataSource.RemoteData
         val rankList: MutableList<RankingData.HomeRankingData> = mutableListOf()
 
         try {
-            val querySnapshot = database.collectionGroup("fishingRecord")
-                .orderBy("fishLength", Query.Direction.DESCENDING)
+            val querySnapshot = database.collectionGroup(FISHING_RECORD_COLLECTION_NAME)
+                .orderBy(FISH_LENGTH_FIELD_NAME, Query.Direction.DESCENDING)
                 .limit(request.count)
                 .get()
                 .await()
@@ -87,8 +89,8 @@ class HomeRemoteDataSourceImpl @Inject constructor() : HomeDataSource.RemoteData
     override suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData> {
         var feedDocs: List<DocumentSnapshot>? = null
         val rankingMap: HashMap<String, Int> = HashMap()
-        database.collection("Feed")
-            .whereNotEqualTo("fishingTime", 0)
+        database.collection(FEED_COLLECTION_NAME)
+            .whereNotEqualTo(FISHING_TIME_FIELD_NAME, 0)
             .get()
             .addOnSuccessListener {
                 feedDocs = it.documents
@@ -143,5 +145,8 @@ class HomeRemoteDataSourceImpl @Inject constructor() : HomeDataSource.RemoteData
     companion object {
         val fishingKey =
             listOf("민물낚시", "선상낚시", "바다낚시", "매운탕", "회뜨기", "낚시꿀팁", "낚시용품", "낚시대", "낚시터", "낚시명당")
+
+        const val FISH_LENGTH_FIELD_NAME = "fishLength"
+        const val FISHING_TIME_FIELD_NAME = "fishingTime"
     }
 }

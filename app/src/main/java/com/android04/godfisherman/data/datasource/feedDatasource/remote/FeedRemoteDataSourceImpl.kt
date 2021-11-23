@@ -3,6 +3,8 @@ package com.android04.godfisherman.data.datasource.feedDatasource.remote
 import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.Timestamp
@@ -21,16 +23,16 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
         type: Type,
         startTimeStamp: Timestamp
     ): List<DocumentSnapshot>? {
-        var feedRef = database.collection("Feed").run {
+        var feedRef = database.collection(FEED_COLLECTION_NAME).run {
             when (type) {
-                Type.PHOTO -> whereEqualTo("isTimeline", false)
+                Type.PHOTO -> whereEqualTo(TYPE_FIELD_NAME, false)
                 Type.TIMELINE -> whereEqualTo("isTimeline", true)
                 Type.ALL -> this
             }
         }
 
-        feedRef = feedRef.orderBy("id", Query.Direction.DESCENDING)
-            .whereLessThan("id", startTimeStamp)
+        feedRef = feedRef.orderBy(FEED_IDENTIFIER_NAME, Query.Direction.DESCENDING)
+            .whereLessThan(FEED_IDENTIFIER_NAME, startTimeStamp)
             .limit(5)
 
         var feedDocs: List<DocumentSnapshot>? = null
@@ -48,8 +50,8 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
             feedList.forEach { feed ->
                 val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
-                feed.reference.collection("fishingRecord")
-                    .orderBy("id", Query.Direction.ASCENDING)
+                feed.reference.collection(FISHING_RECORD_COLLECTION_NAME)
+                    .orderBy(FISHING_RECORD_IDENTIFIER_NAME, Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener { docs ->
                         val fishingRecordList = mutableListOf<FishingRecord>()
@@ -70,5 +72,11 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
             }
         }
         return result
+    }
+
+    companion object {
+        const val TYPE_FIELD_NAME = "isTimeline"
+        const val FEED_IDENTIFIER_NAME = "id"
+        const val FISHING_RECORD_IDENTIFIER_NAME = "id"
     }
 }
