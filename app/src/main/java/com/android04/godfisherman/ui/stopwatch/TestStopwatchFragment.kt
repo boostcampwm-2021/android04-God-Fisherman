@@ -80,7 +80,7 @@ class TestStopwatchFragment :
                 false -> loadingDialog.cancel()
             }
         }
-        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
+        viewModel.successOrFail.observe(viewLifecycleOwner, EventObserver { message ->
             showToast(requireContext(), message)
         })
     }

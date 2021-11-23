@@ -77,8 +77,8 @@ class MainViewModel @Inject constructor(
     private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading: MutableLiveData<Boolean?> = _isLoading
 
-    private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
-    val error: LiveData<Event<String>> = _error
+    private val _successOrFail: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
+    val successOrFail: LiveData<Event<String>> = _successOrFail
 
     fun startOrStopTimer(): Boolean {
         return if (isStopwatchStarted.value == true) {
@@ -130,8 +130,13 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 val result = repository.saveTimeLineRecord(time)
                 _isLoading.postValue(false)
-                if (result is Result.Fail) {
-                    _error.postValue(Event(result.description))
+                when (result) {
+                    is Result.Success -> {
+                        _successOrFail.postValue(Event("업로드를 완료했습니다."))
+                    }
+                    is Result.Fail -> {
+                        _successOrFail.postValue(Event(result.description))
+                    }
                 }
             }
         }
