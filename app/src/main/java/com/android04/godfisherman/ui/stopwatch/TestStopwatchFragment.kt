@@ -9,12 +9,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
 import com.android04.godfisherman.ui.main.MainViewModel
 import com.android04.godfisherman.utils.UploadDialog
+import com.android04.godfisherman.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,6 +84,9 @@ class TestStopwatchFragment :
                 false -> loadingDialog.cancel()
             }
         }
+        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
+            showToast(requireContext(), message)
+        })
     }
 
     private fun setupListener() {
