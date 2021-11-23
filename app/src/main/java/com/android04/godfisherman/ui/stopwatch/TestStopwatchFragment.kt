@@ -33,13 +33,14 @@ class TestStopwatchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.fragment = this
 
         initRecyclerView()
         setupListener()
         setupObserver()
     }
 
-    private fun showDialog() {
+    fun showDialog() {
         val dialog = UploadDialog(requireContext())
         dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
             override fun onClicked() {
@@ -58,11 +59,13 @@ class TestStopwatchFragment :
 
     private fun initRecyclerView() {
         viewModel.loadTmpTimeLineRecord()
-        val recyclerViewEmptySupport = binding.rvTimeLine
-        val emptyView = binding.tvEmptyView
-        recyclerViewEmptySupport.adapter = TimelineListAdapter()
-        recyclerViewEmptySupport.setEmptyView(emptyView)
-        recyclerViewEmptySupport.setVerticalInterval(50)
+        binding.rvTimeLine.apply {
+            setUpConfiguration(
+                TimelineListAdapter(),
+                binding.tvEmptyView,
+                50
+            )
+        }
     }
 
     private fun setupObserver() {
@@ -74,9 +77,6 @@ class TestStopwatchFragment :
                     animateShadow()
                 }
             }
-        })
-        viewModel.tmpFishingList.observe(viewLifecycleOwner, {
-            binding.rvTimeLine.submitList(it)
         })
         viewModel.isLoading.observe(viewLifecycleOwner) {
             when (it) {
@@ -91,13 +91,7 @@ class TestStopwatchFragment :
 
     private fun setupListener() {
 
-        binding.viewStartStop.setOnClickListener {
-            if (viewModel.startOrStopTimer()) {
-                showDialog()
-            }
-        }
-
-        binding.nsvStopwatch.setOnScrollChangeListener { _: NestedScrollView, _, scrollY, _, oldScrollY ->
+        binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
                 Log.i("TAG", "Scroll DOWN")
                 (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)

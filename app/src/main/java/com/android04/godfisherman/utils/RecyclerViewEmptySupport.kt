@@ -60,6 +60,12 @@ class RecyclerViewEmptySupport : RecyclerView {
         this.addItemDecoration(VerticalItemDecoration(height))
     }
 
+    fun setUpConfiguration(adapter: Adapter<*>?, emptyView: View, interval: Int) {
+        setAdapter(adapter)
+        setEmptyView(emptyView)
+        setVerticalInterval(interval)
+    }
+
     class VerticalItemDecoration(private val height: Int) : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(

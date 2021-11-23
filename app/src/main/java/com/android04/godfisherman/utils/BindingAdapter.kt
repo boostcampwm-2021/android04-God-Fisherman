@@ -143,4 +143,12 @@ object BindingAdapter {
             view.visibility = View.INVISIBLE
         }
     }
+
+    @JvmStatic
+    @BindingAdapter("submitList")
+    fun <T> submitListInRecyclerView(recyclerview: RecyclerViewEmptySupport, itemList: List<T>?) {
+        itemList?.let {
+            recyclerview.submitList(it)
+        }
+    }
 }
