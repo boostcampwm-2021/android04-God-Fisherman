@@ -1,5 +1,6 @@
 package com.android04.godfisherman.data.repository
 
+import com.android04.godfisherman.data.cache.HomeInfoCache
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
@@ -12,9 +13,17 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class HomeRepository @Inject constructor(
-    private val remoteDataSource: HomeDataSource.RemoteDataSource
+    private val remoteDataSource: HomeDataSource.RemoteDataSource,
+    private val homeInfoCache: HomeInfoCache
 ) {
     suspend fun fetchYoutubeData(repoCallback: RepoResponseImpl<List<HomeRecommendData>>) {
+        val cached = homeInfoCache.getYoutubeList()
+
+        if (cached != null) {
+            repoCallback.invoke(true, cached)
+            return
+        }
+
         val callback = RepoResponseImpl<YoutubeResponse?>()
 
         callback.addSuccessCallback {
@@ -23,6 +32,8 @@ class HomeRepository @Inject constructor(
                 val url = YOUTUBE_VIDEO_URL + it.id.videoId
                 HomeRecommendData(snippet.thumbnails.high.url, snippet.title, url)
             } ?: listOf()
+
+            homeInfoCache.putYoutubeList(list)
             repoCallback.invoke(true, list)
         }
 
@@ -33,7 +44,12 @@ class HomeRepository @Inject constructor(
         remoteDataSource.fetchYoutubeData(callback)
     }
 
-    suspend fun fetchWeatherData(lat: Double, lon: Double, currentCallback: RepoResponse<HomeCurrentWeather?>, detailCallback: RepoResponse<List<HomeDetailWeather>?>) {
+    suspend fun fetchWeatherData(
+        lat: Double,
+        lon: Double,
+        currentCallback: RepoResponse<HomeCurrentWeather?>,
+        detailCallback: RepoResponse<List<HomeDetailWeather>?>
+    ) {
         val callback = RepoResponseImpl<WeatherResponse?>()
 
         callback.addSuccessCallback {
@@ -46,9 +62,11 @@ class HomeRepository @Inject constructor(
                 val icon = it.current.weather.first().icon
                 val iconUrl = getWeatherIconUrl(icon)
 
-                currentCallback.invoke(true, HomeCurrentWeather(
-                    time, sunrise, sunset, temp, desc, iconUrl
-                ))
+                currentCallback.invoke(
+                    true, HomeCurrentWeather(
+                        time, sunrise, sunset, temp, desc, iconUrl
+                    )
+                )
 
                 val list = it.hourly.subList(0, 24).map {
                     val hour = roundTime(timeConvertUTC(it.dt))
@@ -70,18 +88,19 @@ class HomeRepository @Inject constructor(
 
         remoteDataSource.fetchWeatherData(lat, lon, callback)
     }
-    
-    suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData>
-    = remoteDataSource.fetchRankingList(num)
 
-    suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData>
-    = remoteDataSource.fetchWaitingRankingList()
-   
-    private fun getWeatherIconUrl(icon: String) = WEATHER_IMAGE_URL_PREFIX + icon + WEATHER_IMAGE_URL_SUFFIX
+    suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData> =
+        remoteDataSource.fetchRankingList(num)
+
+    suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData> =
+        remoteDataSource.fetchWaitingRankingList()
+
+    private fun getWeatherIconUrl(icon: String) =
+        WEATHER_IMAGE_URL_PREFIX + icon + WEATHER_IMAGE_URL_SUFFIX
 
     companion object {
         const val YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v="
         const val WEATHER_IMAGE_URL_PREFIX = "http://openweathermap.org/img/wn/"
-        const val WEATHER_IMAGE_URL_SUFFIX= "@2x.png"
+        const val WEATHER_IMAGE_URL_SUFFIX = "@2x.png"
     }
 }
