@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.Event
+import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
@@ -53,16 +54,23 @@ class HomeViewModel @Inject constructor(
 
     private val _isRankLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isRankLoading: LiveData<Boolean> = _isRankLoading
-  
+
     private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
     val error: LiveData<Event<String>> = _error
 
     fun fetchRanking() {
         _isRankLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList(5)
-            _rankList.postValue(list)
-            _isRankLoading.postValue(false)
+            when (val result = homeRepository.fetchRankingList(FishRankingRequest.HOME)) {
+                is Result.Success -> {
+                    _rankList.postValue(result.data)
+                    _isRankLoading.postValue(false)
+                }
+                is Result.Fail -> {
+                    _error.postValue(Event(result.description))
+                }
+            }
         }
     }
 

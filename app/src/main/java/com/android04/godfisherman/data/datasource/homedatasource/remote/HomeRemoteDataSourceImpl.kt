@@ -1,5 +1,6 @@
 package com.android04.godfisherman.data.datasource.homedatasource.remote
 
+import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
@@ -20,7 +21,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataSource {
+class HomeRemoteDataSourceImpl @Inject constructor() : HomeDataSource.RemoteDataSource {
 
     private val database = Firebase.firestore
 
@@ -29,7 +30,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
             q = fishingKey.random()
         )
 
-        call.enqueue(object : Callback<YoutubeResponse>{
+        call.enqueue(object : Callback<YoutubeResponse> {
             override fun onResponse(
                 call: Call<YoutubeResponse>,
                 response: Response<YoutubeResponse>
@@ -49,26 +50,37 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
         })
     }
 
-    override suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData>{
-        var feedDocs: List<DocumentSnapshot>? = null
+    override suspend fun fetchRankingList(request: FishRankingRequest): List<RankingData.HomeRankingData>? {
         val rankList: MutableList<RankingData.HomeRankingData> = mutableListOf()
 
-        database.collectionGroup("fishingRecord")
-            .orderBy("fishLength", Query.Direction.DESCENDING)
-            .limit(num)
-            .get()
-            .addOnSuccessListener {
-                feedDocs = it.documents
-            }.await()
+        try {
+            val querySnapshot = database.collectionGroup("fishingRecord")
+                .orderBy("fishLength", Query.Direction.DESCENDING)
+                .limit(request.count)
+                .get()
+                .await()
 
-        feedDocs?.forEach { doc ->
-            doc.reference.parent.parent!!.get().addOnSuccessListener { parentDoc ->
+            val feedDocs = querySnapshot.documents
+
+            feedDocs.forEach { doc ->
+                val parentDoc = doc.reference.parent.parent!!.get().await()
                 val typeInfo = parentDoc.toObject<TypeInfo>()
                 val fishingRecord = doc.toObject<FishingRecord>()
-                if (typeInfo == null || fishingRecord == null) return@addOnSuccessListener
-                rankList.add(RankingData.HomeRankingData(typeInfo.userName, fishingRecord.fishType, fishingRecord.fishLength))
-            }.await()
+
+                if (typeInfo != null && fishingRecord != null) {
+                    rankList.add(
+                        RankingData.HomeRankingData(
+                            typeInfo.userName,
+                            fishingRecord.fishType,
+                            fishingRecord.fishLength
+                        )
+                    )
+                }
+            }
+        } catch (_: Exception) {
+            return null
         }
+
         return rankList
     }
 
@@ -92,13 +104,18 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
                 }
             }
         }
-        return rankingMap.map { RankingData.HomeWaitingRankingData(it.key, it.value) }.sortedByDescending { it.totalTime }
+        return rankingMap.map { RankingData.HomeWaitingRankingData(it.key, it.value) }
+            .sortedByDescending { it.totalTime }
     }
-    
-    override suspend fun fetchWeatherData(lat: Double, lon: Double, callback: RepoResponse<WeatherResponse?>) {
+
+    override suspend fun fetchWeatherData(
+        lat: Double,
+        lon: Double,
+        callback: RepoResponse<WeatherResponse?>
+    ) {
         val call = RetrofitClient.weatherApiService.getWeatherData(lat, lon)
 
-        call.enqueue(object : Callback<WeatherResponse>{
+        call.enqueue(object : Callback<WeatherResponse> {
             override fun onResponse(
                 call: Call<WeatherResponse>,
                 response: Response<WeatherResponse>
@@ -124,6 +141,7 @@ class HomeRemoteDataSourceImpl @Inject constructor(): HomeDataSource.RemoteDataS
     }
 
     companion object {
-        val fishingKey = listOf("민물낚시", "선상낚시", "바다낚시", "매운탕", "회뜨기", "낚시꿀팁", "낚시용품", "낚시대", "낚시터", "낚시명당")
+        val fishingKey =
+            listOf("민물낚시", "선상낚시", "바다낚시", "매운탕", "회뜨기", "낚시꿀팁", "낚시용품", "낚시대", "낚시터", "낚시명당")
     }
 }

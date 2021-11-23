@@ -1,5 +1,7 @@
 package com.android04.godfisherman.data.repository
 
+import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.cache.HomeInfoCache
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.network.response.WeatherResponse
@@ -89,8 +91,26 @@ class HomeRepository @Inject constructor(
         remoteDataSource.fetchWeatherData(lat, lon, callback)
     }
 
-    suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData> =
-        remoteDataSource.fetchRankingList(num)
+    suspend fun fetchRankingList(request: FishRankingRequest): Result<List<RankingData.HomeRankingData>> {
+        if (request == FishRankingRequest.HOME) {
+            val cached = homeInfoCache.getRankingList()
+            if (cached != null) {
+                return Result.Success(cached)
+            }
+        }
+
+        val rankingList = remoteDataSource.fetchRankingList(request)
+
+        return if (rankingList != null) {
+            if (request == FishRankingRequest.HOME) {
+                homeInfoCache.putRankingList(rankingList)
+            }
+
+            Result.Success(rankingList)
+        } else {
+            Result.Fail("랭킹 정보 요청 실패")
+        }
+    }
 
     suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData> =
         remoteDataSource.fetchWaitingRankingList()

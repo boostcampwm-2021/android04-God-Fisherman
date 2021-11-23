@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +26,7 @@ class RankingDetailViewModel @Inject constructor(
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
             val diferredSizeRanking = async {
-                homeRepository.fetchRankingList(10)
+                homeRepository.fetchRankingList(FishRankingRequest.DETAIL)
             }
             val diferredTimeRanking = async {
                 homeRepository.fetchWaitingRankingList()
@@ -32,11 +34,14 @@ class RankingDetailViewModel @Inject constructor(
 
             val sizeRanking = diferredSizeRanking.await()
             val timeRanking = diferredTimeRanking.await()
-            val ranking = listOf(
-                RankingPageData(RankingType.SIZE, sizeRanking),
-                RankingPageData(RankingType.TIME, timeRanking)
+
+            if (sizeRanking is Result.Success) {
+                val ranking = listOf(
+                    RankingPageData(RankingType.SIZE, sizeRanking.data),
+                    RankingPageData(RankingType.TIME, timeRanking)
                 )
-            _rankList.postValue(ranking)
+                _rankList.postValue(ranking)
+            }
         }
     }
 }
