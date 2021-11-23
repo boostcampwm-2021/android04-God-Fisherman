@@ -314,6 +314,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 viewModel.requestLocation()
             } else {
                 Log.d("LocationUpdate", "권한 false -> false")
+                finish()
             }
         }
         permissionManager.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
