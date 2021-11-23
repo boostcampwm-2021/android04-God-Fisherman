@@ -173,9 +173,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     viewModel.isFromStopwatchFragment = false
                 }
                 MainViewModel.isFromService = false
-                if (currentId == R.id.end) {
-                    viewModel.isOpened = true
-                    viewModel.loadTmpTimeLineRecord()
+                when (currentId) {
+                    R.id.end -> {
+                        viewModel.isOpened = true
+                        viewModel.loadTmpTimeLineRecord()
+                    }
+                    else -> {
+                        viewModel.isOpened = false
+                    }
                 }
             }
 
