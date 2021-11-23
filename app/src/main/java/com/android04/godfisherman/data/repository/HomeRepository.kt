@@ -71,8 +71,8 @@ class HomeRepository @Inject constructor(
         remoteDataSource.fetchWeatherData(lat, lon, callback)
     }
     
-    suspend fun fetchRankingList(): List<RankingData.HomeRankingData>
-    = remoteDataSource.fetchRankingList(10)
+    suspend fun fetchRankingList(num: Long): List<RankingData.HomeRankingData>
+    = remoteDataSource.fetchRankingList(num)
 
     suspend fun fetchWaitingRankingList(): List<RankingData.HomeWaitingRankingData>
     = remoteDataSource.fetchWaitingRankingList()

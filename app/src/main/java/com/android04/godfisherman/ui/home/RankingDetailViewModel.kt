@@ -24,7 +24,7 @@ class RankingDetailViewModel @Inject constructor(
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
             val diferredSizeRanking = async {
-                homeRepository.fetchRankingList()
+                homeRepository.fetchRankingList(10)
             }
             val diferredTimeRanking = async {
                 homeRepository.fetchWaitingRankingList()

@@ -56,7 +56,7 @@ class HomeViewModel @Inject constructor(
     fun fetchRanking() {
         _isRankLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList()
+            val list = homeRepository.fetchRankingList(5)
             _rankList.postValue(list)
             _isRankLoading.postValue(false)
         }
