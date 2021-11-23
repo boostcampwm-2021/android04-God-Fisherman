@@ -105,11 +105,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("setTimeToMinute")
     fun setTimeWithDouble(view: TextView, millisecond: Double) {
-        val time = millisecond.roundToInt() % 8640000
-        val hour = time / 360000
-        val min = time % 3600000 / 6000
-
-        view.text = if (hour == 0) "$min 분" else "$hour 시간 $min 분"
+        view.text = millisecond.toTimeHourMinute()
     }
 
     @JvmStatic

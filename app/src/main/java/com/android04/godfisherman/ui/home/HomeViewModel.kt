@@ -1,5 +1,6 @@
 package com.android04.godfisherman.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -121,6 +122,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val location = locationRepository.loadLocation()
+                Log.d("LocationUpdate", "Home loadLocation() : $location")
                 if (location != null){
                     val newAddress = locationRepository.updateAddress()
                     _address.postValue(newAddress)
