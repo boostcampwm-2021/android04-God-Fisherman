@@ -73,6 +73,9 @@ class MainViewModel @Inject constructor(
     private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
+    private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isLoading: MutableLiveData<Boolean?> = _isLoading
+
     fun startOrStopTimer(): Boolean {
         return if (isStopwatchStarted.value == true) {
             endStopwatch()
@@ -119,13 +122,15 @@ class MainViewModel @Inject constructor(
 
     fun saveTimeLineRecord() {
         if (!_tmpFishingList.value.isNullOrEmpty()) {
+            _isLoading.value = true
             viewModelScope.launch(Dispatchers.IO) {
                 when (repository.saveTimeLineRecord(time)) {
                     is Result.Success -> {
-                        //todo
+                        _isLoading.postValue(false)
                     }
                     is Result.Fail -> {
-                        //todo
+                        _isLoading.postValue(false)
+                        // todo 실패 시 토스트 처리
                     }
                 }
             }

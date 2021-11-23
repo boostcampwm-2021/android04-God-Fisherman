@@ -1,14 +1,15 @@
 package com.android04.godfisherman.ui.stopwatch
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
@@ -23,6 +24,9 @@ class TestStopwatchFragment :
     override val viewModel: MainViewModel by activityViewModels()
 
     private var isPlayAnimate = false
+    private val loadingDialog: Dialog by lazy {
+        LoadingDialogProvider().provideLoadingDialog(requireContext(), R.layout.dialog_upload_loading)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,6 +76,12 @@ class TestStopwatchFragment :
         viewModel.tmpFishingList.observe(viewLifecycleOwner, {
             binding.rvTimeLine.submitList(it)
         })
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> loadingDialog.show()
+                false -> loadingDialog.cancel()
+            }
+        }
     }
 
     private fun setupListener() {
