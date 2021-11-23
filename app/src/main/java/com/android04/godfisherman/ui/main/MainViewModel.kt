@@ -39,13 +39,6 @@ class MainViewModel @Inject constructor(
 
     var lastBackTime = 0L
 
-    private val _isNetworkConnected: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
-
-    fun checkConnectivity() {
-        //_isNetworkConnected.value = NetworkChecker.isConnected()
-    }
-
     private val _currentLocation: MutableLiveData<Location?> by lazy {
         MutableLiveData<Location?>(
             null

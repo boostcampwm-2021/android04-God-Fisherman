@@ -43,8 +43,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObserver()
-        viewModel.checkConnectivity()
         binding.viewModel = viewModel
         setOrientation()
         checkLocationPermission()
@@ -227,11 +225,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     @SuppressLint("SourceLockedOrientationActivity")
     private fun setOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    }
-
-    private fun setObserver() {
-        viewModel.isNetworkConnected.observe(this) {
-        }
     }
 
     override fun onStop() {
