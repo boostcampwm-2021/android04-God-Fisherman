@@ -25,15 +25,15 @@ class RankingDetailViewModel @Inject constructor(
 
     fun fetchRanking() {
         viewModelScope.launch(Dispatchers.IO) {
-            val diferredSizeRanking = async {
+            val deferredSizeRanking = async {
                 homeRepository.fetchRankingList(FishRankingRequest.DETAIL)
             }
-            val diferredTimeRanking = async {
+            val deferredTimeRanking = async {
                 homeRepository.fetchWaitingRankingList()
             }
 
-            val sizeRanking = diferredSizeRanking.await()
-            val timeRanking = diferredTimeRanking.await()
+            val sizeRanking = deferredSizeRanking.await()
+            val timeRanking = deferredTimeRanking.await()
 
             if (sizeRanking is Result.Success) {
                 val ranking = listOf(
