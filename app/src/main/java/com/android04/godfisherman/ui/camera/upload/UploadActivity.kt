@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Window
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.ActivityUploadBinding
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.CameraActivity
@@ -23,7 +21,9 @@ class UploadActivity :
 
     override val viewModel: UploadViewModel by viewModels()
 
-    private lateinit var loadingDialog: Dialog
+    private val loadingDialog: Dialog by lazy {
+        LoadingDialogProvider().provideLoadingDialog(this, R.layout.dialog_upload_loading)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,6 @@ class UploadActivity :
         initListener()
         setupObserver()
         setUpBinding()
-        setLoadingDialog()
         loadData()
 
     }
@@ -123,27 +122,11 @@ class UploadActivity :
         }
     }
 
-    private fun setLoadingDialog() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialog.setContentView(R.layout.dialog_upload_loading)
-
-        loadingDialog = dialog
-    }
-
     private fun showLoadingDialog() {
-        if (::loadingDialog.isInitialized) {
-            loadingDialog.show()
-        }
+        loadingDialog.show()
     }
 
     private fun cancelLoadingDialog() {
-        if (::loadingDialog.isInitialized) {
-            loadingDialog.cancel()
-        }
+        loadingDialog.cancel()
     }
 }

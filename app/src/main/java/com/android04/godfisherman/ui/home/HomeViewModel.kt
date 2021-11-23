@@ -1,5 +1,6 @@
 package com.android04.godfisherman.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -50,13 +51,18 @@ class HomeViewModel @Inject constructor(
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
 
+    private val _isRankLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isRankLoading: LiveData<Boolean> = _isRankLoading
+  
     private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
     val error: LiveData<Event<String>> = _error
 
     fun fetchRanking() {
+        _isRankLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList()
+            val list = homeRepository.fetchRankingList(5)
             _rankList.postValue(list)
+            _isRankLoading.postValue(false)
         }
     }
 
@@ -103,6 +109,10 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
+                detailCallback.addFailureCallback {
+                    _isWeatherLoading.postValue(false)
+                }
+                
                 homeRepository.fetchWeatherData(
                     location.latitude,
                     location.longitude,

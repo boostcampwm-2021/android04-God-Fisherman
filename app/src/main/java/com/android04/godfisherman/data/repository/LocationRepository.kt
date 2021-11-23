@@ -1,6 +1,7 @@
 package com.android04.godfisherman.data.repository
 
 import android.location.Location
+import android.util.Log
 import com.android04.godfisherman.data.DTO.Gps
 import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSource
 import com.android04.godfisherman.utils.SharedPreferenceManager
@@ -14,7 +15,7 @@ class LocationRepository @Inject constructor(
 
     suspend fun updateAddress(): Result<String> {
         val location = loadLocation()
-
+        
         if (location != null) {
             val currentAddress =
                 remoteDataSource.fetchAddress(location.latitude, location.longitude)

@@ -105,11 +105,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("setTimeToMinute")
     fun setTimeWithDouble(view: TextView, millisecond: Double) {
-        val time = millisecond.roundToInt() % 8640000
-        val hour = time / 360000
-        val min = time % 3600000 / 6000
-
-        view.text = if (hour == 0) "$min 분" else "$hour 시간 $min 분"
+        view.text = millisecond.toTimeHourMinute()
     }
 
     @JvmStatic
@@ -121,7 +117,6 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("visibilityOnMotion")
     fun setVisibilityOnMotion(view: View, visible: Boolean) {
-        println("visibility : $visible")
         if (view.parent is MotionLayout) {
             val motionLayout = view.parent as MotionLayout
             val visibility = if (visible) View.VISIBLE else View.GONE
@@ -140,8 +135,12 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("setRankID")
-    fun setRankingTextWithIDAndRank(view: TextView, id: String) {
-        view.text = "이번 주 ${id}님의 전체 순위는 10위 입니다."
+    @BindingAdapter("setVisible")
+    fun setVisibleWithBoolean(view: View, isVisible: Boolean?) {
+        if (isVisible == true) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.INVISIBLE
+        }
     }
 }

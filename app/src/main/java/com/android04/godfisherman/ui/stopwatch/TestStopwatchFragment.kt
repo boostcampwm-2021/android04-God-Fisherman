@@ -79,7 +79,6 @@ class TestStopwatchFragment :
         binding.viewStartStop.setOnClickListener {
             if (viewModel.startOrStopTimer()) {
                 showDialog()
-                viewModel.resetStopwatch()
             }
         }
 

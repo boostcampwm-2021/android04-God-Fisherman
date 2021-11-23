@@ -17,17 +17,19 @@ class LogInViewModel @Inject constructor(private val manager: SharedPreferenceMa
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun fetchLoginData() {
+        val token = manager.getString(LOGIN_TOKEN)
         val name = manager.getString(LOGIN_NAME)
         val email = manager.getString(LOGIN_EMAIL)
         val img = manager.getString(LOGIN_IMG)
 
-        _isLogin.value = name != "" && email != "" && img != null
+        _isLogin.value = token != "" && name != "" && email != "" && img != null
     }
 
-    fun setLoginData(name: String, mail: String, img: String) {
+    fun setLoginData(token: String, name: String, mail: String, img: String) {
         manager.saveString(LOGIN_NAME, name)
         manager.saveString(LOGIN_EMAIL, mail)
         manager.saveString(LOGIN_IMG, img)
+        manager.saveString(LOGIN_TOKEN, token)
     }
 
     fun setLoading(isLoading: Boolean) {
@@ -35,6 +37,7 @@ class LogInViewModel @Inject constructor(private val manager: SharedPreferenceMa
     }
 
     companion object {
+        const val LOGIN_TOKEN = "LOGIN_TOKEN"
         const val LOGIN_NAME = "LOGIN_NAME"
         const val LOGIN_EMAIL = "LOGIN_MAIL"
         const val LOGIN_IMG = "LOGIN_IMG"
