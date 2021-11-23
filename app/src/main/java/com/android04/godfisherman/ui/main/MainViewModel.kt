@@ -168,7 +168,6 @@ class MainViewModel @Inject constructor(
                 val location = locationHelper.getLocation()
                 locationRepository.saveLocation(location)
                 _currentLocation.postValue(location)
-//                _address.postValue(locationRepository.updateLocation(location))
             }
         }
     }

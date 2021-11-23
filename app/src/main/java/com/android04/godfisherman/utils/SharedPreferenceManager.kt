@@ -24,13 +24,13 @@ class SharedPreferenceManager @Inject constructor(
         editor.remove(key).apply()
     }
 
-    fun getString(key: String) = sharedPref.getString(key, "")
+    fun getString(key: String) = sharedPref.getString(key, null)
 
     fun saveGps(value: Gps) {
         editor.putParcelable(KEY_GPS, value)
     }
 
-    fun getGps(): Gps? {
+    fun loadGps(): Gps? {
        return sharedPref.getParcelable(KEY_GPS, null)
     }
 
