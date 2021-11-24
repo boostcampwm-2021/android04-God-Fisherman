@@ -26,7 +26,7 @@ class LocationRepository @Inject constructor(
                 // 주소를 얻을 수 없는 좌표의 경우
             }
         } else {
-            return Result.Fail("GPS를 켜주세요")
+            return Result.Fail("위치 정보를 불러올 수 없습니다.")
         }
 
         val address = preferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)

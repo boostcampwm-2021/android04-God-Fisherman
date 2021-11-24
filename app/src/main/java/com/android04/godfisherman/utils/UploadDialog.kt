@@ -21,7 +21,7 @@ class UploadDialog(context: Context, private val uploadCallback:() -> (Unit), pr
         dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
-        dialog.findViewById<Button>(R.id.btn_upload).setOnClickListener {
+        dialog.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
             uploadCallback()
             dialog.dismiss()
         }
