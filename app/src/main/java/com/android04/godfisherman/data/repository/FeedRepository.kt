@@ -27,6 +27,10 @@ class FeedRepository @Inject constructor(
     private val networkChecker: NetworkChecker
 ) {
     private fun fetchPagingData(type: Type): Flow<PagingData<FeedData>> {
+        CoroutineScope(Dispatchers.IO + NonCancellable).launch {
+            localDataSource.deleteAll()
+        }
+
         return Pager(PagingConfig(pageSize = 2)) { FeedRemotePagingSource(type) }.flow
     }
 
@@ -74,8 +78,6 @@ class FeedRepository @Inject constructor(
     }
 
     private suspend fun saveFeedListInCache(feedList: List<FeedDTO>) {
-        localDataSource.deleteAll()
-
         feedList.forEach { feed ->
             localDataSource.saveFeed(
                 feed.typeInfo.toTypeInfoCached(),
