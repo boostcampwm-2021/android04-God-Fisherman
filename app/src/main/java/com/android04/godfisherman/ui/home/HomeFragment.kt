@@ -65,12 +65,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
         }
 
-        viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
-            if (!it) {
-                showToast(requireContext(), R.string.home_recommend_fail)
-            }
-        }
-
         viewModel.rankList.observe(viewLifecycleOwner) {
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }

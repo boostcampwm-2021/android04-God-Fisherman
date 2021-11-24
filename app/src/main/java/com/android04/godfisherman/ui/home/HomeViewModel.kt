@@ -1,11 +1,11 @@
 package com.android04.godfisherman.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.Event
+import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
@@ -33,8 +33,8 @@ class HomeViewModel @Inject constructor(
     private val _isYoutubeLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeLoading: LiveData<Boolean> = _isYoutubeLoading
 
-    private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
+    private val _youtubeError: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val youtubeError: LiveData<String> = _youtubeError
 
     private val _homeCurrentWeather: MutableLiveData<HomeCurrentWeather> by lazy { MutableLiveData<HomeCurrentWeather>() }
     val homeCurrentWeather: LiveData<HomeCurrentWeather> = _homeCurrentWeather
@@ -45,40 +45,49 @@ class HomeViewModel @Inject constructor(
     private val _isWeatherLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isWeatherLoading: LiveData<Boolean> = _isWeatherLoading
 
-    private val _userName: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val userName: LiveData<String> = _userName
+    private val _userName: MutableLiveData<String?> by lazy { MutableLiveData<String?>() }
+    val userName: LiveData<String?> = _userName
 
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
 
     private val _isRankLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isRankLoading: LiveData<Boolean> = _isRankLoading
-  
+
     private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
     val error: LiveData<Event<String>> = _error
 
     fun fetchRanking() {
         _isRankLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList(5)
-            _rankList.postValue(list)
-            _isRankLoading.postValue(false)
+            when (val result = homeRepository.fetchRankingList(FishRankingRequest.HOME)) {
+                is Result.Success -> {
+                    _rankList.postValue(result.data)
+                    _isRankLoading.postValue(false)
+                }
+                is Result.Fail -> {
+                    _error.postValue(Event(result.description))
+                }
+            }
         }
     }
 
     fun fetchYoutube() {
+        _youtubeError.value = null
+
         viewModelScope.launch(Dispatchers.IO) {
             _isYoutubeLoading.postValue(true)
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
             repoCallback.addSuccessCallback {
                 _youtubeList.postValue(it)
-                _isYoutubeSuccess.postValue(true)
                 _isYoutubeLoading.postValue(false)
             }
 
             repoCallback.addFailureCallback {
-                _isYoutubeSuccess.postValue(false)
+                _isYoutubeLoading.postValue(false)
+                _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했으므로 내일 다시 시도해주세요")
             }
 
             homeRepository.fetchYoutubeData(repoCallback)
@@ -112,7 +121,7 @@ class HomeViewModel @Inject constructor(
                 detailCallback.addFailureCallback {
                     _isWeatherLoading.postValue(false)
                 }
-                
+
                 homeRepository.fetchWeatherData(
                     location.latitude,
                     location.longitude,
