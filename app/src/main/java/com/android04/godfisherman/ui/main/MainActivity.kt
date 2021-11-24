@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,12 +25,14 @@ import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import com.android04.godfisherman.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
 
     override val viewModel: MainViewModel by viewModels()
+    private val swipeMotionLayoutWrapper: SwipeMotionLayoutWrapper by lazy {
+        SwipeMotionLayoutWrapper(binding.container)
+    }
 
     companion object {
         const val DEFAULT_BUNDLE = "defaultKey"
@@ -39,7 +40,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private lateinit var serviceIntent: Intent
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +60,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     fun closeContainer() {
         if (viewModel.isStopwatchStarted.value == true) {
-            binding.container.transitionToState(R.id.end)
+            swipeMotionLayoutWrapper.transitionToState(R.id.end)
             viewModel.endStopwatch()
             showDialog()
         } else {
-            binding.container.transitionToState(R.id.end_close)
+            swipeMotionLayoutWrapper.transitionToState(R.id.end_close)
             viewModel.stopwatchOnFlag.value = false
         }
     }
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     private fun setupObserver() {
         viewModel.isAfterUpload.observe(this) {
             if (it) {
-                binding.container.transitionToState(R.id.end_close)
+                swipeMotionLayoutWrapper.transitionToState(R.id.end_close)
                 viewModel.stopwatchOnFlag.value = false
                 binding.navView.selectedItemId = R.id.navigation_stopwatch
                 changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
@@ -103,13 +103,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 // 라이브데이터 바인딩이 제대로 되지 않아서 일단 임시 방편으로 바인딩 어댑터를 직접 사용
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
                 changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
-                binding.container.setTransition(R.id.transition)
-                binding.container.transitionToState(R.id.end)
-                val marginInPx = resources.getDimension(R.dimen.stopwatch_view_height_small)
-                setMarginBottomInMotion(marginInPx)
+                swipeMotionLayoutWrapper.apply {
+                    setTransition(R.id.transition)
+                    transitionToState(R.id.end)
+                    val marginInPx = resources.getDimension(R.dimen.stopwatch_view_height_small)
+                    updateConstraint(R.id.start, R.id.fl_fragment_container) {
+                        it.layout.bottomMargin = marginInPx.toInt()
+                    }
+                }
             } else {
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
-                setMarginBottomInMotion(0f)
+                swipeMotionLayoutWrapper.updateConstraint(R.id.start, R.id.fl_fragment_container) {
+                    it.layout.bottomMargin = 0
+                }
             }
         }
     }
@@ -135,7 +141,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 }
                 R.id.navigation_stopwatch -> {
                     if (viewModel.stopwatchOnFlag.value == true) {
-                        binding.container.transitionToEnd()
+                        swipeMotionLayoutWrapper.transitionToState(R.id.end)
                         viewModel.isFromStopwatchFragment = true
                     } else {
                         changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
@@ -159,24 +165,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun initMotionListener() {
-        binding.container.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionStarted(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int
-            ) {
-            }
-
-            override fun onTransitionChange(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int,
-                progress: Float
-            ) {
-            }
-
-            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-
+        swipeMotionLayoutWrapper.setupTransitionListener(
+            transitionCompletedCallback = { _, currentId ->
                 if (viewModel.isFromInfoFragment) {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fl_fragment_container, HomeFragment()).commit()
@@ -197,16 +187,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                         viewModel.isOpened = false
                     }
                 }
-            }
-
-            override fun onTransitionTrigger(
-                motionLayout: MotionLayout?,
-                triggerId: Int,
-                positive: Boolean,
-                progress: Float
-            ) {
-            }
-        })
+            },
+            transitionStartedCallback = null,
+            transitionChangedCallback = null,
+            transitionTriggerCallback = null
+        )
     }
 
     override fun onBackPressed() {
@@ -221,7 +206,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         when {
             viewModel.isOpened -> {
-                binding.container.transitionToState(R.id.start)
+                swipeMotionLayoutWrapper.transitionToState(R.id.start)
                 viewModel.isOpened = false
             }
             !isHome -> {
@@ -329,14 +314,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     fun setMotionSwipeAreaVisibility(visibility: Int) {
-        val constraintSet = binding.container.getConstraintSet(R.id.end)
-        val swipeArea = constraintSet.getConstraint(R.id.cl_container_stopwatch)
-        swipeArea.propertySet.visibility = visibility
-    }
-
-    private fun setMarginBottomInMotion(marginInPx: Float) {
-        val constraintSet = binding.container.getConstraintSet(R.id.start)
-        val frameLayoutConstraint = constraintSet.getConstraint(R.id.fl_fragment_container)
-        frameLayoutConstraint.layout.bottomMargin = marginInPx.roundToInt()
+        swipeMotionLayoutWrapper.updateConstraint(R.id.end, R.id.cl_container_stopwatch) {
+            it.propertySet.visibility = visibility
+        }
     }
 }
