@@ -32,7 +32,7 @@ class TestStopwatchFragment :
         setupObserver()
     }
 
-    private fun showDialog() {
+    fun showDialog() {
         val dialog = UploadDialog(requireContext(), { viewModel.saveTimeLineRecord() },
             { viewModel.resumeStopwatch() })
         dialog.showDialog()
