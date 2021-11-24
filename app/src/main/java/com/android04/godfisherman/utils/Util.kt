@@ -1,5 +1,6 @@
 package com.android04.godfisherman.utils
 
+import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -53,3 +54,13 @@ fun roundTime(time: String): String {
 }
 
 fun isLevelCorrect(x: Float, y: Float) = abs(x.roundToInt()) <= 1 && abs(y.roundToInt()) <= 1
+
+fun calculateRecordSize(record: TmpFishingRecord): Int {
+    var size = 0
+
+    size += record.image.allocationByteCount
+    size += 2 * (record.fishType.length + record.date.toString().length)
+    size += 1000
+
+    return size
+}

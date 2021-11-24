@@ -34,6 +34,9 @@ class UploadViewModel @Inject constructor(
     private val _isInputCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isInputCorrect: MutableLiveData<Boolean?> = _isInputCorrect
 
+    private val _isSizeCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isSizeCorrect: MutableLiveData<Boolean?> = _isSizeCorrect
+
     private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading: MutableLiveData<Boolean?> = _isLoading
 
@@ -104,7 +107,7 @@ class UploadViewModel @Inject constructor(
                     }
 
                     callback.addFailureCallback {
-                        _isUploadSuccess.postValue(false)
+                        _isSizeCorrect.postValue(false)
                         _isLoading.postValue(false)
                     }
 

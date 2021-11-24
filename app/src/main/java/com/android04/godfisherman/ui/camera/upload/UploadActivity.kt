@@ -91,6 +91,11 @@ class UploadActivity :
                 showToast(this, R.string.upload_input_fail)
             }
         }
+        viewModel.isSizeCorrect.observe(this) {
+            if (it == false) {
+                showToast(this, R.string.upload_size_fail)
+            }
+        }
 
         viewModel.isLoading.observe(this) {
             when (it) {

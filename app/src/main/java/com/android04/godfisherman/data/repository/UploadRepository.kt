@@ -8,6 +8,8 @@ import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_NAME
 import com.android04.godfisherman.utils.RepoResponse
 import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.utils.StorageManager
+import com.android04.godfisherman.utils.calculateRecordSize
 import com.google.firebase.Timestamp
 import java.lang.Exception
 import java.util.*
@@ -70,10 +72,14 @@ class UploadRepository @Inject constructor(
         callback: RepoResponse<Unit>
     ) {
         val fishingRecord = TmpFishingRecord(image, Date(), fishLength, fishType)
-        var isSuccess = true
+        val size = calculateRecordSize(fishingRecord)
+
+        var isSuccess = StorageManager.getInternalRemainMemory() > size
 
         try {
-            localDataSource.saveTmpTimeLineRecord(fishingRecord)
+            if(isSuccess) {
+                localDataSource.saveTmpTimeLineRecord(fishingRecord)
+            }
         } catch (e: Exception) {
             isSuccess = false
         } finally {
