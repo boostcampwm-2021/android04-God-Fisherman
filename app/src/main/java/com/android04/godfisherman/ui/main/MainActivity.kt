@@ -58,6 +58,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             viewModel.endStopwatch()
             showDialog()
         } else {
+            swipeMotionLayoutWrapper.updateConstraint(R.id.start, R.id.fl_fragment_container) {
+                it.layout.bottomMargin = 0
+            }
             swipeMotionLayoutWrapper.transitionToState(R.id.end_close)
             viewModel.stopwatchOnFlag.value = false
         }
@@ -107,9 +110,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 }
             } else {
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
-                swipeMotionLayoutWrapper.updateConstraint(R.id.start, R.id.fl_fragment_container) {
-                    it.layout.bottomMargin = 0
-                }
             }
         }
     }
