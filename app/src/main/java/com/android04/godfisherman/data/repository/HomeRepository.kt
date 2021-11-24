@@ -11,11 +11,13 @@ import com.android04.godfisherman.ui.home.HomeDetailWeather
 import com.android04.godfisherman.ui.home.HomeRecommendData
 import com.android04.godfisherman.utils.*
 import com.android04.godfisherman.ui.home.RankingData
+import com.android04.godfisherman.ui.login.LogInViewModel
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class HomeRepository @Inject constructor(
     private val remoteDataSource: HomeDataSource.RemoteDataSource,
+    private val manager: SharedPreferenceManager,
     private val homeInfoCache: HomeInfoCache
 ) {
     suspend fun fetchYoutubeData(repoCallback: RepoResponseImpl<List<HomeRecommendData>>) {
@@ -117,6 +119,8 @@ class HomeRepository @Inject constructor(
 
     private fun getWeatherIconUrl(icon: String) =
         WEATHER_IMAGE_URL_PREFIX + icon + WEATHER_IMAGE_URL_SUFFIX
+
+    fun fetchUserName() = manager.getString(LogInViewModel.LOGIN_NAME)
 
     companion object {
         const val YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v="

@@ -9,9 +9,7 @@ import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.ui.login.LogInViewModel
 import com.android04.godfisherman.utils.RepoResponseImpl
-import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
-    private val locationRepository: LocationRepository,
-    private val manager: SharedPreferenceManager
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -133,7 +130,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchUserID() {
-        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
+        _userName.value = homeRepository.fetchUserName()
     }
 
     fun loadLocation() {
