@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/iv_photo"
+            setImage="@{url}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            setImage="@{url}"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

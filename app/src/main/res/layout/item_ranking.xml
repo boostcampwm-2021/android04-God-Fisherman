@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,10 +12,10 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/space_median"
         android:layout_marginTop="@dimen/space_x_large"
-        android:paddingBottom="@dimen/space_large"
-        android:paddingTop="@dimen/space_x_large"
         android:background="@drawable/bg_ranking_round"
-        android:paddingHorizontal="@dimen/space_median">
+        android:paddingHorizontal="@dimen/space_median"
+        android:paddingTop="@dimen/space_x_large"
+        android:paddingBottom="@dimen/space_large">
 
         <TextView
             android:id="@+id/tv_ranking_title"
