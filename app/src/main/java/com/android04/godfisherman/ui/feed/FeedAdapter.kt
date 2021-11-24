@@ -12,7 +12,7 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ItemFeedPhotoTypeBinding
 import com.android04.godfisherman.databinding.ItemFeedTimelineTypeBinding
 
-class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
+class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         Log.d("pagingAdapter", "onBind 실행")
         val item = getItem(position)
@@ -62,6 +62,7 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
         Log.d("pagingAdapter", "getItemCount 실행: ${super.getItemCount()}")
         return super.getItemCount()
     }
+
     sealed class FeedViewHolder(binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         abstract fun onBind(data: FeedData)
@@ -83,6 +84,9 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
             binding.ivFishPhoto.adapter = TimelineViewPagerAdapter(data.photoUrlList)
             binding.indicator.setViewPager2(binding.ivFishPhoto)
             binding.rvTimeline.adapter = TimelineRecyclerViewAdapter(data.timeline)
+            binding.rvTimeline.visibility = View.GONE
+            binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+            binding.tvShowTimeline.setText(R.string.feed_show_timeline)
             setListener()
         }
 
@@ -105,7 +109,7 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
         const val PHOTO_TYPE = 0
         const val TIMELINE_TYPE = 1
         private val diffCallback = object : DiffUtil.ItemCallback<FeedData>() {
-            override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean{
+            override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean {
                 Log.d("pagingAdapter", "Diff 실행: ${oldItem.date}, ${newItem.date}")
                 return oldItem.date == newItem.date
             }
