@@ -34,11 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         SwipeMotionLayoutWrapper(binding.container)
     }
 
-    companion object {
-        const val DEFAULT_BUNDLE = "defaultKey"
-        var isStopwatchServiceRunning = false
-    }
-
     private lateinit var serviceIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +50,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         initMotionListener()
         checkFromService()
         setupObserver()
-
     }
 
     fun closeContainer() {
@@ -317,5 +311,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         swipeMotionLayoutWrapper.updateConstraint(R.id.end, R.id.cl_container_stopwatch) {
             it.propertySet.visibility = visibility
         }
+    }
+
+    companion object {
+        const val DEFAULT_BUNDLE = "defaultKey"
+        var isStopwatchServiceRunning = false
     }
 }
