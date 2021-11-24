@@ -5,6 +5,7 @@ import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
+import com.android04.godfisherman.data.datasource.feedDatasource.remote.FeedRemoteDataSourceImpl.Companion.FEED_IDENTIFIER_NAME
 import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
 import com.android04.godfisherman.ui.feed.FeedData
 import com.android04.godfisherman.utils.toFeedPhotoData
@@ -98,7 +99,7 @@ class FeedRepository @Inject constructor(
                 LoadResult.Page(
                     data = response,
                     prevKey = null,
-                    nextKey = snapshotList?.last()?.get("id") as Timestamp
+                    nextKey = snapshotList?.last()?.get(FEED_IDENTIFIER_NAME) as Timestamp
                 )
             } catch (e: Exception) {
                 LoadResult.Error(e)
