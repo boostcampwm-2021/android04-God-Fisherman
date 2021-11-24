@@ -56,8 +56,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_small"
                     android:layout_marginEnd="@dimen/space_large"
-                    android:textSize="@dimen/text_median"
                     android:text="@string/home_welcome_help"
+                    android:textSize="@dimen/text_median"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_user_name"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
@@ -198,10 +198,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_x_large"
+                        android:layout_marginEnd="@dimen/space_x_large"
+                        android:textAlignment="center"
+                        android:textStyle="italic"
+                        android:text="@{viewModel.youtubeError != null ? viewModel.youtubeError : ``}"
                         app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:text="@{viewModel.youtubeError != null ? viewModel.youtubeError : ``}"
                         app:layout_constraintTop_toTopOf="@id/rv_recommend" />
 
                     <TextView
