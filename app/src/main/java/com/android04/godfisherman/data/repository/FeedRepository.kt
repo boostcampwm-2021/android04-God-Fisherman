@@ -1,6 +1,5 @@
 package com.android04.godfisherman.data.repository
 
-import android.util.Log
 import androidx.paging.*
 import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.common.Type
@@ -8,10 +7,16 @@ import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
 import com.android04.godfisherman.ui.feed.FeedData
-import com.android04.godfisherman.utils.*
+import com.android04.godfisherman.utils.toFeedPhotoData
+import com.android04.godfisherman.utils.toFeedTimeLineData
+import com.android04.godfisherman.utils.toFishingRecordCached
+import com.android04.godfisherman.utils.toTypeInfoCached
 import com.google.firebase.Timestamp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -25,7 +30,6 @@ class FeedRepository @Inject constructor(
     }
 
     private fun loadPagingData(type: Type): Flow<PagingData<FeedData>> {
-        Log.d("paging3", "loadPagingData")
         return Pager(PagingConfig(pageSize = 2)) { FeedLocalPagingSource(type) }.flow
     }
 
@@ -48,8 +52,6 @@ class FeedRepository @Inject constructor(
             CoroutineScope(Dispatchers.IO + NonCancellable).launch {
                 saveFeedListInCache(feedList)
             }
-        } else {
-            //todo
         }
         return list
     }
