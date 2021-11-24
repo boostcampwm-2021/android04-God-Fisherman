@@ -44,7 +44,7 @@
 
                 <ImageView
                     android:id="@+id/iv_user_icon"
-                    setImage="@{viewModel.userImageUrl}"
+                    setImage="@{viewModel.userInfo.imgUrl}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_margin="@dimen/space_x_large"
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_large"
                     android:layout_marginEnd="@dimen/space_x_large"
-                    android:text="@{viewModel.userName}"
+                    android:text="@{viewModel.userInfo.name}"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/tv_user_email"
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space_x_large"
                     android:layout_marginEnd="@dimen/space_x_large"
-                    android:text="@{viewModel.userEmail}"
+                    android:text="@{viewModel.userInfo.email}"
                     android:textColor="@color/feed_text_dark_gray"
                     app:layout_constraintBottom_toBottomOf="@id/iv_user_icon"
                     app:layout_constraintEnd_toEndOf="parent"
