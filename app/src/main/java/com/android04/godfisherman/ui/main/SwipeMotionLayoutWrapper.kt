@@ -53,4 +53,12 @@ class SwipeMotionLayoutWrapper(private val motionLayout: MotionLayout) {
         val constraint = constraintSet.getConstraint(constraintId)
         updateCallback(constraint)
     }
+
+    fun updateConstraintSet(updateCallback: (ConstraintSet) -> Unit) {
+        for (constraintSetId in motionLayout.constraintSetIds) {
+            motionLayout.getConstraintSet(constraintSetId)?.let { constraintSet ->
+                updateCallback(constraintSet)
+            }
+        }
+    }
 }

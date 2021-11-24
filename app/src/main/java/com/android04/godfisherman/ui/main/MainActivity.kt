@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.NotificationManagerCompat
@@ -93,9 +94,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
-                // TODO 수정해야함
-                // 라이브데이터 바인딩이 제대로 되지 않아서 일단 임시 방편으로 바인딩 어댑터를 직접 사용
-                BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
                 changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
                 swipeMotionLayoutWrapper.apply {
                     setTransition(R.id.transition)
@@ -104,8 +102,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                         binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
                     }
                 }
-            } else {
-                BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
+            }
+            val visibility = if (flag) View.VISIBLE else View.GONE
+            swipeMotionLayoutWrapper.updateConstraintSet { constraintSet ->
+                constraintSet.setVisibility(R.id.cl_container_stopwatch, visibility)
             }
         }
     }
