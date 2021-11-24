@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.common.Event
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
@@ -73,6 +74,12 @@ class MainViewModel @Inject constructor(
     private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
+    private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isLoading: MutableLiveData<Boolean?> = _isLoading
+
+    private val _successOrFail: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
+    val successOrFail: LiveData<Event<String>> = _successOrFail
+
     fun startOrStopTimer(): Boolean {
         return if (isStopwatchStarted.value == true) {
             endStopwatch()
@@ -119,13 +126,16 @@ class MainViewModel @Inject constructor(
 
     fun saveTimeLineRecord() {
         if (!_tmpFishingList.value.isNullOrEmpty()) {
+            _isLoading.value = true
             viewModelScope.launch(Dispatchers.IO) {
-                when (repository.saveTimeLineRecord(time)) {
+                val result = repository.saveTimeLineRecord(time)
+                _isLoading.postValue(false)
+                when (result) {
                     is Result.Success -> {
-                        //todo
+                        _successOrFail.postValue(Event("업로드를 완료했습니다."))
                     }
                     is Result.Fail -> {
-                        //todo
+                        _successOrFail.postValue(Event(result.description))
                     }
                 }
             }
