@@ -99,8 +99,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
                 swipeMotionLayoutWrapper.apply {
                     setTransition(R.id.transition)
-                    swipeMotionLayoutWrapper.setProgress(1f)
-                    viewModel.isOpened = true
+                    swipeMotionLayoutWrapper.setProgress(1f) {
+                        viewModel.isOpened = true
+                        binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
+                    }
                 }
             } else {
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
