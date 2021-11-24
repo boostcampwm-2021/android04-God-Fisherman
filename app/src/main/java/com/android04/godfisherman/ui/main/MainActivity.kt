@@ -58,9 +58,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             viewModel.endStopwatch()
             showDialog()
         } else {
-            swipeMotionLayoutWrapper.updateConstraint(R.id.start, R.id.fl_fragment_container) {
-                it.layout.bottomMargin = 0
-            }
             swipeMotionLayoutWrapper.transitionToState(R.id.end_close)
             viewModel.stopwatchOnFlag.value = false
         }
@@ -104,10 +101,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     setTransition(R.id.transition)
                     swipeMotionLayoutWrapper.setProgress(1f)
                     viewModel.isOpened = true
-                    val marginInPx = resources.getDimension(R.dimen.stopwatch_view_height_small)
-                    updateConstraint(R.id.start, R.id.fl_fragment_container) {
-                        it.layout.bottomMargin = marginInPx.toInt()
-                    }
                 }
             } else {
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
