@@ -6,6 +6,7 @@ import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
 import com.android04.godfisherman.data.datasource.feedDatasource.remote.FeedRemoteDataSourceImpl.Companion.FEED_IDENTIFIER_NAME
+import com.android04.godfisherman.di.ApplicationScope
 import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
 import com.android04.godfisherman.ui.feed.FeedData
 import com.android04.godfisherman.utils.toFeedPhotoData
@@ -14,20 +15,20 @@ import com.android04.godfisherman.utils.toFishingRecordCached
 import com.android04.godfisherman.utils.toTypeInfoCached
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
 class FeedRepository @Inject constructor(
     private val localDataSource: FeedDataSource.LocalDataSource,
     private val remoteDataSource: FeedDataSource.RemoteDataSource,
-    private val networkChecker: NetworkChecker
+    private val networkChecker: NetworkChecker,
+    @ApplicationScope private val externalScope: CoroutineScope
 ) {
     private fun fetchPagingData(type: Type): Flow<PagingData<FeedData>> {
-        CoroutineScope(Dispatchers.IO + NonCancellable).launch {
+        externalScope.launch {
             localDataSource.deleteAll()
         }
 
@@ -54,7 +55,7 @@ class FeedRepository @Inject constructor(
                     false -> list.add(feed.toFeedPhotoData())
                 }
             }
-            CoroutineScope(Dispatchers.IO + NonCancellable).launch {
+            externalScope.launch {
                 saveFeedListInCache(feedList)
             }
         }
