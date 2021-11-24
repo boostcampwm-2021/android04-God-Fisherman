@@ -34,8 +34,6 @@ class MainViewModel @Inject constructor(
     val stopwatch = StopwatchManager({ time -> _displayTime.postValue(time.toTimeMilliSecond()) })
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
     var beforeMenuItemId: Int = 0
-    var isFromStopwatchFragment: Boolean = false
-    var isFromInfoFragment: Boolean = false
     var isOpened: Boolean = false
     var isServiceRequestWithOutCamera = true
 

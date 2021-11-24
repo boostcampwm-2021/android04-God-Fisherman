@@ -35,6 +35,10 @@ class SwipeMotionLayoutWrapper(private val motionLayout: MotionLayout) {
         motionLayout.transitionToState(constraintSetId)
     }
 
+    fun setProgress(progress: Float) {
+        motionLayout.progress = progress
+    }
+
     fun setTransition(transitionId: Int) {
         motionLayout.setTransition(transitionId)
     }
