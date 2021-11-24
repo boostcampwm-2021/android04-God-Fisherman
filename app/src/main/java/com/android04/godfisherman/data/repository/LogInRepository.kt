@@ -22,10 +22,6 @@ class LogInRepository @Inject constructor(
         manager.doLogOut()
     }
 
-    fun doSignOut(callback: RepoResponse<Unit>) {
-        manager.doSignOut(callback)
-    }
-
     fun getUserInfo() = manager.getUserInfo()
 
     fun isAutoLogIn() = manager.isAutoLogIn()

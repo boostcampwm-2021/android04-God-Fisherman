@@ -6,7 +6,6 @@ import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_NAME
 import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_TOKEN
 import com.android04.godfisherman.ui.mypage.UserInfo
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import javax.inject.Inject
 
@@ -15,7 +14,6 @@ class FirebaseAuthManager @Inject constructor(
 ) {
 
     private val auth = FirebaseAuth.getInstance()
-    private var user: FirebaseUser? = auth.currentUser
 
     fun isAutoLogIn(): Boolean {
         val token = manager.getString(LOGIN_TOKEN)
@@ -49,7 +47,6 @@ class FirebaseAuthManager @Inject constructor(
         val credential = GoogleAuthProvider.getCredential(token, null)
         auth.signInWithCredential(credential)
             .addOnSuccessListener {
-                user = auth.currentUser
                 callback.invoke(true, Unit)
             }
             .addOnFailureListener {
@@ -65,30 +62,4 @@ class FirebaseAuthManager @Inject constructor(
         manager.deleteString(LOGIN_IMG)
     }
 
-    fun doSignOut(callback: RepoResponse<Unit>) {
-        if (user == null) {
-            val token = manager.getString(LOGIN_TOKEN)
-            val credential = GoogleAuthProvider.getCredential(token, null)
-            auth.signInWithCredential(credential)
-                .addOnSuccessListener {
-                    user = auth.currentUser
-                    deleteUser(callback)
-                }
-                .addOnFailureListener {
-                    callback.invoke(false, Unit)
-                }
-        } else {
-            deleteUser(callback)
-        }
-    }
-
-    private fun deleteUser(callback: RepoResponse<Unit>) {
-        user!!.delete()
-            .addOnSuccessListener {
-                callback.invoke(true, Unit)
-            }
-            .addOnFailureListener {
-                callback.invoke(false, Unit)
-            }
-    }
 }
