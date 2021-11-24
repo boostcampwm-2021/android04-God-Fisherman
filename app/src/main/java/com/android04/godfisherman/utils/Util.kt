@@ -2,6 +2,8 @@ package com.android04.godfisherman.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 fun findHeightCenter(rect: List<Int>): Int {
     return (rect[0] + rect[1]) / 2
@@ -49,3 +51,5 @@ fun roundTime(time: String): String {
 
     return "${hour}시"
 }
+
+fun isLevelCorrect(x: Float, y: Float) = abs(x.roundToInt()) <= 1 && abs(y.roundToInt()) <= 1

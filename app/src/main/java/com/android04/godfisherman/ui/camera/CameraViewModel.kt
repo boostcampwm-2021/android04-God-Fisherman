@@ -1,12 +1,9 @@
 package com.android04.godfisherman.ui.camera
 
-import android.hardware.SensorEvent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android04.godfisherman.utils.*
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 class CameraViewModel : ViewModel() {
     private val _isLevelOk: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
@@ -74,7 +71,7 @@ class CameraViewModel : ViewModel() {
         }
     }
     
-    fun changedLevel(event: SensorEvent){
-        _isLevelOk.value = abs(event.values[0].roundToInt()) <= 1 && abs(event.values[1].roundToInt()) <= 1
+    fun changedLevel(x: Float, y: Float){
+        _isLevelOk.value = isLevelCorrect(x, y)
     }
 }
