@@ -143,6 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_median"
+                android:overScrollMode="never"
                 android:paddingBottom="@dimen/space_small"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
