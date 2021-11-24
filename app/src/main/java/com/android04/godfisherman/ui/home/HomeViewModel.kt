@@ -9,6 +9,7 @@ import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
+import com.android04.godfisherman.data.repository.LogInRepository
 import com.android04.godfisherman.utils.RepoResponseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
+    private val logInRepository: LogInRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {
 
@@ -130,7 +132,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchUserID() {
-        _userName.value = homeRepository.fetchUserName()
+        _userName.value = logInRepository.getUserInfo().name
     }
 
     fun loadLocation() {
