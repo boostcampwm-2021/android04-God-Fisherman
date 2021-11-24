@@ -1,7 +1,5 @@
 package com.android04.godfisherman.ui.camera.upload
 
-import android.graphics.Bitmap
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -52,12 +50,11 @@ class UploadViewModel @Inject constructor(
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
     var bodySizeCentiMeter: String? = null
-    lateinit var fishThumbnail: Bitmap
+    var fishThumbnail = CameraActivity.captureImage!!
 
     fun fetchInitData(size: Double) {
         bodySize = roundBodySize(size)
         bodySizeCentiMeter = convertCentiMeter(size)
-        fishThumbnail = CameraActivity.captureImage!!
 
         viewModelScope.launch(Dispatchers.IO) {
             _address.postValue(repository.getAddress())
@@ -88,17 +85,13 @@ class UploadViewModel @Inject constructor(
         }
     }
 
-    fun setFishTypeSelected(selected: Editable) {
-        fishTypeSelected = selected.toString()
-    }
-
     fun saveFishingRecord() {
         if (!networkChecker.isConnected()) {
             _isNetworkConnected.value = false
             return
         }
 
-        if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
+        if (fishTypeSelected != null && bodySize != null) {
             _isInputCorrect.value = true
             _isLoading.value = true
             if (MainViewModel.isTimeLine) {
