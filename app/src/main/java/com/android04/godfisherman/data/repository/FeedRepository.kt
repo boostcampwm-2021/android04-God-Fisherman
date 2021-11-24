@@ -36,7 +36,7 @@ class FeedRepository @Inject constructor(
         }
     }
 
-    private fun fetch(feedList: List<FeedDTO>?): List<FeedData> {
+    private fun fetchFeedDataList(feedList: List<FeedDTO>?): List<FeedData> {
         val list = mutableListOf<FeedData>()
         if (feedList != null) {
             feedList.forEach { feed ->
@@ -92,7 +92,7 @@ class FeedRepository @Inject constructor(
                 val next = params.key ?: Timestamp.now()
                 val snapshotList = remoteDataSource.fetchSnapshotList(type, next)
                 val feedList = remoteDataSource.fetchFeedDataList(snapshotList)
-                var response = fetch(feedList)
+                var response = fetchFeedDataList(feedList)
                 LoadResult.Page(
                     data = response,
                     prevKey = null,
