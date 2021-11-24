@@ -1,7 +1,6 @@
 package com.android04.godfisherman.data.repository
 
 import android.location.Location
-import android.util.Log
 import com.android04.godfisherman.data.DTO.Gps
 import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSource
 import com.android04.godfisherman.utils.SharedPreferenceManager
@@ -24,6 +23,7 @@ class LocationRepository @Inject constructor(
                 preferenceManager.saveString(SharedPreferenceManager.PREF_LOCATION, currentAddress)
             } else {
                 return Result.Fail("네트워크 연결이 좋지 않아 위치를 불러올 수 없습니다")
+                // 주소를 얻을 수 없는 좌표의 경우
             }
         } else {
             return Result.Fail("GPS를 켜주세요")
@@ -42,5 +42,5 @@ class LocationRepository @Inject constructor(
         if (location != null) preferenceManager.saveGps(Gps(location.longitude, location.latitude))
     }
 
-    fun loadLocation() = preferenceManager.getGps()
+    fun loadLocation() = preferenceManager.loadGps()
 }

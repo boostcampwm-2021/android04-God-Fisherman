@@ -9,7 +9,6 @@ import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -38,24 +37,68 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         const val DEFAULT_BUNDLE = "defaultKey"
         var isStopwatchServiceRunning = false
     }
+
     private lateinit var serviceIntent: Intent
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObserver()
-        viewModel.checkConnectivity()
         binding.viewModel = viewModel
+        binding.activity = this
+        serviceIntent = Intent(this, StopwatchService::class.java)
+        registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
+
         setOrientation()
-        checkLocationPermission()
         StopwatchNotification.createChannel(this)
+        checkLocationPermission()
         initBottomNavigation()
         initMotionListener()
+        checkFromService()
+        setupObserver()
 
+    }
+
+    fun closeContainer() {
+        if (viewModel.isStopwatchStarted.value == true) {
+            binding.container.transitionToState(R.id.end)
+            viewModel.endStopwatch()
+            showDialog()
+        } else {
+            binding.container.transitionToState(R.id.end_close)
+            viewModel.stopwatchOnFlag.value = false
+        }
+    }
+
+    private fun checkFromService() {
+        val flag = intent.getBooleanExtra(StopwatchService.FROM_SERVICE, false)
+        MainViewModel.isFromService = flag
+        if (flag) viewModel.stopwatchOnFlag.value = true
+    }
+
+    private fun setupObserver() {
+        viewModel.isAfterUpload.observe(this) {
+            if (it) {
+                binding.container.transitionToState(R.id.end_close)
+                viewModel.stopwatchOnFlag.value = false
+                binding.navView.selectedItemId = R.id.navigation_stopwatch
+                changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
+                viewModel.setIsAfterUploadFalse()
+                viewModel.isOpened = false
+            }
+        }
+
+        viewModel.currentLocation.observe(this) {
+            if (it != null) {
+                supportFragmentManager.setFragmentResult(
+                    HomeFragment.LOCATION_UPDATED, bundleOf(
+                        DEFAULT_BUNDLE to true
+                    )
+                )
+            }
+        }
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
-                Log.d("MotionLayout", "옵저브 실행")
                 // TODO 수정해야함
                 // 라이브데이터 바인딩이 제대로 되지 않아서 일단 임시 방편으로 바인딩 어댑터를 직접 사용
                 BindingAdapter.setVisibilityOnMotion(binding.clContainerStopwatch, flag)
@@ -69,51 +112,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 setMarginBottomInMotion(0f)
             }
         }
-
-        binding.ivClose.setOnClickListener {
-            if (viewModel.isStopwatchStarted.value == true) {
-                binding.container.transitionToState(R.id.end)
-                viewModel.endStopwatch()
-                showDialog()
-            } else {
-                binding.container.transitionToState(R.id.end_close)
-                viewModel.stopwatchOnFlag.value = false
-            }
-        }
-
-
-        serviceIntent = Intent(this, StopwatchService::class.java)
-        registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
-        val flag = intent.getBooleanExtra(StopwatchService.FROM_SERVICE, false)
-        MainViewModel.isFromService = flag
-
-        if (flag) {
-            viewModel.stopwatchOnFlag.value = true
-        }
-
-        viewModel.isAfterUpload.observe(this) {
-            if (it){
-                binding.container.transitionToState(R.id.end_close)
-                viewModel.stopwatchOnFlag.value = false
-                binding.navView.selectedItemId = R.id.navigation_stopwatch
-                changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
-                viewModel.setIsAfterUploadFalse()
-                viewModel.isOpened = false
-            }
-        }
-
-        viewModel.currentLocation.observe(this) {
-            if (it != null) {
-                supportFragmentManager.setFragmentResult(HomeFragment.LOCATION_UPDATED, bundleOf(
-                    DEFAULT_BUNDLE to true))
-            }
-        }
-
     }
 
     private fun initBottomNavigation() {
         binding.navView.setOnItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.navigation_home -> {
                     changeFragment(R.id.fl_fragment_container, HomeFragment())
                     viewModel.beforeMenuItemId = R.id.navigation_home
@@ -157,14 +160,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun initMotionListener() {
         binding.container.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionStarted(motionLayout: MotionLayout?, startId: Int, endId: Int) {}
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+            }
 
-            override fun onTransitionChange(motionLayout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+            }
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
 
                 if (viewModel.isFromInfoFragment) {
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_fragment_container, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fl_fragment_container, HomeFragment()).commit()
                     viewModel.isFromInfoFragment = false
                     binding.navView.menu.findItem(R.id.navigation_home).isChecked = true
                 }
@@ -184,7 +199,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 }
             }
 
-            override fun onTransitionTrigger(motionLayout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
         })
     }
 
@@ -234,25 +255,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    private fun setObserver() {
-        viewModel.isNetworkConnected.observe(this) {
-        }
-    }
-
     override fun onStop() {
         super.onStop()
         if (viewModel.isServiceRequestWithOutCamera) {
-            Log.d("StopWatch", "서비스 실행 요청")
-            passStopwatchToService(viewModel.time)
+            passStopwatchToService(viewModel.stopwatch.getTime())
         }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.isServiceRequestWithOutCamera = true
-        Log.d("serviceRunning", "${isStopwatchServiceRunning}")
         if (isStopwatchServiceRunning) {
-            Log.d("serviceRunning", "서비스 종료 실행")
             stopService(serviceIntent)
             isStopwatchServiceRunning = false
         }
@@ -273,55 +286,46 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     private val receiveTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, receiveIntent: Intent) {
             val receivedTime = receiveIntent.getDoubleExtra(StopwatchService.SERVICE_DESTROYED, 0.0)
-            Log.d("receiveFromService", "리시브 실행 : $receivedTime")
             viewModel.passedTimeFromService(receivedTime)
             NotificationManagerCompat.from(context).cancel(StopwatchService.NOTIFICATION_ID)
         }
     }
 
     private fun showDialog() {
-        val dialog = UploadDialog(this)
-        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "upload")
-                viewModel.saveTimeLineRecord()
-            }
-        })
-        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "back")
-                viewModel.resumeStopwatch()
-            }
-        })
+        val dialog = UploadDialog(this, { viewModel.saveTimeLineRecord() },
+            { viewModel.resumeStopwatch() })
         dialog.showDialog()
     }
 
-    private fun checkLocationPermission(){
+    private fun checkLocationPermission() {
         if (isGrantedLocationPermission(this)) {
-            Log.d("LocationUpdate", "권한 true")
             viewModel.requestLocation()
         } else {
             requestLocationPermission()
-            Log.d("LocationUpdate", "권한 false")
         }
     }
 
-    private fun requestLocationPermission(){
+    private fun requestLocationPermission() {
         var permissionCount = 0
         val permissionManager = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions(
-            )) { permissions ->
-            permissions.entries.forEach{
+            )
+        ) { permissions ->
+            permissions.entries.forEach {
                 if (it.value) permissionCount++
             }
             if (permissionCount == 2) {
-                Log.d("LocationUpdate", "권한 false -> true")
                 viewModel.requestLocation()
             } else {
-                Log.d("LocationUpdate", "권한 false -> false")
+                finish()
             }
         }
-        permissionManager.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+        permissionManager.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
 
     fun setMotionSwipeAreaVisibility(visibility: Int) {

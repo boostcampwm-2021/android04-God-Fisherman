@@ -8,14 +8,17 @@
         <variable
             name="feedViewModel"
             type="com.android04.godfisherman.ui.feed.FeedViewModel" />
-
+        <variable
+            name="feedFragment"
+            type="com.android04.godfisherman.ui.feed.FeedFragment" />
 
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/SRL_feed"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        setRefreshLoading="@{feedViewModel.isDataLoading()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -40,21 +43,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
-                    android:text="@string/feed_all" />
+                    android:text="@string/feed_all"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/cp_type_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
-                    android:text="@string/feed_photo" />
+                    android:text="@string/feed_photo"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/cp_type_timeline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
-                    android:text="@string/feed_timeline" />
+                    android:text="@string/feed_timeline"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -77,6 +83,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                setLottieLoading="@{feedViewModel.isDataLoading()}"
                 app:lottie_autoPlay="true"
                 app:lottie_fileName="lottie_loading.json"
                 app:lottie_loop="true" />

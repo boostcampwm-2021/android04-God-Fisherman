@@ -1,6 +1,5 @@
 package com.android04.godfisherman.ui.feed
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(private val repository: FeedRepository) : ViewModel() {
+
+    private val _isDataLoading : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(true) }
+    val isDataLoading : LiveData<Boolean> = _isDataLoading
 
     private var pagingData : Flow<PagingData<FeedData>> = repository.getFeedDataList(Type.ALL).cachedIn(viewModelScope)
 
@@ -38,4 +40,11 @@ class FeedViewModel @Inject constructor(private val repository: FeedRepository) 
         }
     }
 
+    fun setLoadingOn(){
+        _isDataLoading.postValue(true)
+    }
+
+    fun setLoadingOff(){
+        _isDataLoading.postValue(false)
+    }
 }

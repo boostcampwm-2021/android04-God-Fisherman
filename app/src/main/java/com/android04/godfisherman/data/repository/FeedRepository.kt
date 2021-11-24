@@ -67,7 +67,6 @@ class FeedRepository @Inject constructor(
                 false -> list.add(feed.toFeedPhotoData())
             }
         }
-
         return list
     }
 
@@ -83,25 +82,23 @@ class FeedRepository @Inject constructor(
             )
         }
     }
+
     inner class FeedRemotePagingSource(private val type: Type) :
         PagingSource<Timestamp, FeedData>() {
         override val keyReuseSupported = true
 
         override suspend fun load(params: LoadParams<Timestamp>): LoadResult<Timestamp, FeedData> {
             return try {
-                val next = params.key?: Timestamp.now()
-                Log.d("paging3", "next : $next")
+                val next = params.key ?: Timestamp.now()
                 val snapshotList = remoteDataSource.fetchSnapshotList(type, next)
-                Log.d("paging3", "snapshotList : " + snapshotList.toString())
                 val feedList = remoteDataSource.fetchFeedDataList(snapshotList)
-                Log.d("paging3", "feedList : $feedList")
                 var response = fetch(feedList)
-                Log.d("paging3", "response : $response")
                 LoadResult.Page(
-                    data = response, prevKey = null, nextKey = snapshotList?.last()?.get("id") as Timestamp
+                    data = response,
+                    prevKey = null,
+                    nextKey = snapshotList?.last()?.get("id") as Timestamp
                 )
             } catch (e: Exception) {
-                Log.d("paging3", "Exception : $e")
                 LoadResult.Error(e)
             }
         }
@@ -122,16 +119,13 @@ class FeedRepository @Inject constructor(
 
         override suspend fun load(params: LoadParams<Date>): LoadResult<Date, FeedData> {
             return try {
-                val next: Date = params.key?: Timestamp.now().toDate()
-                Log.d("paging3", "next : $next")
+                val next: Date = params.key ?: Timestamp.now().toDate()
                 val feedList = loadFeedDataList(type, next)
                 val typeList = feedDataToTypeData(feedList)
-                Log.d("paging3", "feedList : $feedList")
                 LoadResult.Page(
                     data = typeList, prevKey = null, nextKey = feedList.last().typeInfo.id
                 )
             } catch (e: Exception) {
-                Log.d("paging3", "Exception : $e")
                 LoadResult.Error(e)
             }
         }

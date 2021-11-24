@@ -6,9 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.airbnb.lottie.LottieAnimationView
 import com.android04.godfisherman.R
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.chip.Chip
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -145,10 +148,35 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("setLottieLoading")
+    fun setLottieLoading(view: LottieAnimationView, isLoading: Boolean?) {
+        if (isLoading == true) {
+            view.playAnimation()
+            view.visibility = View.VISIBLE
+        } else {
+            view.pauseAnimation()
+            view.visibility = View.GONE
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setChipLoading")
+    fun setChipLoading(view: Chip, isLoading: Boolean?) {
+        view.isEnabled = isLoading != true
+    }
+
+    @JvmStatic
+    @BindingAdapter("setRefreshLoading")
+    fun setRefreshLoading(view: SwipeRefreshLayout, isLoading: Boolean?) {
+        if (isLoading != true) view.isRefreshing = false
+    }
+
+    @JvmStatic
     @BindingAdapter("submitList")
     fun <T> submitListInRecyclerView(recyclerview: RecyclerViewEmptySupport, itemList: List<T>?) {
         itemList?.let {
             recyclerview.submitList(it)
         }
     }
+
 }
