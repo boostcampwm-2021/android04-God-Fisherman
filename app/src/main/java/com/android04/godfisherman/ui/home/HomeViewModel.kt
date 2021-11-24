@@ -57,11 +57,12 @@ class HomeViewModel @Inject constructor(
     private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
     val error: LiveData<Event<String>> = _error
 
-    fun fetchRanking() {
+    fun fetchRanking(isRefresh: Boolean = false) {
         _isRankLoading.value = true
 
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = homeRepository.fetchRankingList(FishRankingRequest.HOME)) {
+            when (val result =
+                homeRepository.fetchRankingList(FishRankingRequest.HOME, isRefresh)) {
                 is Result.Success -> {
                     _rankList.postValue(result.data)
                     _isRankLoading.postValue(false)
@@ -73,7 +74,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun fetchYoutube() {
+    fun fetchYoutube(isRefresh: Boolean = false) {
         _youtubeError.value = null
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -90,7 +91,7 @@ class HomeViewModel @Inject constructor(
                 _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했으므로 내일 다시 시도해주세요")
             }
 
-            homeRepository.fetchYoutubeData(repoCallback)
+            homeRepository.fetchYoutubeData(repoCallback, isRefresh)
         }
     }
 
