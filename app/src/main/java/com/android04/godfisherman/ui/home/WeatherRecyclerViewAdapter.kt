@@ -10,6 +10,7 @@ class WeatherRecyclerViewAdapter : RecyclerView.Adapter<WeatherRecyclerViewAdapt
     private val data = mutableListOf<HomeDetailWeather>()
 
     fun setData(new: List<HomeDetailWeather>) {
+        data.clear()
         data.addAll(new)
         notifyDataSetChanged()
     }

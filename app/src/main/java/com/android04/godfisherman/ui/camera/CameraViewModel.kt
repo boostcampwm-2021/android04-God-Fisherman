@@ -41,11 +41,19 @@ class CameraViewModel : ViewModel() {
                 _moneyRect.value = null
             }
         }
+
+        setSize()
     }
 
-    fun setSize(list: List<Int>) {
-        if (list.size >= 2) {
-            _bodySize.value = list[0].toDouble() / list[1] * MONEY_SIZE
+    private fun setSize() {
+        val fishRect = _fishRect.value
+        val moneyRect = _moneyRect.value
+
+        if (fishRect != null && moneyRect != null) {
+            val fishSize = fishRect[2] - fishRect[3]
+            val moneySize = moneyRect[2] - moneyRect[3]
+
+            _bodySize.value = fishSize.toDouble() / moneySize * MONEY_SIZE
         } else {
             _bodySize.value = null
         }

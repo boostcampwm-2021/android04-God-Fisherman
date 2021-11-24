@@ -41,7 +41,7 @@ class HomeRepository @Inject constructor(
                 val time = timeConvertUTCFull(it.current.dt)
                 val sunrise = timeConvertUTC(it.current.sunrise)
                 val sunset = timeConvertUTC(it.current.sunset)
-                val temp = it.current.temp.toString() + "°"
+                val temp = ((it.current.temp * 10).roundToInt() / 10F).toString() + "°"
                 val desc = it.current.weather.first().description
                 val icon = it.current.weather.first().icon
                 val iconUrl = getWeatherIconUrl(icon)
