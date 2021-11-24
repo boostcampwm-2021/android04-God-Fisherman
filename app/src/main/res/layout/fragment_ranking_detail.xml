@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.RankingDetailFragment"
-        android:background="@color/background_home">
+        android:background="@color/background_home"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,7 +40,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_ranking_title"
                 android:layout_marginTop="@dimen/space_small"
                 />
-
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_ranking"

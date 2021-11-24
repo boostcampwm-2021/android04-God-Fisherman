@@ -2,6 +2,7 @@ package com.android04.godfisherman.di
 
 import android.content.Context
 import com.android04.godfisherman.common.NetworkChecker
+import com.android04.godfisherman.data.cache.HomeInfoCache
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,4 +18,8 @@ object AppDiModule {
     @Provides
     fun provideNetworkChecker(@ApplicationContext context: Context): NetworkChecker =
         NetworkChecker(context)
+
+    @Singleton
+    @Provides
+    fun provideHomeInfoCache(): HomeInfoCache = HomeInfoCache()
 }

@@ -16,12 +16,10 @@ import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.intro.GodFishermanIntro
 import com.android04.godfisherman.utils.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -85,6 +83,17 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
                 cancelLoadingDialog()
             }
         }
+        viewModel.isLogInSuccess.observe(this) {
+            when(it) {
+                true -> {
+                    showToast(this, R.string.login_success)
+                    moveToIntro()
+                }
+                false -> {
+                    showToast(this, R.string.login_server_fail)
+                }
+            }
+        }
     }
 
     private fun moveToIntro() {
@@ -100,34 +109,18 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account)
+                viewModel.setLoginData(
+                    account.idToken!!,
+                    account.displayName!!,
+                    account.email!!,
+                    account.photoUrl!!.toString()
+                )
+                viewModel.doLogIn()
             } catch (e: ApiException) {
                 viewModel.setLoading(false)
                 showToast(this, R.string.login_google_fail)
             }
         }
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val idToken = account.idToken
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    viewModel.setLoading(false)
-                    showToast(this, R.string.login_success)
-                    viewModel.setLoginData(
-                        account.idToken!!,
-                        account.displayName!!,
-                        account.email!!,
-                        account.photoUrl!!.toString()
-                    )
-                    moveToIntro()
-                } else {
-                    viewModel.setLoading(false)
-                    showToast(this, R.string.login_server_fail)
-                }
-            }
     }
 
     private fun setLoadingDialog() {

@@ -221,11 +221,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                             widthConvert(it.right, image.width, screenSize.width))
                     }
                 )
-                viewModel.setSize(
-                    rectList.map {
-                        it.right - it.left
-                    }
-                )
             }
         }
     }
