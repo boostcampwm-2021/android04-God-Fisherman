@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class FeedRepository @Inject constructor(
     private val localDataSource: FeedDataSource.LocalDataSource,
@@ -28,8 +27,10 @@ class FeedRepository @Inject constructor(
     @ApplicationScope private val externalScope: CoroutineScope
 ) {
     private fun fetchPagingData(type: Type): Flow<PagingData<FeedData>> {
-        externalScope.launch {
-            localDataSource.deleteAll()
+        if (type == Type.ALL) {
+            externalScope.launch {
+                localDataSource.deleteAll()
+            }
         }
 
         return Pager(PagingConfig(pageSize = 2)) { FeedRemotePagingSource(type) }.flow
