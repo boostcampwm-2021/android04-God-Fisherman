@@ -170,4 +170,11 @@ object BindingAdapter {
     fun setRefreshLoading(view: SwipeRefreshLayout, isLoading: Boolean?) {
         if (isLoading != true) view.isRefreshing = false
     }
+
+    @BindingAdapter("submitList")
+    fun <T> submitListInRecyclerView(recyclerview: RecyclerViewEmptySupport, itemList: List<T>?) {
+        itemList?.let {
+            recyclerview.submitList(it)
+        }
+    }
 }

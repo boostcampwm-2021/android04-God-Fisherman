@@ -19,10 +19,10 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
 
     override suspend fun fetchFishTypeList(): List<String> {
         val fishTypeList = mutableListOf<String>()
-        database.collection("Data").document("species")
+        database.collection(FISH_TYPE_COLLECTION_NAME).document(FISH_TYPE_DOCUMENT_NAME)
             .get()
             .addOnSuccessListener {
-                with(fishTypeList) { addAll(it.data?.get("array") as List<String>) }
+                with(fishTypeList) { addAll(it.data?.get(FISH_TYPE_KEY) as List<String>) }
             }
             .addOnFailureListener { throw it }
             .await()
@@ -36,7 +36,7 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "IMAGE_${timeStamp}.jpg"
 
-        val imagesRef = storage.reference.child("images").child(imageFileName)
+        val imagesRef = storage.reference.child(STORAGE_IMAGE_PATH).child(imageFileName)
 
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -61,7 +61,7 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
     }
 
     override suspend fun saveImageType(typeInfo: TypeInfo, fishingRecord: FishingRecord) {
-        val newImageTypeRef = database.collection("Feed")
+        val newImageTypeRef = database.collection(FEED_COLLECTION_NAME)
 
         newImageTypeRef.add(typeInfo).continueWithTask { task ->
             if (!task.isSuccessful) {
@@ -70,7 +70,7 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
                 }
             }
 
-            task.result.collection("fishingRecord").add(fishingRecord)
+            task.result.collection(FISHING_RECORD_COLLECTION_NAME).add(fishingRecord)
         }.addOnFailureListener {
             throw it
         }
@@ -80,12 +80,12 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         typeInfo: TypeInfo,
         fishingRecordList: List<FishingRecord>
     ): Boolean {
-        val newTimeLineTypeRef = database.collection("Feed")
+        val newTimeLineTypeRef = database.collection(FEED_COLLECTION_NAME)
 
         try {
             val result = newTimeLineTypeRef.add(typeInfo).await()
 
-            result.collection("fishingRecord").run {
+            result.collection(FISHING_RECORD_COLLECTION_NAME).run {
                 fishingRecordList.forEach { record ->
                     add(record).await()
                 }
@@ -96,5 +96,14 @@ class UploadRemoteDataSourceImpl @Inject constructor() : UploadDataSource.Remote
         }
 
         return true
+    }
+
+    companion object {
+        const val FISH_TYPE_COLLECTION_NAME = "Data"
+        const val FISH_TYPE_DOCUMENT_NAME = "species"
+        const val FISH_TYPE_KEY = "array"
+        const val STORAGE_IMAGE_PATH = "images"
+        const val FEED_COLLECTION_NAME = "Feed"
+        const val FISHING_RECORD_COLLECTION_NAME = "fishingRecord"
     }
 }

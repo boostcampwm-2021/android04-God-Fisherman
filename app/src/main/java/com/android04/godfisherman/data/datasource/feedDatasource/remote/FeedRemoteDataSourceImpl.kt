@@ -3,6 +3,8 @@ package com.android04.godfisherman.data.datasource.feedDatasource.remote
 import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
+import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.google.firebase.Timestamp
@@ -17,30 +19,40 @@ import javax.inject.Inject
 class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteDataSource {
     private val database = Firebase.firestore
 
-    override suspend fun fetchSnapshotList(type: Type, startTimeStamp: Timestamp): List<DocumentSnapshot>? {
-        var feedRef = when (type) {
-            Type.ALL -> database.collection("Feed")
-            Type.PHOTO -> database.collection("Feed").whereEqualTo("isTimeline", false)
-            Type.TIMELINE -> database.collection("Feed").whereEqualTo("isTimeline", true)
+    override suspend fun fetchSnapshotList(
+        type: Type,
+        startTimeStamp: Timestamp
+    ): List<DocumentSnapshot>? {
+        var feedRef = database.collection(FEED_COLLECTION_NAME).run {
+            when (type) {
+                Type.PHOTO -> whereEqualTo(TYPE_FIELD_NAME, false)
+                Type.TIMELINE -> whereEqualTo("isTimeline", true)
+                Type.ALL -> this
+            }
         }
 
-        feedRef = feedRef.orderBy("id", Query.Direction.DESCENDING).whereLessThan("id",
-            startTimeStamp
-        ).limit(5)
+        feedRef = feedRef.orderBy(FEED_IDENTIFIER_NAME, Query.Direction.DESCENDING)
+            .whereLessThan(FEED_IDENTIFIER_NAME, startTimeStamp)
+            .limit(5)
+
         var feedDocs: List<DocumentSnapshot>? = null
         feedRef.get().addOnSuccessListener {
             feedDocs = it.documents
         }.await()
+
         return feedDocs
     }
 
     override suspend fun fetchFeedDataList(feedDocs: List<DocumentSnapshot>?): List<FeedDTO> {
         val result = mutableListOf<FeedDTO>()
+
         feedDocs?.let { feedList ->
             feedList.forEach { feed ->
                 val feedTypeInfo: TypeInfo? = feed.toObject<TypeInfo>()
 
-                feed.reference.collection("fishingRecord").get()
+                feed.reference.collection(FISHING_RECORD_COLLECTION_NAME)
+                    .orderBy(FISHING_RECORD_IDENTIFIER_NAME, Query.Direction.ASCENDING)
+                    .get()
                     .addOnSuccessListener { docs ->
                         val fishingRecordList = mutableListOf<FishingRecord>()
 
@@ -56,12 +68,15 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
                             result.add(FeedDTO(feedTypeInfo, fishingRecordList.toList()))
                         }
 
-                    }.addOnFailureListener {
-                        //Todo
-                    }
-                    .await()
+                    }.await()
             }
         }
         return result
+    }
+
+    companion object {
+        const val TYPE_FIELD_NAME = "isTimeline"
+        const val FEED_IDENTIFIER_NAME = "id"
+        const val FISHING_RECORD_IDENTIFIER_NAME = "id"
     }
 }
