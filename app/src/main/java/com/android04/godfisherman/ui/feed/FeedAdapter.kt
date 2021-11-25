@@ -1,6 +1,5 @@
 package com.android04.godfisherman.ui.feed
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.android04.godfisherman.databinding.ItemFeedPhotoTypeBinding
 import com.android04.godfisherman.databinding.ItemFeedTimelineTypeBinding
 
 class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
+
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        Log.d("pagingAdapter", "onBind 실행")
         val item = getItem(position)
         if (item != null) {
             holder.onBind(item)
@@ -22,8 +21,6 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
-
-        Log.d("pagingAdapter", "onCreateViewHolder 실행")
         return when (viewType) {
             PHOTO_TYPE -> {
                 val binding = ItemFeedPhotoTypeBinding.inflate(
@@ -58,10 +55,6 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
         }
     }
 
-    override fun getItemCount(): Int {
-        Log.d("pagingAdapter", "getItemCount 실행: ${super.getItemCount()}")
-        return super.getItemCount()
-    }
     sealed class FeedViewHolder(binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         abstract fun onBind(data: FeedData)
@@ -106,10 +99,8 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
         const val TIMELINE_TYPE = 1
         private val diffCallback = object : DiffUtil.ItemCallback<FeedData>() {
             override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean{
-                Log.d("pagingAdapter", "Diff 실행: ${oldItem.date}, ${newItem.date}")
                 return oldItem.date == newItem.date
             }
-
 
             override fun areContentsTheSame(oldItem: FeedData, newItem: FeedData): Boolean =
                 oldItem == newItem

@@ -1,31 +1,42 @@
 package com.android04.godfisherman.data.repository
 
-import android.util.Log
 import androidx.paging.*
 import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.data.DTO.FeedDTO
 import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
+import com.android04.godfisherman.data.datasource.feedDatasource.remote.FeedRemoteDataSourceImpl.Companion.FEED_IDENTIFIER_NAME
+import com.android04.godfisherman.di.ApplicationScope
 import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
 import com.android04.godfisherman.ui.feed.FeedData
-import com.android04.godfisherman.utils.*
+import com.android04.godfisherman.utils.toFeedPhotoData
+import com.android04.godfisherman.utils.toFeedTimeLineData
+import com.android04.godfisherman.utils.toFishingRecordCached
+import com.android04.godfisherman.utils.toTypeInfoCached
 import com.google.firebase.Timestamp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 class FeedRepository @Inject constructor(
     private val localDataSource: FeedDataSource.LocalDataSource,
     private val remoteDataSource: FeedDataSource.RemoteDataSource,
-    private val networkChecker: NetworkChecker
+    private val networkChecker: NetworkChecker,
+    @ApplicationScope private val externalScope: CoroutineScope
 ) {
     private fun fetchPagingData(type: Type): Flow<PagingData<FeedData>> {
+        if (type == Type.ALL) {
+            externalScope.launch {
+                localDataSource.deleteAll()
+            }
+        }
+
         return Pager(PagingConfig(pageSize = 2)) { FeedRemotePagingSource(type) }.flow
     }
 
     private fun loadPagingData(type: Type): Flow<PagingData<FeedData>> {
-        Log.d("paging3", "loadPagingData")
         return Pager(PagingConfig(pageSize = 2)) { FeedLocalPagingSource(type) }.flow
     }
 
@@ -36,7 +47,7 @@ class FeedRepository @Inject constructor(
         }
     }
 
-    private fun fetch(feedList: List<FeedDTO>?): List<FeedData> {
+    private fun fetchFeedDataList(feedList: List<FeedDTO>?): List<FeedData> {
         val list = mutableListOf<FeedData>()
         if (feedList != null) {
             feedList.forEach { feed ->
@@ -45,11 +56,9 @@ class FeedRepository @Inject constructor(
                     false -> list.add(feed.toFeedPhotoData())
                 }
             }
-            CoroutineScope(Dispatchers.IO + NonCancellable).launch {
+            externalScope.launch {
                 saveFeedListInCache(feedList)
             }
-        } else {
-            //todo
         }
         return list
     }
@@ -71,8 +80,6 @@ class FeedRepository @Inject constructor(
     }
 
     private suspend fun saveFeedListInCache(feedList: List<FeedDTO>) {
-        localDataSource.deleteAll()
-
         feedList.forEach { feed ->
             localDataSource.saveFeed(
                 feed.typeInfo.toTypeInfoCached(),
@@ -92,11 +99,11 @@ class FeedRepository @Inject constructor(
                 val next = params.key ?: Timestamp.now()
                 val snapshotList = remoteDataSource.fetchSnapshotList(type, next)
                 val feedList = remoteDataSource.fetchFeedDataList(snapshotList)
-                var response = fetch(feedList)
+                var response = fetchFeedDataList(feedList)
                 LoadResult.Page(
                     data = response,
                     prevKey = null,
-                    nextKey = snapshotList?.last()?.get("id") as Timestamp
+                    nextKey = snapshotList?.last()?.get(FEED_IDENTIFIER_NAME) as Timestamp
                 )
             } catch (e: Exception) {
                 LoadResult.Error(e)
