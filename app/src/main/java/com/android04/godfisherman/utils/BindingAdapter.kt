@@ -165,4 +165,10 @@ object BindingAdapter {
         }
     }
 
+    @JvmStatic
+    @BindingAdapter("setLength")
+    fun setLength(view: TextView, length: Double) {
+        view.text = length.toString() + "cm"
+    }
+
 }

@@ -21,6 +21,15 @@ fun Double.toTimeMilliSecond(): String{
     return  String.format("%02d:%02d:%02d.%02d", hour, min, sec, milli)
 }
 
+fun Long.toTimeMilliSecond(): String{
+    val time = this
+    val hour = time / 360000
+    val min = time % 360000 / 6000
+    val sec = time % 360000 % 6000 / 100
+    val milli = time % 360000 % 6000 % 100
+    return  String.format("%02d:%02d:%02d.%02d", hour, min, sec, milli)
+}
+
 fun Double.toTimeSecond(): String{
     val time = this.roundToInt()
     val hour = time / 360000

@@ -18,10 +18,10 @@ class HomeRepository @Inject constructor(
     private val remoteDataSource: HomeDataSource.RemoteDataSource,
     private val homeInfoCache: HomeInfoCache
 ) {
-    suspend fun fetchYoutubeData(repoCallback: RepoResponseImpl<List<HomeRecommendData>>) {
+    suspend fun fetchYoutubeData(repoCallback: RepoResponseImpl<List<HomeRecommendData>>, isRefresh: Boolean) {
         val cached = homeInfoCache.getYoutubeList()
 
-        if (cached != null) {
+        if (!isRefresh && cached != null) {
             repoCallback.invoke(true, cached)
             return
         }
@@ -91,10 +91,10 @@ class HomeRepository @Inject constructor(
         remoteDataSource.fetchWeatherData(lat, lon, callback)
     }
 
-    suspend fun fetchRankingList(request: FishRankingRequest): Result<List<RankingData.HomeRankingData>> {
+    suspend fun fetchRankingList(request: FishRankingRequest, isRefresh: Boolean = false): Result<List<RankingData.HomeRankingData>> {
         if (request == FishRankingRequest.HOME) {
             val cached = homeInfoCache.getRankingList()
-            if (cached != null) {
+            if (!isRefresh && cached != null) {
                 return Result.Success(cached)
             }
         }
