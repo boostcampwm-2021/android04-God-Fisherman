@@ -6,9 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.airbnb.lottie.LottieAnimationView
 import com.android04.godfisherman.R
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.chip.Chip
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -105,11 +108,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("setTimeToMinute")
     fun setTimeWithDouble(view: TextView, millisecond: Double) {
-        val time = millisecond.roundToInt() % 8640000
-        val hour = time / 360000
-        val min = time % 3600000 / 6000
-
-        view.text = if (hour == 0) "$min 분" else "$hour 시간 $min 분"
+        view.text = millisecond.toTimeHourMinute()
     }
 
     @JvmStatic
@@ -119,29 +118,57 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("visibilityOnMotion")
-    fun setVisibilityOnMotion(view: View, visible: Boolean) {
-        println("visibility : $visible")
-        if (view.parent is MotionLayout) {
-            val motionLayout = view.parent as MotionLayout
-            val visibility = if (visible) View.VISIBLE else View.GONE
-
-            for (constraintId in motionLayout.constraintSetIds) {
-                val constraintSet = motionLayout.getConstraintSet(constraintId)
-                constraintSet?.setVisibility(view.id, visibility)
-            }
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("setWelcomeText")
     fun setWelcomeTextWithID(view: TextView, id: String) {
         view.text = "안녕하세요 ${id}님!"
     }
 
     @JvmStatic
-    @BindingAdapter("setRankID")
-    fun setRankingTextWithIDAndRank(view: TextView, id: String) {
-        view.text = "이번 주 ${id}님의 전체 순위는 10위 입니다."
+    @BindingAdapter("setVisible")
+    fun setVisibleWithBoolean(view: View, isVisible: Boolean?) {
+        if (isVisible == true) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.INVISIBLE
+        }
     }
+
+    @JvmStatic
+    @BindingAdapter("setLottieLoading")
+    fun setLottieLoading(view: LottieAnimationView, isLoading: Boolean?) {
+        if (isLoading == true) {
+            view.playAnimation()
+            view.visibility = View.VISIBLE
+        } else {
+            view.pauseAnimation()
+            view.visibility = View.GONE
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setChipLoading")
+    fun setChipLoading(view: Chip, isLoading: Boolean?) {
+        view.isEnabled = isLoading != true
+    }
+
+    @JvmStatic
+    @BindingAdapter("setRefreshLoading")
+    fun setRefreshLoading(view: SwipeRefreshLayout, isLoading: Boolean?) {
+        if (isLoading != true) view.isRefreshing = false
+    }
+
+    @JvmStatic
+    @BindingAdapter("submitList")
+    fun <T> submitListInRecyclerView(recyclerview: RecyclerViewEmptySupport, itemList: List<T>?) {
+        itemList?.let {
+            recyclerview.submitList(it)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setLength")
+    fun setLength(view: TextView, length: Double) {
+        view.text = length.toString() + "cm"
+    }
+
 }

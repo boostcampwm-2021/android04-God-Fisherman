@@ -4,51 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/space_xxx_large"
-        android:layout_marginBottom="@dimen/space_xxx_large"
-        android:paddingVertical="40dp"
-        android:layout_marginStart="@dimen/space_large"
-        android:layout_marginEnd="@dimen/space_large"
-        android:background="@drawable/bg_ranking_round">
+        android:layout_marginHorizontal="@dimen/space_median"
+        android:layout_marginTop="@dimen/space_x_large"
+        android:background="@drawable/bg_ranking_round"
+        android:paddingHorizontal="@dimen/space_median"
+        android:paddingTop="@dimen/space_x_large"
+        android:paddingBottom="@dimen/space_large">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/space_x_small"
-                android:layout_marginStart="@dimen/space_x_large"
-                android:layout_marginEnd="@dimen/space_x_large"
-                android:paddingEnd="@dimen/space_x_small"
-                android:paddingBottom="@dimen/space_small">
+        <TextView
+            android:id="@+id/tv_ranking_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ranking_size"
+            android:textSize="@dimen/text_x_large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_ranking_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_median"
-                    android:text="@string/ranking_size"
-                    android:textSize="@dimen/text_x_large"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_ranking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_median"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ranking_title"
-                    tools:listitem="@layout/item_home_ranking" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ranking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_median"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_ranking_title"
+            tools:listitem="@layout/item_home_ranking" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

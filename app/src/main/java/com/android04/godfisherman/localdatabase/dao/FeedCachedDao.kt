@@ -4,6 +4,7 @@ import androidx.room.*
 import com.android04.godfisherman.localdatabase.entity.FishingRecordCached
 import com.android04.godfisherman.localdatabase.entity.TypeInfoCached
 import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
+import java.util.*
 
 @Dao
 interface FeedCachedDao {
@@ -29,10 +30,10 @@ interface FeedCachedDao {
     suspend fun deleteAll()
 
     @Transaction
-    @Query("SELECT * FROM TypeInfoCached ORDER BY id DESC")
-    suspend fun getTypeInfosWithFishingRecords(): List<TypeInfoWithFishingRecords>
+    @Query("SELECT * FROM TypeInfoCached WHERE id < :id ORDER BY id DESC LIMIT 5")
+    suspend fun getTypeInfosWithFishingRecords(id: Date): List<TypeInfoWithFishingRecords>
 
     @Transaction
-    @Query("SELECT * FROM TypeInfoCached WHERE isTimeline = :isTimeLine ORDER BY id DESC")
-    suspend fun getTypeInfosWithFishingRecordsFiltered(isTimeLine: Boolean): List<TypeInfoWithFishingRecords>
+    @Query("SELECT * FROM TypeInfoCached WHERE isTimeline = :isTimeLine AND id < :id ORDER BY id DESC LIMIT 5")
+    suspend fun getTypeInfosWithFishingRecordsFiltered(isTimeLine: Boolean, id: Date): List<TypeInfoWithFishingRecords>
 }

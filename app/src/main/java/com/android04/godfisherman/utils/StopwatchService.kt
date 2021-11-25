@@ -10,20 +10,19 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
 import java.util.*
 
-class StopwatchService:
+class StopwatchService :
     Service() {
 
     companion object {
         const val TIME_EXTRA = "timeExtra"
-        const val TIME_SAVED = "timeSaved"
         const val FROM_SERVICE = "fromService"
         const val SERVICE_DESTROYED = "serviceDestroyed"
         const val STOPWATCH_ENTER = "timeEnter"
         const val NOTIFICATION_ID = 10
     }
+
     private var saveTime = 0.0
     private val stopwatch = Timer()
     private lateinit var notification: NotificationCompat.Builder
@@ -31,13 +30,13 @@ class StopwatchService:
     override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onStartCommand(passedIntent: Intent, flags: Int, startId: Int): Int {
-        Log.d("StopWatch", "서비스 실행")
         MainActivity.isStopwatchServiceRunning = true
         val intent = Intent(this, MainActivity::class.java)
         intent.action = STOPWATCH_ENTER
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra(FROM_SERVICE, true)
+
         val pendingIntent = PendingIntent
             .getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
@@ -56,7 +55,6 @@ class StopwatchService:
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("checkLifeCycle", "$this : onDestroy")
         stopwatch.cancel()
         val intent = Intent(SERVICE_DESTROYED)
         intent.putExtra(SERVICE_DESTROYED, saveTime)

@@ -14,10 +14,12 @@ class StopwatchInfoFragment : BaseFragment<FragmentStopwatchInfoBinding, Stopwat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStatusBarColor(R.color.gradient_main_start)
         binding.btnStart.setOnClickListener {
             val activity = requireActivity() as MainActivity
             activity.viewModel.stopwatchOnFlag.value = true
-            activity.viewModel.isFromInfoFragment = true
+//            activity.viewModel.isFromInfoFragment = true
+            activity.removeFragment()
         }
     }
 }

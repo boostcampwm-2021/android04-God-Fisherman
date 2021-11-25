@@ -1,26 +1,23 @@
 package com.android04.godfisherman.ui.stopwatch
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startForegroundService
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.EventObserver
+import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
+import com.android04.godfisherman.ui.main.MainActivity
 import com.android04.godfisherman.ui.main.MainViewModel
-import com.android04.godfisherman.utils.StopwatchService
 import com.android04.godfisherman.utils.UploadDialog
+import com.android04.godfisherman.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class TestStopwatchFragment :
@@ -29,49 +26,41 @@ class TestStopwatchFragment :
     override val viewModel: MainViewModel by activityViewModels()
 
     private var isPlayAnimate = false
+    private val loadingDialog: Dialog by lazy {
+        LoadingDialogProvider().provideLoadingDialog(requireContext(), R.layout.dialog_upload_loading)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        binding.fragment = this
 
         initRecyclerView()
-        setObserver()
-        binding.viewStartStop.setOnClickListener {
-            if (viewModel.startOrStopTimer()) {
-                showDialog()
-                viewModel.resetStopwatch()
-            }
-        }
+        setupListener()
+        setupObserver()
+        animateFinger()
     }
 
-    private fun showDialog() {
-        val dialog = UploadDialog(requireContext())
-        dialog.setUploadOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "upload")
-                viewModel.saveTimeLineRecord()
-            }
-        })
-        dialog.setBackOnClickListener(object : UploadDialog.OnDialogClickListener {
-            override fun onClicked() {
-                Log.d("UploadDialog", "back")
-                viewModel.resumeStopwatch()
-            }
-        })
+    fun showDialog() {
+        val dialog = UploadDialog(requireContext(), { viewModel.saveTimeLineRecord() },
+            { viewModel.resumeStopwatch() })
+
         dialog.showDialog()
     }
 
     private fun initRecyclerView() {
         viewModel.loadTmpTimeLineRecord()
-        val recyclerViewEmptySupport = binding.rvTimeLine
-        val emptyView = binding.tvEmptyView
-        recyclerViewEmptySupport.adapter = TimelineListAdapter()
-        recyclerViewEmptySupport.setEmptyView(emptyView)
-        recyclerViewEmptySupport.setVerticalInterval(50)
+        binding.rvTimeLine.apply {
+            setUpConfiguration(
+                TimelineListAdapter(),
+                binding.tvEmptyView,
+                50
+            )
+        }
     }
 
-    private fun setObserver() {
-        viewModel.isStopwatchStarted.observe(viewLifecycleOwner, Observer {
+    private fun setupObserver() {
+        viewModel.isStopwatchStarted.observe(viewLifecycleOwner, {
             binding.vShadow.isVisible = it
             isPlayAnimate = it
             if (it) {
@@ -80,14 +69,31 @@ class TestStopwatchFragment :
                 }
             }
         })
-        viewModel.tmpFishingList.observe(viewLifecycleOwner, Observer {
-            binding.rvTimeLine.submitList(it)
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> loadingDialog.show()
+                false -> loadingDialog.cancel()
+            }
+        }
+        viewModel.successOrFail.observe(viewLifecycleOwner, EventObserver { message ->
+            showToast(requireContext(), message)
         })
+    }
+
+    private fun setupListener() {
+
+        binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
+            }
+            if (scrollY == 0) {
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
+            }
+        }
     }
 
     private fun animateShadow() {
         if (isPlayAnimate) {
-            Log.d("animateShadow", "메소드 실행")
             binding.vShadow.apply {
                 animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).withEndAction {
                     animate().scaleX(1f).scaleY(1f).setDuration(1000).withEndAction {
@@ -95,6 +101,20 @@ class TestStopwatchFragment :
                     }.start()
                 }.start()
             }
+        }
+    }
+
+    private fun animateFinger(){
+        binding.ivFinger.apply {
+            animate().translationYBy(0f).setDuration(700).withEndAction {
+                isVisible = true
+                animate().translationYBy(200f).setDuration(1000).withEndAction {
+                    translationY = 0f
+                    animate().translationYBy(200f).setDuration(1000).withEndAction {
+                        isVisible = false
+                    }.start()
+                }.start()
+            }.start()
         }
     }
 

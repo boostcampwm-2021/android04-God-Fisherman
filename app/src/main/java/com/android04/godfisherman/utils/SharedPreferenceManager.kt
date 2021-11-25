@@ -7,10 +7,12 @@ import com.android04.godfisherman.data.DTO.Gps
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @Singleton
 class SharedPreferenceManager @Inject constructor(
     @ApplicationContext context: Context
 ){
+
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF_APP_FILE, Context.MODE_PRIVATE)
     private val editor = sharedPref.edit()
@@ -20,21 +22,34 @@ class SharedPreferenceManager @Inject constructor(
     }
 
     fun deleteString(key: String) {
-        val editor = sharedPref.edit()
         editor.remove(key).apply()
     }
 
-    fun getString(key: String) = sharedPref.getString(key, "")
+    fun getString(key: String) = sharedPref.getString(key, null)
 
     fun saveGps(value: Gps) {
         editor.putParcelable(KEY_GPS, value)
     }
 
-    fun getGps(): Gps? {
+    fun loadGps(): Gps? {
        return sharedPref.getParcelable(KEY_GPS, null)
     }
 
+    fun saveTIme(value: Long) {
+        editor.putLong(KEY_TIME, value).apply()
+    }
+
+    fun loadTime(): Long? {
+        return sharedPref.getLong(KEY_TIME, ERROR_TIME)
+    }
+
+    fun deleteTime() {
+        editor.remove(KEY_TIME).apply()
+    }
+
     companion object {
+        const val ERROR_TIME = -1L
+        const val KEY_TIME = "time"
         const val KEY_GPS = "gps"
         const val PREF_APP_FILE = "pref_app_file"
         const val PREF_LOCATION = "pref_location"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,11 +9,15 @@
             name="feedViewModel"
             type="com.android04.godfisherman.ui.feed.FeedViewModel" />
 
+        <variable
+            name="feedFragment"
+            type="com.android04.godfisherman.ui.feed.FeedFragment" />
 
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/SRL_feed"
+        setRefreshLoading="@{feedViewModel.isDataLoading()}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,15 +32,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_small"
-                android:visibility="invisible"
                 app:checkedChip="@id/cp_type_all"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:selectionRequired="true"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/cp_type_all"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -44,6 +49,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/cp_type_photo"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -51,6 +57,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/cp_type_timeline"
+                    setChipLoading="@{feedViewModel.isDataLoading()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -71,6 +78,7 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_loading"
+                setLottieLoading="@{feedViewModel.isDataLoading()}"
                 android:layout_width="@dimen/feed_loading_lottie_size"
                 android:layout_height="@dimen/feed_loading_lottie_size"
                 app:layout_constraintBottom_toBottomOf="parent"

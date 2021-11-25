@@ -13,20 +13,36 @@ fun ByteBuffer.toByteArray(): ByteArray {
 }
 
 fun Double.toTimeMilliSecond(): String{
-    val time = this.roundToInt() % 8640000
+    val time = this.roundToInt()
     val hour = time / 360000
-    val min = time % 3600000 / 6000
-    val sec = time % 3600000 % 6000 / 100
-    val milli = time % 3600000 % 6000 % 100
-    return  String.format("%02d:%02d:%02d:%02d", hour, min, sec, milli)
+    val min = time % 360000 / 6000
+    val sec = time % 360000 % 6000 / 100
+    val milli = time % 360000 % 6000 % 100
+    return  String.format("%02d:%02d:%02d.%02d", hour, min, sec, milli)
+}
+
+fun Long.toTimeMilliSecond(): String{
+    val time = this
+    val hour = time / 360000
+    val min = time % 360000 / 6000
+    val sec = time % 360000 % 6000 / 100
+    val milli = time % 360000 % 6000 % 100
+    return  String.format("%02d:%02d:%02d.%02d", hour, min, sec, milli)
 }
 
 fun Double.toTimeSecond(): String{
-    val time = this.roundToInt() % 8640000
+    val time = this.roundToInt()
     val hour = time / 360000
-    val min = time % 3600000 / 6000
-    val sec = time % 3600000 % 6000 / 100
+    val min = time % 360000 / 6000
+    val sec = time % 360000 % 6000 / 100
     return  String.format("%02d:%02d:%02d", hour, min, sec)
+}
+
+fun Double.toTimeHourMinute(): String{
+    val time = this.roundToInt()
+    val hour = time / 360000
+    val min = time % 360000 / 6000
+    return  String.format("%02d시간 %02d분", hour, min)
 }
 
 fun Date.toDateString(): String{

@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android04.godfisherman.common.NetworkChecker
+import com.android04.godfisherman.common.Event
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.utils.LocationHelper
+import com.android04.godfisherman.utils.StopwatchManager
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,49 +25,51 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: StopwatchRepository,
     private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper,
+    private val locationHelper: LocationHelper
 ) : ViewModel() {
-    companion object{
+    companion object {
         var isTimeLine = false
         var isFromService = false
     }
+    val stopwatch = StopwatchManager({ time -> _displayTime.postValue(time.toTimeMilliSecond()) })
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
     var beforeMenuItemId: Int = 0
-    var isFromStopwatchFragment: Boolean = false
-    var isFromInfoFragment: Boolean = false
     var isOpened: Boolean = false
     var isServiceRequestWithOutCamera = true
 
     var lastBackTime = 0L
 
-    private val _isNetworkConnected: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
-
-    fun checkConnectivity() {
-        //_isNetworkConnected.value = NetworkChecker.isConnected()
+    private val _currentLocation: MutableLiveData<Location?> by lazy {
+        MutableLiveData<Location?>(
+            null
+        )
     }
-
-    private val _currentLocation: MutableLiveData<Location?> by lazy { MutableLiveData<Location?>(null) }
     val currentLocation: LiveData<Location?> = _currentLocation
 
-    private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
+    private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(
+            false
+        )
+    }
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
 
     private val _isAfterUpload: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isAfterUpload: LiveData<Boolean> = _isAfterUpload
 
-    private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy{ MutableLiveData<List<TmpFishingRecord>>() }
+    private val _tmpFishingList: MutableLiveData<List<TmpFishingRecord>> by lazy { MutableLiveData<List<TmpFishingRecord>>() }
     val tmpFishingList: LiveData<List<TmpFishingRecord>> = _tmpFishingList
-
-    private lateinit var stopwatch: Timer
-    var time = 0.0
-    var resumeTime = 0.0
 
     private val _displayTime: MutableLiveData<String> by lazy { MutableLiveData<String>("00:00:00.00") }
     val displayTime: LiveData<String> = _displayTime
 
-    fun startOrStopTimer(): Boolean{
-        return if(isStopwatchStarted.value == true) {
+    private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isLoading: MutableLiveData<Boolean?> = _isLoading
+
+    private val _successOrFail: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
+    val successOrFail: LiveData<Event<String>> = _successOrFail
+
+    fun startOrStopTimer(): Boolean {
+        return if (isStopwatchStarted.value == true) {
             endStopwatch()
             true
         } else {
@@ -74,91 +78,77 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun passedTimeFromService(passedTime: Double){
-        time = passedTime
-        stopwatch = Timer()
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
+    fun passedTimeFromService(passedTime: Double) {
+        stopwatch.start(10, passedTime)
         _isStopwatchStarted.value = true
     }
 
-    fun resetStopwatch(){
-        time = 0.0
-        _displayTime.postValue(time.toTimeMilliSecond())
-    }
-
-    private fun startStopwatch(){
+    private fun startStopwatch() {
         isTimeLine = true
-        stopwatch = Timer()
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
+        stopwatch.start(10)
         _isStopwatchStarted.value = true
     }
 
-    fun endStopwatch(){
+    fun endStopwatch() {
         isTimeLine = false
-        stopwatch.cancel()
-        resumeTime = time
+        stopwatch.end()
         _isStopwatchStarted.value = false
     }
 
-    fun resumeStopwatch(){
+    fun resumeStopwatch() {
         isTimeLine = true
-        stopwatch = Timer()
-        time = resumeTime
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 10)
+        stopwatch.resumeStopwatch(10)
         _isStopwatchStarted.value = true
     }
 
-    fun saveTimeLineRecord(){
-        if (!_tmpFishingList.value.isNullOrEmpty()){
-            viewModelScope.launch(Dispatchers.IO){
-                repository.saveTimeLineRecord(time)
+    fun saveTimeLineRecord() {
+        if (!_tmpFishingList.value.isNullOrEmpty()) {
+            _isLoading.value = true
+          
+            viewModelScope.launch(Dispatchers.IO) {
+                val result = repository.saveTimeLineRecord(stopwatch.getTime())
+                _isLoading.postValue(false)
+                
+                when (result) {
+                    is Result.Success -> {
+                        _successOrFail.postValue(Event("업로드를 완료했습니다."))
+                    }
+                    is Result.Fail -> {
+                        _successOrFail.postValue(Event(result.description))
+                    }
+                }
             }
         }
         _isAfterUpload.value = true
     }
 
-    private inner class StopwatchTask() : TimerTask() {
-        override fun run() {
-            time++
-            _displayTime.postValue(time.toTimeMilliSecond())
-        }
-
-        override fun cancel(): Boolean {
-            resumeTime = time
-            time = 0.0
-            return super.cancel()
-        }
-    }
-
-    fun loadTmpTimeLineRecord(){
+    fun loadTmpTimeLineRecord() {
         viewModelScope.launch(Dispatchers.IO) {
             _tmpFishingList.postValue(repository.loadTmpTimeLineRecord())
         }
     }
 
-    fun passStopwatchToService(){
+    fun passStopwatchToService() {
         _isStopwatchStarted.value = false
-        stopwatch.cancel()
+        stopwatch.end()
     }
 
-    fun setIsAfterUploadFalse(){
+    fun setIsAfterUploadFalse() {
         _isAfterUpload.value = false
+    }
+
+    fun requestLocation() {
+        locationHelper.setLocationUpdate { updateLocation() }
     }
 
     private fun updateLocation() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 val location = locationHelper.getLocation()
                 locationRepository.saveLocation(location)
                 _currentLocation.postValue(location)
-//                _address.postValue(locationRepository.updateLocation(location))
             }
         }
-    }
-
-    fun requestLocation(){
-        Log.d("LocationUpdate", "requestLocation() 실행")
-        locationHelper.setLocationUpdate { updateLocation() }
     }
 
 }

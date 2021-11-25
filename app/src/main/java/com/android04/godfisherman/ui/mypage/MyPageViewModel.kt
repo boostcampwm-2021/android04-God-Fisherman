@@ -3,32 +3,23 @@ package com.android04.godfisherman.ui.mypage
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android04.godfisherman.ui.login.LogInViewModel
-import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.data.repository.LogInRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(private val manager: SharedPreferenceManager) : ViewModel() {
+class MyPageViewModel @Inject constructor(
+    private val repository: LogInRepository
+) : ViewModel() {
 
-    private val _userName : MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val userName : LiveData<String> = _userName
-
-    private val _userEmail : MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val userEmail : LiveData<String> = _userEmail
-
-    private val _userImageUrl : MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val userImageUrl : LiveData<String> = _userImageUrl
+    private val _userInfo: MutableLiveData<UserInfo> by lazy { MutableLiveData<UserInfo>() }
+    val userInfo: LiveData<UserInfo> = _userInfo
 
     fun fetchUserData() {
-        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
-        _userEmail.value = manager.getString(LogInViewModel.LOGIN_EMAIL)
-        _userImageUrl.value = manager.getString(LogInViewModel.LOGIN_IMG)
+        _userInfo.value = repository.getUserInfo()
     }
 
     fun doLogout() {
-        manager.deleteString(LogInViewModel.LOGIN_NAME)
-        manager.deleteString(LogInViewModel.LOGIN_EMAIL)
-        manager.deleteString(LogInViewModel.LOGIN_IMG)
+        repository.doLogOut()
     }
 }

@@ -17,33 +17,26 @@ class RecyclerViewEmptySupport : RecyclerView {
     constructor (context: Context, attrs: AttributeSet) : super(context, attrs){}
 
     private var emptyView: View? = null
-    private val adapterDataObserver: AdapterDataObserver = object : AdapterDataObserver() {
-        override fun onChanged() {
-            super.onChanged()
 
-            val adapter = adapter
-
-            Log.d("TAG", "onChanged: ${adapter!!.itemCount}")
-            if (adapter != null && emptyView != null)
+    private fun onDataChanged() {
+        Log.d("TAG", "onChanged: ${adapter!!.itemCount}")
+        if (adapter != null && emptyView != null)
+        {
+            if (adapter!!.itemCount == 0)
             {
-                if (adapter.itemCount == 0)
-                {
-                    emptyView!!.visibility = View.VISIBLE
-                    this@RecyclerViewEmptySupport.visibility = View.GONE
-                }
-                else
-                {
-                    emptyView!!.visibility = View.GONE
-                    this@RecyclerViewEmptySupport.visibility = View.VISIBLE
-                }
+                emptyView!!.visibility = View.VISIBLE
+                this@RecyclerViewEmptySupport.visibility = View.GONE
+            } else
+            {
+                emptyView!!.visibility = View.GONE
+                this@RecyclerViewEmptySupport.visibility = View.VISIBLE
             }
         }
     }
 
     override fun setAdapter(adapter: Adapter<*>?) {
         super.setAdapter(adapter)
-        adapter?.registerAdapterDataObserver(adapterDataObserver)
-        adapterDataObserver.onChanged()
+        onDataChanged()
     }
 
     fun setEmptyView(emptyView: View) {
@@ -53,8 +46,10 @@ class RecyclerViewEmptySupport : RecyclerView {
     // RecyclerView Adpater 가 ListAdapter인 경우에만 사용
     fun <T> submitList(dataList: List<T>) {
         try {
-            (adapter as ListAdapter<T, *>).submitList(dataList)
-            adapterDataObserver.onChanged()
+            (adapter as ListAdapter<T, *>).submitList(dataList) {
+                onDataChanged()
+            }
+
         } catch (e: Exception) {
             // 이는 사용자가 아닌 개발자의 실라 별도의 예외처리 없이 로그 출력
             e.printStackTrace()
@@ -63,6 +58,12 @@ class RecyclerViewEmptySupport : RecyclerView {
 
     fun setVerticalInterval(height: Int) {
         this.addItemDecoration(VerticalItemDecoration(height))
+    }
+
+    fun setUpConfiguration(adapter: Adapter<*>?, emptyView: View, interval: Int) {
+        setAdapter(adapter)
+        setEmptyView(emptyView)
+        setVerticalInterval(interval)
     }
 
     class VerticalItemDecoration(private val height: Int) : RecyclerView.ItemDecoration() {

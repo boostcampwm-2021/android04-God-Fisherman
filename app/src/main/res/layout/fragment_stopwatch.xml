@@ -6,6 +6,9 @@
         <variable
             name="viewModel"
             type="com.android04.godfisherman.ui.main.MainViewModel" />
+        <variable
+            name="fragment"
+            type="com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +16,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_stopwatch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -77,6 +81,7 @@
                     android:layout_marginTop="@dimen/space_xxx_large"
                     android:background="@null"
                     android:clickable="true"
+                    android:onClick="@{() -> viewModel.startOrStopTimer() ? fragment.showDialog() : void}"
                     android:elevation="10dp"
                     android:src="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop_with_ripple : @drawable/btn_start}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -104,6 +109,7 @@
                     android:layout_marginTop="@dimen/space_median"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    submitList="@{viewModel.tmpFishingList}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
@@ -119,6 +125,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line" />
+
+                <ImageView
+                    android:id="@+id/iv_finger"
+                    android:layout_width="67dp"
+                    android:layout_height="91dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:elevation="24dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/touch_finger" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

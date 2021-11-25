@@ -1,13 +1,18 @@
 package com.android04.godfisherman.ui.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.android04.godfisherman.R
-import com.android04.godfisherman.common.Type
 import com.android04.godfisherman.databinding.FragmentFeedBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.fragment_feed) {
@@ -15,45 +20,49 @@ class FeedFragment : BaseFragment<FragmentFeedBinding, FeedViewModel>(R.layout.f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.rvFeed.adapter = FeedRecyclerViewAdapter()
+        binding.feedFragment = this
+        binding.rvFeed.adapter = FeedAdapter()
         binding.feedViewModel = viewModel
-
-        setRefresh()
+        setStatusBarColor(R.color.basic)
         initListener()
-        setupObserver()
-
-        viewModel.fetchFeedDataList(Type.ALL)
-    }
-
-    private fun setRefresh(){
-        binding.SRLFeed.setOnRefreshListener {
-            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
-            viewModel.setFilter(binding.cgType.checkedChipId)
-
-        }
+        initRecyclerView()
     }
 
     private fun initListener() {
         binding.cgType.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.setFilter(checkedId)
-            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).clearData()
-
-            binding.lottieLoading.visibility = View.VISIBLE
-            binding.lottieLoading.playAnimation()
-
-            binding.cgType.visibility = View.INVISIBLE
+            initRecyclerView()
+        }
+        binding.SRLFeed.setOnRefreshListener {
+            initRecyclerView()
         }
     }
 
-    private fun setupObserver() {
-        viewModel.feedDataList.observe(viewLifecycleOwner) {
-            binding.lottieLoading.visibility = View.GONE
-            binding.lottieLoading.pauseAnimation()
-
-            binding.cgType.visibility = View.VISIBLE
-            binding.SRLFeed.isRefreshing = false
-            (binding.rvFeed.adapter as FeedRecyclerViewAdapter).setData(it)
+    private fun initRecyclerView() {
+        binding.rvFeed.adapter = FeedAdapter()
+        pagingStateListener()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.setFilter(binding.cgType.checkedChipId).collectLatest { newData ->
+                (binding.rvFeed.adapter as FeedAdapter).submitData(newData)
+            }
         }
     }
+
+    private fun pagingStateListener() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            (binding.rvFeed.adapter as FeedAdapter).loadStateFlow.collectLatest { loadStates ->
+                when (loadStates.refresh) {
+                    is LoadState.Loading -> {
+                        viewModel.setLoadingOn()
+                    }
+                    !is LoadState.Loading -> {
+                        viewModel.setLoadingOff()
+                    }
+                    is LoadState.Error -> {
+                        Log.d("LoadState", "에러 발생")
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -5,8 +5,11 @@ import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSou
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_NAME
 import com.android04.godfisherman.utils.RepoResponse
 import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.utils.StorageManager
+import com.android04.godfisherman.utils.calculateRecordSize
 import com.google.firebase.Timestamp
 import java.lang.Exception
 import java.util.*
@@ -33,16 +36,21 @@ class UploadRepository @Inject constructor(
         return ret
     }
 
-    suspend fun saveImageType(image: Bitmap, fishLength: Double, fishType: String, callback: RepoResponse<Unit>) {
+    suspend fun saveImageType(
+        image: Bitmap,
+        fishLength: Double,
+        fishType: String,
+        callback: RepoResponse<Unit>
+    ) {
         val imageUrl = remoteDataSource.getImageUrl(image)
 
         imageUrl?.let {
             val type = TypeInfo(
                 Timestamp(Date()),
                 false,
-                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "",
+                getAddress(),
                 0,
-                "user1"
+                sharedPreferenceManager.getString(LOGIN_NAME) ?: "USER1"
             )
             val fishingRecord = FishingRecord(0, imageUrl, Date(), fishLength, fishType)
             var isSuccess = true
@@ -57,16 +65,28 @@ class UploadRepository @Inject constructor(
         }
     }
 
-    suspend fun saveTmpTimeLineRecord(image: Bitmap, fishLength: Double, fishType: String, callback: RepoResponse<Unit>){
+    suspend fun saveTmpTimeLineRecord(
+        image: Bitmap,
+        fishLength: Double,
+        fishType: String,
+        callback: RepoResponse<Unit>
+    ) {
         val fishingRecord = TmpFishingRecord(image, Date(), fishLength, fishType)
-        var isSuccess = true
+        val size = calculateRecordSize(fishingRecord)
+
+        var isSuccess = StorageManager.getInternalRemainMemory() > size
 
         try {
-            localDataSource.saveTmpTimeLineRecord(fishingRecord)
+            if(isSuccess) {
+                localDataSource.saveTmpTimeLineRecord(fishingRecord)
+            }
         } catch (e: Exception) {
             isSuccess = false
         } finally {
             callback.invoke(isSuccess, Unit)
         }
     }
+
+    fun getAddress(): String =
+        sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: ""
 }

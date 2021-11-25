@@ -197,7 +197,11 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     override fun onSensorChanged(event: SensorEvent?) {
         event?.let{
             binding.lvTest.onSensorEvent(event)
-            viewModel.changedLevel(event)
+
+            val x = event.values[0]
+            val y = event.values[1]
+
+            viewModel.changedLevel(x, y)
         }
     }
 
@@ -219,11 +223,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
                             heightConvert(it.bottom, image.height, screenSize.height),
                             widthConvert(it.left, image.width, screenSize.width),
                             widthConvert(it.right, image.width, screenSize.width))
-                    }
-                )
-                viewModel.setSize(
-                    rectList.map {
-                        it.right - it.left
                     }
                 )
             }

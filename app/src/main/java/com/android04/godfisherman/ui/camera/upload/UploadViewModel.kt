@@ -1,7 +1,5 @@
 package com.android04.godfisherman.ui.camera.upload
 
-import android.graphics.Bitmap
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,6 +34,9 @@ class UploadViewModel @Inject constructor(
     private val _isInputCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isInputCorrect: MutableLiveData<Boolean?> = _isInputCorrect
 
+    private val _isSizeCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
+    val isSizeCorrect: MutableLiveData<Boolean?> = _isSizeCorrect
+
     private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading: MutableLiveData<Boolean?> = _isLoading
 
@@ -46,15 +47,23 @@ class UploadViewModel @Inject constructor(
     }
     val isNetworkConnected: MutableLiveData<Boolean?> = _isNetworkConnected
 
+    private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val address: LiveData<String> get() = _address
+
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
     var bodySizeCentiMeter: String? = null
-    lateinit var fishThumbnail: Bitmap
+    var fishThumbnail = CameraActivity.captureImage!!
 
     fun fetchInitData(size: Double) {
         bodySize = roundBodySize(size)
         bodySizeCentiMeter = convertCentiMeter(size)
-        fishThumbnail = CameraActivity.captureImage!!
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _address.postValue(repository.getAddress())
+        }
+
+        fetchFishTypeList()
     }
 
     fun fetchFishTypeList() {
@@ -79,17 +88,13 @@ class UploadViewModel @Inject constructor(
         }
     }
 
-    fun setFishTypeSelected(selected: Editable) {
-        fishTypeSelected = selected.toString()
-    }
-
     fun saveFishingRecord() {
         if (!networkChecker.isConnected()) {
             _isNetworkConnected.value = false
             return
         }
 
-        if (fishTypeSelected != null && bodySize != null && ::fishThumbnail.isInitialized) {
+        if (fishTypeSelected != null && bodySize != null) {
             _isInputCorrect.value = true
             _isLoading.value = true
             if (MainViewModel.isTimeLine) {
@@ -102,7 +107,7 @@ class UploadViewModel @Inject constructor(
                     }
 
                     callback.addFailureCallback {
-                        _isUploadSuccess.postValue(false)
+                        _isSizeCorrect.postValue(false)
                         _isLoading.postValue(false)
                     }
 

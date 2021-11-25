@@ -4,22 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.common.Event
+import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.ui.login.LogInViewModel
+import com.android04.godfisherman.data.repository.LogInRepository
 import com.android04.godfisherman.utils.RepoResponseImpl
-import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
-    private val locationRepository: LocationRepository,
-    private val manager: SharedPreferenceManager
+    private val logInRepository: LogInRepository,
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -31,8 +32,8 @@ class HomeViewModel @Inject constructor(
     private val _isYoutubeLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isYoutubeLoading: LiveData<Boolean> = _isYoutubeLoading
 
-    private val _isYoutubeSuccess: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val isYoutubeSuccess: LiveData<Boolean> = _isYoutubeSuccess
+    private val _youtubeError: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val youtubeError: LiveData<String> = _youtubeError
 
     private val _homeCurrentWeather: MutableLiveData<HomeCurrentWeather> by lazy { MutableLiveData<HomeCurrentWeather>() }
     val homeCurrentWeather: LiveData<HomeCurrentWeather> = _homeCurrentWeather
@@ -43,37 +44,53 @@ class HomeViewModel @Inject constructor(
     private val _isWeatherLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isWeatherLoading: LiveData<Boolean> = _isWeatherLoading
 
-    private val _userName: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val userName: LiveData<String> = _userName
+    private val _userName: MutableLiveData<String?> by lazy { MutableLiveData<String?>() }
+    val userName: LiveData<String?> = _userName
 
     private val _rankList: MutableLiveData<List<RankingData.HomeRankingData>> by lazy { MutableLiveData<List<RankingData.HomeRankingData>>() }
     val rankList: LiveData<List<RankingData.HomeRankingData>> = _rankList
-    
 
+    private val _isRankLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val isRankLoading: LiveData<Boolean> = _isRankLoading
 
-    fun fetchRanking() {
+    private val _error: MutableLiveData<Event<String>> by lazy { MutableLiveData<Event<String>>() }
+    val error: LiveData<Event<String>> = _error
+
+    fun fetchRanking(isRefresh: Boolean = false) {
+        _isRankLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
-            val list = homeRepository.fetchRankingList()
-            _rankList.postValue(list)
+            when (val result =
+                homeRepository.fetchRankingList(FishRankingRequest.HOME, isRefresh)) {
+                is Result.Success -> {
+                    _rankList.postValue(result.data)
+                    _isRankLoading.postValue(false)
+                }
+                is Result.Fail -> {
+                    _error.postValue(Event(result.description))
+                }
+            }
         }
     }
 
-    fun fetchYoutube() {
+    fun fetchYoutube(isRefresh: Boolean = false) {
+        _youtubeError.value = null
+
         viewModelScope.launch(Dispatchers.IO) {
             _isYoutubeLoading.postValue(true)
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
             repoCallback.addSuccessCallback {
                 _youtubeList.postValue(it)
-                _isYoutubeSuccess.postValue(true)
                 _isYoutubeLoading.postValue(false)
             }
 
             repoCallback.addFailureCallback {
-                _isYoutubeSuccess.postValue(false)
+                _isYoutubeLoading.postValue(false)
+                _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했습니다\n내일 다시 시도해주세요")
             }
 
-            homeRepository.fetchYoutubeData(repoCallback)
+            homeRepository.fetchYoutubeData(repoCallback, isRefresh)
         }
     }
 
@@ -101,25 +118,30 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
-                homeRepository.fetchWeatherData(location.latitude, location.longitude, currentCallback, detailCallback)
+                detailCallback.addFailureCallback {
+                    _isWeatherLoading.postValue(false)
+                }
+
+                homeRepository.fetchWeatherData(
+                    location.latitude,
+                    location.longitude,
+                    currentCallback,
+                    detailCallback
+                )
             }
         }
     }
 
     fun fetchUserID() {
-        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
+        _userName.value = logInRepository.getUserInfo().name
     }
 
     fun loadLocation() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val location = locationRepository.loadLocation()
-                if (location != null){
-                    val newAddress = locationRepository.updateAddress()
-                    _address.postValue(newAddress)
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = locationRepository.updateAddress()) {
+                is Result.Success -> _address.postValue(result.data)
+                is Result.Fail -> _error.postValue(Event(result.description))
             }
         }
     }
-
 }

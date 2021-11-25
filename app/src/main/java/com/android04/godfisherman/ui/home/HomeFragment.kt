@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
+import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.databinding.FragmentHomeBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
@@ -22,20 +23,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        setStatusBarColor(R.color.background_home)
         setLocationSavedListener()
         loadLocation()
         initView()
         setListener()
         setRecyclerView()
-        setObserver()
+        setupObserver()
 
         viewModel.fetchUserID()
         viewModel.fetchYoutube()
         viewModel.fetchRanking()
+
     }
 
-    private fun setLocationSavedListener(){
-        parentFragmentManager.setFragmentResultListener(LOCATION_UPDATED, viewLifecycleOwner) { key, bundle ->
+    private fun setLocationSavedListener() {
+        parentFragmentManager.setFragmentResultListener(
+            LOCATION_UPDATED,
+            viewLifecycleOwner
+        ) { key, bundle ->
             val isSaved = bundle.getBoolean(MainActivity.DEFAULT_BUNDLE)
             Log.d("LocationUpdate", "통신 완료 : $isSaved")
             if (isSaved) viewModel.loadLocation()
@@ -54,48 +60,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.rvWeatherDetail.adapter = WeatherRecyclerViewAdapter()
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.youtubeList.observe(viewLifecycleOwner) {
             (binding.rvRecommend.adapter as RecommendRecyclerViewAdapter).setData(it)
         }
-        viewModel.isYoutubeLoading.observe(viewLifecycleOwner) {
-            if (it == true) {
-                binding.lottieLoading.visibility = View.VISIBLE
-            } else {
-                binding.lottieLoading.visibility = View.INVISIBLE
-            }
-        }
-        viewModel.isYoutubeSuccess.observe(viewLifecycleOwner) {
-            if (!it) {
-                showToast(requireContext(), R.string.home_recommend_fail)
-            }
-        }
+
         viewModel.rankList.observe(viewLifecycleOwner) {
-            binding.lottieRankingLoading.visibility = View.GONE
             (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setData(it)
         }
-        
+
         viewModel.address.observe(viewLifecycleOwner) {
             viewModel.fetchWeather()
         }
+
         viewModel.homeDetailWeather.observe(viewLifecycleOwner) {
             (binding.rvWeatherDetail.adapter as WeatherRecyclerViewAdapter).setData(it)
         }
-        viewModel.isWeatherLoading.observe(viewLifecycleOwner) {
-            if (it == true) {
-                binding.lottieWeatherLoading.visibility = View.VISIBLE
-                binding.tvSunriseDesc.visibility = View.INVISIBLE
-                binding.tvSunsetDesc.visibility = View.INVISIBLE
-                binding.ivWeatherIcon.visibility = View.INVISIBLE
-                binding.layoutShowAll.isEnabled = false
-            } else {
-                binding.lottieWeatherLoading.visibility = View.INVISIBLE
-                binding.tvSunriseDesc.visibility = View.VISIBLE
-                binding.tvSunsetDesc.visibility = View.VISIBLE
-                binding.ivWeatherIcon.visibility = View.VISIBLE
-                binding.layoutShowAll.isEnabled = true
-            }
-        }
+
+        viewModel.error.observe(viewLifecycleOwner, EventObserver { message ->
+            showToast(requireContext(), message)
+        })
     }
 
     private fun setListener() {
@@ -118,6 +102,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                 commit()
             }
         }
+        binding.srlHome.setOnRefreshListener {
+            viewModel.fetchYoutube(true)
+            viewModel.fetchRanking(true)
+            viewModel.fetchWeather()
+            binding.srlHome.isRefreshing = false
+        }
     }
 
     override fun onStart() {
@@ -132,7 +122,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         application.exitCameraActivityFlag = false
     }
 
-    private fun loadLocation(){
+    private fun loadLocation() {
         viewModel.loadLocation()
     }
 

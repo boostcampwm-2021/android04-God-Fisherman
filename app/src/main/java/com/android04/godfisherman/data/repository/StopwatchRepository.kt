@@ -1,10 +1,12 @@
 package com.android04.godfisherman.data.repository
 
+import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.datasource.stopwatchdatasource.StopwatchDataSource
 import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
 import com.android04.godfisherman.data.entity.FishingRecord
 import com.android04.godfisherman.data.entity.TypeInfo
 import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.ui.login.LogInViewModel
 import com.android04.godfisherman.utils.SharedPreferenceManager
 import com.google.firebase.Timestamp
 import java.util.*
@@ -18,7 +20,7 @@ class StopwatchRepository @Inject constructor(
     suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord> =
         localDataSource.loadTmpTimeLineRecord()
 
-    suspend fun saveTimeLineRecord(time: Double) {
+    suspend fun saveTimeLineRecord(time: Double): Result<Boolean> {
         val list = loadTmpTimeLineRecord()
         val recordList = mutableListOf<FishingRecord>()
 
@@ -29,7 +31,7 @@ class StopwatchRepository @Inject constructor(
                     FishingRecord(
                         index,
                         imageUrl,
-                        Date(),
+                        record.date,
                         record.fishLength,
                         record.fishType
                     )
@@ -43,12 +45,16 @@ class StopwatchRepository @Inject constructor(
                 sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)
                     ?: "위치 정보 없음",
                 time.toInt(),
-                "user1"
+                sharedPreferenceManager.getString(LogInViewModel.LOGIN_NAME) ?: "유저 이름 없음"
             )
 
-            remoteDataSource.saveTimeLineType(type, recordList)
-            removeTmpTimeLineRecord()
+            if (remoteDataSource.saveTimeLineType(type, recordList)) {
+                removeTmpTimeLineRecord()
+                return Result.Success(true)
+            }
         }
+
+        return Result.Fail("업로드에 실패했습니다 다시 시도해주세요")
     }
 
     suspend fun removeTmpTimeLineRecord() = localDataSource.removeTmpTimeLineRecord()

@@ -8,19 +8,8 @@ import android.view.WindowManager
 import android.widget.Button
 import com.android04.godfisherman.R
 
-class UploadDialog(context: Context) {
+class UploadDialog(context: Context, private val uploadCallback:() -> (Unit), private val backCallback:() -> (Unit)) {
     private val dialog = Dialog(context)
-
-    private lateinit var onUploadClickListener: OnDialogClickListener
-    private lateinit var onBackClickListener: OnDialogClickListener
-
-    fun setUploadOnClickListener(listener: OnDialogClickListener) {
-        onUploadClickListener = listener
-    }
-
-    fun setBackOnClickListener(listener: OnDialogClickListener) {
-        onBackClickListener = listener
-    }
 
     fun showDialog() {
         dialog.setContentView(R.layout.dialog_upload)
@@ -32,17 +21,14 @@ class UploadDialog(context: Context) {
         dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
-        dialog.findViewById<Button>(R.id.btn_upload).setOnClickListener {
-            onUploadClickListener.onClicked()
+        dialog.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+            uploadCallback()
             dialog.dismiss()
         }
         dialog.findViewById<Button>(R.id.btn_back).setOnClickListener {
-            onBackClickListener.onClicked()
+            backCallback()
             dialog.dismiss()
         }
     }
 
-    interface OnDialogClickListener {
-        fun onClicked()
-    }
 }

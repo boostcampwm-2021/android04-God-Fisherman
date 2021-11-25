@@ -6,6 +6,9 @@
         <variable
             name="viewModel"
             type="com.android04.godfisherman.ui.main.MainViewModel" />
+        <variable
+            name="activity"
+            type="com.android04.godfisherman.ui.main.MainActivity" />
     </data>
 
 
@@ -41,7 +44,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_container_stopwatch"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/stopwatch_view_height_small"
             app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -75,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close_24"
                 android:textStyle="bold"
+                android:onClick="@{()->activity.closeContainer()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
