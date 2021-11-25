@@ -11,7 +11,7 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ItemFeedPhotoTypeBinding
 import com.android04.godfisherman.databinding.ItemFeedTimelineTypeBinding
 
-class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
+class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         val item = getItem(position)
@@ -76,6 +76,9 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
             binding.ivFishPhoto.adapter = TimelineViewPagerAdapter(data.photoUrlList)
             binding.indicator.setViewPager2(binding.ivFishPhoto)
             binding.rvTimeline.adapter = TimelineRecyclerViewAdapter(data.timeline)
+            binding.rvTimeline.visibility = View.GONE
+            binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+            binding.tvShowTimeline.setText(R.string.feed_show_timeline)
             setListener()
         }
 
@@ -98,10 +101,10 @@ class FeedAdapter: PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffC
         const val PHOTO_TYPE = 0
         const val TIMELINE_TYPE = 1
         private val diffCallback = object : DiffUtil.ItemCallback<FeedData>() {
-            override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean{
-                return oldItem.date == newItem.date
-            }
 
+            override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean =
+                oldItem.date == newItem.date
+           
             override fun areContentsTheSame(oldItem: FeedData, newItem: FeedData): Boolean =
                 oldItem == newItem
         }
