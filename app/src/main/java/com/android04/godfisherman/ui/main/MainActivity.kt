@@ -75,8 +75,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             if (it) {
                 swipeMotionLayoutWrapper.transitionToState(R.id.end_close)
                 viewModel.stopwatchOnFlag.value = false
-                binding.navView.selectedItemId = R.id.navigation_stopwatch
-                changeFragment(R.id.fl_fragment_container, StopwatchInfoFragment())
                 viewModel.setIsAfterUploadFalse()
                 viewModel.isOpened = false
             }
