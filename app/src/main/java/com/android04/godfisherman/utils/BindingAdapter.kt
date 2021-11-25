@@ -118,20 +118,6 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("visibilityOnMotion")
-    fun setVisibilityOnMotion(view: View, visible: Boolean) {
-        if (view.parent is MotionLayout) {
-            val motionLayout = view.parent as MotionLayout
-            val visibility = if (visible) View.VISIBLE else View.GONE
-
-            for (constraintId in motionLayout.constraintSetIds) {
-                val constraintSet = motionLayout.getConstraintSet(constraintId)
-                constraintSet?.setVisibility(view.id, visibility)
-            }
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("setWelcomeText")
     fun setWelcomeTextWithID(view: TextView, id: String) {
         view.text = "안녕하세요 ${id}님!"
@@ -177,6 +163,12 @@ object BindingAdapter {
         itemList?.let {
             recyclerview.submitList(it)
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setLength")
+    fun setLength(view: TextView, length: Double) {
+        view.text = length.toString() + "cm"
     }
 
 }

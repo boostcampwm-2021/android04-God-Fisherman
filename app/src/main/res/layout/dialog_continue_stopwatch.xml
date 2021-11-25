@@ -17,7 +17,7 @@
         android:paddingTop="10dp"
         android:paddingEnd="12dp"
         android:paddingBottom="10dp"
-        android:text="@string/upload_dialog_back"
+        android:text="@string/continue_dialog_btn_cancel"
         android:textColor="@color/primary"
         android:textSize="16dp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="69dp"
-        android:text="@string/upload_dialog_title"
+        android:text="@string/continue_dialog_title"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/upload_dialog_detail"
+        android:text="@string/continue_dialog_detail"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:paddingTop="10dp"
         android:paddingEnd="12dp"
         android:paddingBottom="10dp"
-        android:text="@string/upload_dialog_btn_upload"
+        android:text="@string/continue_dialog_btn_confirm"
         android:textColor="@color/primary"
         android:textSize="16dp"
         android:textStyle="bold"
@@ -73,5 +73,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_upload_dialog" />
+        app:srcCompat="@drawable/ic_baseline_notification_important_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -72,6 +72,12 @@
     <string name="upload_dialog_title">낚시타임 종료</string>
     <string name="upload_dialog_detail">낚시기록을 업로드 하시겠습니까?\n(기록이 없을 경우 업로드되지 않습니다)</string>
 
+    <!-- Continue Stopwatch Dialog -->
+    <string name="continue_dialog_btn_confirm">확인</string>
+    <string name="continue_dialog_btn_cancel">취소</string>
+    <string name="continue_dialog_title">저장되지 않은 기록</string>
+    <string name="continue_dialog_detail">예상치 못하게 종료된 기록이 있습니다.\n낚시타임을 이어서 기록 하시겠습니까?\n(취소를 누르면 기록을 새롭게 시작합니다.)</string>
+
     <!-- Ranking Detail Fragment -->
     <string name="ranking_size">크기 랭킹</string>
     <string name="ranking_time">존버 랭킹</string>

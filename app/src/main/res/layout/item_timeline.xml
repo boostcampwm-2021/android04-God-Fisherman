@@ -48,10 +48,10 @@
 
         <TextView
             android:id="@+id/tv_fish_size"
+            setSizeText="@{data.fishSize}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xx_small"
-            setSizeText="@{data.fishSize}"
             android:textSize="@dimen/text_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_fish_type"

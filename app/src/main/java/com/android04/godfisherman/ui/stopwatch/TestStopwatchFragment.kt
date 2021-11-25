@@ -16,6 +16,8 @@ import com.android04.godfisherman.ui.main.MainViewModel
 import com.android04.godfisherman.utils.UploadDialog
 import com.android04.godfisherman.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class TestStopwatchFragment :
@@ -36,6 +38,7 @@ class TestStopwatchFragment :
         initRecyclerView()
         setupListener()
         setupObserver()
+        animateFinger()
     }
 
     fun showDialog() {
@@ -98,6 +101,20 @@ class TestStopwatchFragment :
                     }.start()
                 }.start()
             }
+        }
+    }
+
+    private fun animateFinger(){
+        binding.ivFinger.apply {
+            animate().translationYBy(0f).setDuration(700).withEndAction {
+                isVisible = true
+                animate().translationYBy(200f).setDuration(1000).withEndAction {
+                    translationY = 0f
+                    animate().translationYBy(200f).setDuration(1000).withEndAction {
+                        isVisible = false
+                    }.start()
+                }.start()
+            }.start()
         }
     }
 

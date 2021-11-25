@@ -18,7 +18,8 @@ class StopwatchInfoFragment : BaseFragment<FragmentStopwatchInfoBinding, Stopwat
         binding.btnStart.setOnClickListener {
             val activity = requireActivity() as MainActivity
             activity.viewModel.stopwatchOnFlag.value = true
-            activity.viewModel.isFromInfoFragment = true
+//            activity.viewModel.isFromInfoFragment = true
+            activity.removeFragment()
         }
     }
 }

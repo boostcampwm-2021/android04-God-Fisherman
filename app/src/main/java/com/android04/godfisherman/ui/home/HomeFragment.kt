@@ -103,8 +103,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }
         binding.srlHome.setOnRefreshListener {
-            viewModel.fetchYoutube()
-            viewModel.fetchRanking()
+            viewModel.fetchYoutube(true)
+            viewModel.fetchRanking(true)
             viewModel.fetchWeather()
             binding.srlHome.isRefreshing = false
         }

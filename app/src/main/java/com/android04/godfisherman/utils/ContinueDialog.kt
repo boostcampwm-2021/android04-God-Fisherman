@@ -8,11 +8,11 @@ import android.view.WindowManager
 import android.widget.Button
 import com.android04.godfisherman.R
 
-class UploadDialog(context: Context, private val uploadCallback:() -> (Unit), private val backCallback:() -> (Unit)) {
+class ContinueDialog(context: Context, private val confirmCallback:() -> (Unit), private val cancelCallback:() -> (Unit)) {
     private val dialog = Dialog(context)
 
     fun showDialog() {
-        dialog.setContentView(R.layout.dialog_upload)
+        dialog.setContentView(R.layout.dialog_continue_stopwatch)
         dialog.window!!.setLayout(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT
@@ -22,11 +22,11 @@ class UploadDialog(context: Context, private val uploadCallback:() -> (Unit), pr
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
         dialog.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-            uploadCallback()
+            confirmCallback()
             dialog.dismiss()
         }
         dialog.findViewById<Button>(R.id.btn_back).setOnClickListener {
-            backCallback()
+            cancelCallback()
             dialog.dismiss()
         }
     }
