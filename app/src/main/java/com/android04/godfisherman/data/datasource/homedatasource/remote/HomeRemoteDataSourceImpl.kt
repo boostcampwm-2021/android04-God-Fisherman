@@ -1,16 +1,16 @@
 package com.android04.godfisherman.data.datasource.homedatasource.remote
 
-import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
-import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
-import com.android04.godfisherman.data.datasource.uploadDataSource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
-import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.TypeInfo
+import com.android04.godfisherman.data.datasource.uploaddatasource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
+import com.android04.godfisherman.data.datasource.uploaddatasource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
+import com.android04.godfisherman.data.dto.FishingRecord
+import com.android04.godfisherman.data.dto.TypeInfo
 import com.android04.godfisherman.network.RetrofitClient
 import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
-import com.android04.godfisherman.ui.home.RankingData
-import com.android04.godfisherman.utils.RepoResponse
+import com.android04.godfisherman.presentation.rankingdetail.RankingData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore

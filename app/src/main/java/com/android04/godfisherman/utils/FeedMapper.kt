@@ -1,14 +1,14 @@
 package com.android04.godfisherman.utils
 
-import com.android04.godfisherman.data.DTO.FeedDTO
-import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.TypeInfo
-import com.android04.godfisherman.localdatabase.entity.FishingRecordCached
-import com.android04.godfisherman.localdatabase.entity.TypeInfoCached
-import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
-import com.android04.godfisherman.ui.feed.FeedPhotoData
-import com.android04.godfisherman.ui.feed.FeedTimelineData
-import com.android04.godfisherman.ui.feed.TimeLineData
+import com.android04.godfisherman.data.dto.FeedDTO
+import com.android04.godfisherman.data.dto.FishingRecord
+import com.android04.godfisherman.data.dto.TypeInfo
+import com.android04.godfisherman.data.localdatabase.entity.FishingRecordCached
+import com.android04.godfisherman.data.localdatabase.entity.TypeInfoCached
+import com.android04.godfisherman.data.localdatabase.entity.TypeInfoWithFishingRecords
+import com.android04.godfisherman.presentation.feed.FeedPhotoData
+import com.android04.godfisherman.presentation.feed.FeedTimelineData
+import com.android04.godfisherman.presentation.feed.TimeLineData
 import java.text.SimpleDateFormat
 import java.util.*
 

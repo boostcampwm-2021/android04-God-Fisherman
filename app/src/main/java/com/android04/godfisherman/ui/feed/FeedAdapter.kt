@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ItemFeedPhotoTypeBinding
 import com.android04.godfisherman.databinding.ItemFeedTimelineTypeBinding
+import com.android04.godfisherman.presentation.feed.FeedData
+import com.android04.godfisherman.presentation.feed.FeedPhotoData
+import com.android04.godfisherman.presentation.feed.FeedTimelineData
 
 class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diffCallback) {
 

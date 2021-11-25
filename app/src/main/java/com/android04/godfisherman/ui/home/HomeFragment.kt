@@ -8,9 +8,11 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.databinding.FragmentHomeBinding
+import com.android04.godfisherman.presentation.home.HomeViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.utils.showToast
+import com.android04.godfisherman.ui.rankingdetail.RankingDetailFragment
+import com.android04.godfisherman.ui.rankingdetail.RankingRecyclerViewAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 

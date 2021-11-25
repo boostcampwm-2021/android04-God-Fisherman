@@ -7,7 +7,7 @@
 
         <variable
             name="uploadViewModel"
-            type="com.android04.godfisherman.ui.camera.upload.UploadViewModel" />
+            type="com.android04.godfisherman.presentation.upload.UploadViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_gradient_surface_to_white"
-        tools:context=".ui.camera.upload.UploadActivity">
+        tools:context=".ui.upload.UploadActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout_top"

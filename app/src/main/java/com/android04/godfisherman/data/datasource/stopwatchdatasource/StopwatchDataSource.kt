@@ -1,6 +1,6 @@
 package com.android04.godfisherman.data.datasource.stopwatchdatasource
 
-import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
 
 interface StopwatchDataSource {
 

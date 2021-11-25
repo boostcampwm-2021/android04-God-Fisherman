@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.mypage.MyPageViewModel" />
+            type="com.android04.godfisherman.presentation.mypage.MyPageViewModel" />
 
     </data>
 

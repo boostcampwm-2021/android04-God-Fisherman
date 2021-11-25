@@ -1,9 +1,9 @@
 package com.android04.godfisherman.data.repository
 
 import android.location.Location
-import com.android04.godfisherman.data.DTO.Gps
-import com.android04.godfisherman.data.datasource.remote.LocationRemoteDataSource
-import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.presentation.main.Gps
+import com.android04.godfisherman.data.datasource.locationdatasource.LocationRemoteDataSource
+import com.android04.godfisherman.common.SharedPreferenceManager
 import javax.inject.Inject
 import com.android04.godfisherman.common.Result
 

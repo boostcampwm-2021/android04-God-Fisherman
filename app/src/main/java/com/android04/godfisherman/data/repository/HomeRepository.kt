@@ -1,16 +1,18 @@
 package com.android04.godfisherman.data.repository
 
-import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.common.RepoResponseImpl
+import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.Result
-import com.android04.godfisherman.data.cache.HomeInfoCache
+import com.android04.godfisherman.common.cache.HomeInfoCache
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
-import com.android04.godfisherman.ui.home.HomeCurrentWeather
-import com.android04.godfisherman.ui.home.HomeDetailWeather
-import com.android04.godfisherman.ui.home.HomeRecommendData
+import com.android04.godfisherman.presentation.home.HomeCurrentWeather
+import com.android04.godfisherman.presentation.home.HomeDetailWeather
+import com.android04.godfisherman.presentation.home.HomeRecommendData
 import com.android04.godfisherman.utils.*
-import com.android04.godfisherman.ui.home.RankingData
+import com.android04.godfisherman.presentation.rankingdetail.RankingData
 import javax.inject.Inject
 import kotlin.math.roundToInt
 

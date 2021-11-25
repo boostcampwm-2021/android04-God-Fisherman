@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.android04.godfisherman.ui.feed.FeedTimelineData" />
+            type="com.android04.godfisherman.presentation.feed.FeedTimelineData" />
 
         <variable
             name="timelineClickListener"

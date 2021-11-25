@@ -10,9 +10,9 @@ import android.view.Window
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentMyPageBinding
+import com.android04.godfisherman.presentation.mypage.MyPageViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.login.LogInActivity
-import com.android04.godfisherman.utils.showToast
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 

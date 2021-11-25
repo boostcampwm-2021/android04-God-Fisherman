@@ -7,23 +7,29 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.StopwatchNotification
 import com.android04.godfisherman.databinding.ActivityMainBinding
+import com.android04.godfisherman.presentation.main.MainViewModel
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
+import com.android04.godfisherman.ui.service.StopwatchService
 import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
+import com.android04.godfisherman.ui.stopwatch.UploadDialog
 import com.android04.godfisherman.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -281,6 +287,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             requestLocationPermission()
         }
     }
+
+    private fun isGrantedLocationPermission(context: Context) =
+        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     private fun requestLocationPermission() {
         var permissionCount = 0

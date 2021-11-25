@@ -12,9 +12,9 @@ import android.view.WindowInsets
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.ActivityLogInBinding
+import com.android04.godfisherman.presentation.login.LogInViewModel
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.intro.GodFishermanIntro
-import com.android04.godfisherman.utils.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

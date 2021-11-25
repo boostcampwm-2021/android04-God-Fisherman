@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.android04.godfisherman.localdatabase.entity.TmpFishingRecord" />
+            type="com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord" />
     </data>
 
     <androidx.cardview.widget.CardView

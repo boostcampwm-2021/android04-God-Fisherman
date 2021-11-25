@@ -7,7 +7,7 @@
 
         <variable
             name="feedViewModel"
-            type="com.android04.godfisherman.ui.feed.FeedViewModel" />
+            type="com.android04.godfisherman.presentation.feed.FeedViewModel" />
 
         <variable
             name="feedFragment"

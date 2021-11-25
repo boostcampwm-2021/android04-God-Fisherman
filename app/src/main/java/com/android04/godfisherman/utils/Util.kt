@@ -1,6 +1,6 @@
 package com.android04.godfisherman.utils
 
-import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs

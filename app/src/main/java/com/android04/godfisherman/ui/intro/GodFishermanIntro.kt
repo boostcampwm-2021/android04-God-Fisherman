@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
+import com.android04.godfisherman.presentation.intro.IntroViewModel
 import com.github.paolorotolo.appintro.AppIntroFragment
 import dagger.hilt.android.AndroidEntryPoint
 
