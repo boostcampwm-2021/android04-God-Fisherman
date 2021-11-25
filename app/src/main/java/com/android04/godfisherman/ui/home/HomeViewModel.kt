@@ -9,9 +9,8 @@ import com.android04.godfisherman.common.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.ui.login.LogInViewModel
+import com.android04.godfisherman.data.repository.LogInRepository
 import com.android04.godfisherman.utils.RepoResponseImpl
-import com.android04.godfisherman.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
-    private val locationRepository: LocationRepository,
-    private val manager: SharedPreferenceManager
+    private val logInRepository: LogInRepository,
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -88,7 +87,7 @@ class HomeViewModel @Inject constructor(
 
             repoCallback.addFailureCallback {
                 _isYoutubeLoading.postValue(false)
-                _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했으므로 내일 다시 시도해주세요")
+                _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했습니다\n내일 다시 시도해주세요")
             }
 
             homeRepository.fetchYoutubeData(repoCallback, isRefresh)
@@ -134,7 +133,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchUserID() {
-        _userName.value = manager.getString(LogInViewModel.LOGIN_NAME)
+        _userName.value = logInRepository.getUserInfo().name
     }
 
     fun loadLocation() {

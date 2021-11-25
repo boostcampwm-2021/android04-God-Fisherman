@@ -30,33 +30,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         setStatusBarColor(R.color.background_home)
         setLoadingDialog()
         setListener()
-        setObserver()
 
         viewModel.fetchUserData()
-    }
-
-    private fun setObserver() {
-        viewModel.isSignOutSuccess.observe(viewLifecycleOwner) {
-            when(it) {
-                true -> {
-                    showToast(requireContext(), R.string.signout_success)
-                    viewModel.doLogout()
-                    moveToLogIn()
-                }
-                false -> {
-                    showToast(requireContext(), R.string.signout_fail)
-                }
-            }
-            cancelLoadingDialog()
-        }
     }
 
     private fun setListener() {
         binding.btLogout.setOnClickListener {
             logOut()
-        }
-        binding.btSignOut.setOnClickListener {
-            signOut()
         }
     }
 
@@ -65,11 +45,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         showToast(requireContext(), R.string.logout_success)
         viewModel.doLogout()
         moveToLogIn()
-    }
-
-    private fun signOut() {
-        showLoadingDialog()
-        viewModel.doSignOut()
     }
 
     private fun moveToLogIn() {
@@ -90,15 +65,4 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         loadingDialog = dialog
     }
 
-    private fun showLoadingDialog() {
-        if (::loadingDialog.isInitialized) {
-            loadingDialog.show()
-        }
-    }
-
-    private fun cancelLoadingDialog() {
-        if (::loadingDialog.isInitialized) {
-            loadingDialog.cancel()
-        }
-    }
 }

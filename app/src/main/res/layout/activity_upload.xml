@@ -161,7 +161,7 @@
                         android:id="@+id/auto_complete_textview_fish_type"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:afterTextChanged="@{(s) -> uploadViewModel.setFishTypeSelected(s)}"
+                        android:afterTextChanged="@{(s) -> uploadViewModel.setFishTypeSelected(s.toString())}"
                         android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>

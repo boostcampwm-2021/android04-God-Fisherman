@@ -59,7 +59,7 @@ class HomeRepository @Inject constructor(
                 val time = timeConvertUTCFull(it.current.dt)
                 val sunrise = timeConvertUTC(it.current.sunrise)
                 val sunset = timeConvertUTC(it.current.sunset)
-                val temp = ((it.current.temp * 10).roundToInt() / 10F).toString() + "°"
+                val temp = ((it.current.temp * 10).roundToInt() / 10F).toString() + "°C"
                 val desc = it.current.weather.first().description
                 val icon = it.current.weather.first().icon
                 val iconUrl = getWeatherIconUrl(icon)
@@ -72,7 +72,7 @@ class HomeRepository @Inject constructor(
 
                 val list = it.hourly.subList(0, 24).map {
                     val hour = roundTime(timeConvertUTC(it.dt))
-                    val hourTemp = it.temp.roundToInt().toString() + "°"
+                    val hourTemp = it.temp.roundToInt().toString() + "°C"
                     val hourIcon = it.weather.first().icon
                     val hourUrl = getWeatherIconUrl(hourIcon)
 

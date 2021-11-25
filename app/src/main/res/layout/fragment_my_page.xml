@@ -79,25 +79,20 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_user_id" />
 
                 <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:id="@+id/bt_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_x_large"
                     android:layout_marginBottom="@dimen/space_x_large"
                     android:text="로그아웃"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/text_median"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/bt_sign_out"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_user_icon" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt_sign_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="회원탈퇴"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/bt_logout"
-                    app:layout_constraintTop_toTopOf="@id/bt_logout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,6 +109,41 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_user_profile" />
+
+        <TextView
+            android:id="@+id/tv_board_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_xxx_large"
+            android:layout_marginTop="@dimen/space_x_large"
+            android:layout_marginEnd="@dimen/space_xxx_large"
+            android:text="어종 태그 추가 및 문의 사항은 개발진에게 연락 부탁드립니다."
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_board" />
+
+        <TextView
+            android:id="@+id/tv_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_large"
+            android:text="Contact"
+            android:textSize="@dimen/text_x_large"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_board" />
+
+        <TextView
+            android:id="@+id/tv_contact_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_xxx_large"
+            android:layout_marginTop="@dimen/space_x_large"
+            android:layout_marginEnd="@dimen/space_xxx_large"
+            android:text="그물잠 개발진\nhellokyk20@gmail.com"
+            android:textSize="@dimen/text_median"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_contact" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

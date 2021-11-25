@@ -198,6 +198,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_x_large"
+                        android:layout_marginEnd="@dimen/space_x_large"
+                        android:textAlignment="center"
+                        android:textStyle="italic"
                         android:text="@{viewModel.youtubeError != null ? viewModel.youtubeError : ``}"
                         app:layout_constraintBottom_toBottomOf="@id/rv_recommend"
                         app:layout_constraintEnd_toEndOf="parent"
