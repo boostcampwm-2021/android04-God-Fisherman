@@ -26,7 +26,7 @@ class FeedRemoteDataSourceImpl @Inject constructor() : FeedDataSource.RemoteData
         var feedRef = database.collection(FEED_COLLECTION_NAME).run {
             when (type) {
                 Type.PHOTO -> whereEqualTo(TYPE_FIELD_NAME, false)
-                Type.TIMELINE -> whereEqualTo("isTimeline", true)
+                Type.TIMELINE -> whereEqualTo(TYPE_FIELD_NAME, true)
                 Type.ALL -> this
             }
         }
