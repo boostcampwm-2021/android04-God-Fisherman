@@ -8,7 +8,7 @@
             type="com.android04.godfisherman.presentation.main.MainViewModel" />
         <variable
             name="fragment"
-            type="com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment" />
+            type="com.android04.godfisherman.ui.stopwatch.StopwatchFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

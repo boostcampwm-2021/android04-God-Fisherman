@@ -28,9 +28,8 @@ import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
 import com.android04.godfisherman.ui.service.StopwatchService
 import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
-import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
+import com.android04.godfisherman.ui.stopwatch.StopwatchFragment
 import com.android04.godfisherman.ui.stopwatch.UploadDialog
-import com.android04.godfisherman.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -98,7 +97,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
-                changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
+                changeFragment(R.id.fl_stopwatch_big, StopwatchFragment())
                 swipeMotionLayoutWrapper.apply {
                     setTransition(R.id.transition)
                     swipeMotionLayoutWrapper.setProgress(1f) {

@@ -16,7 +16,7 @@ import com.android04.godfisherman.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TestStopwatchFragment :
+class StopwatchFragment :
     BaseFragment<FragmentStopwatchBinding, MainViewModel>(R.layout.fragment_stopwatch) {
 
     override val viewModel: MainViewModel by activityViewModels()
