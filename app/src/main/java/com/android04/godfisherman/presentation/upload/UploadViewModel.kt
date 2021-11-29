@@ -3,24 +3,24 @@ package com.android04.godfisherman.presentation.upload
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.data.repository.UploadRepository
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.presentation.main.MainViewModel
 import com.android04.godfisherman.common.RepoResponseImpl
+import com.android04.godfisherman.common.di.ApplicationScope
 import com.android04.godfisherman.utils.convertCentiMeter
 import com.android04.godfisherman.utils.roundBodySize
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class UploadViewModel @Inject constructor(
     private val repository: UploadRepository,
-    private val networkChecker: NetworkChecker
+    private val networkChecker: NetworkChecker,
+    @ApplicationScope private val externalScope: CoroutineScope
 ) : ViewModel() {
     private val _fishTypeList: MutableLiveData<List<String>> by lazy { MutableLiveData<List<String>>() }
     val fishTypeList: LiveData<List<String>> = _fishTypeList
@@ -59,7 +59,7 @@ class UploadViewModel @Inject constructor(
         bodySize = roundBodySize(size)
         bodySizeCentiMeter = convertCentiMeter(size)
 
-        viewModelScope.launch(Dispatchers.IO) {
+        externalScope.launch {
             _address.postValue(repository.getAddress())
         }
 
@@ -69,17 +69,15 @@ class UploadViewModel @Inject constructor(
     fun fetchFishTypeList() {
         when (networkChecker.isConnected()) {
             true -> {
-                viewModelScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val callback = RepoResponseImpl<Unit>()
+                externalScope.launch {
+                    val callback = RepoResponseImpl<Unit>()
 
-                        callback.addFailureCallback {
-                            _isFetchSuccess.postValue(false)
-                        }
-
-                        _isFetchSuccess.postValue(true)
-                        _fishTypeList.postValue(repository.fetchFishTypeList(callback))
+                    callback.addFailureCallback {
+                        _isFetchSuccess.postValue(false)
                     }
+
+                    _isFetchSuccess.postValue(true)
+                    _fishTypeList.postValue(repository.fetchFishTypeList(callback))
                 }
             }
             false -> {
@@ -98,7 +96,7 @@ class UploadViewModel @Inject constructor(
             _isInputCorrect.value = true
             _isLoading.value = true
             if (MainViewModel.isTimeLine) {
-                viewModelScope.launch(Dispatchers.IO) {
+                externalScope.launch {
                     val callback = RepoResponseImpl<Unit>()
 
                     callback.addSuccessCallback {
@@ -119,7 +117,7 @@ class UploadViewModel @Inject constructor(
                     )
                 }
             } else {
-                viewModelScope.launch {
+                externalScope.launch {
                     val callback = RepoResponseImpl<Unit>()
 
                     callback.addSuccessCallback {

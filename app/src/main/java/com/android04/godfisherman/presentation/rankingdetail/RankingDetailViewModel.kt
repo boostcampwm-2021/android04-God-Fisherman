@@ -3,19 +3,20 @@ package com.android04.godfisherman.presentation.rankingdetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.common.di.ApplicationScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RankingDetailViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+    @ApplicationScope private val externalScope: CoroutineScope
 ) : ViewModel() {
 
     private val _rankList: MutableLiveData<List<RankingPageData>> by lazy {
@@ -24,7 +25,7 @@ class RankingDetailViewModel @Inject constructor(
     val rankList: LiveData<List<RankingPageData>> = _rankList
 
     fun fetchRanking() {
-        viewModelScope.launch(Dispatchers.IO) {
+        externalScope.launch {
             val deferredSizeRanking = async {
                 homeRepository.fetchRankingList(FishRankingRequest.DETAIL)
             }

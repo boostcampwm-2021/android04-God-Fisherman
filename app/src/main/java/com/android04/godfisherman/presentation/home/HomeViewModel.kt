@@ -3,17 +3,17 @@ package com.android04.godfisherman.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.Event
 import com.android04.godfisherman.common.RepoResponseImpl
 import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.common.di.ApplicationScope
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.LogInRepository
 import com.android04.godfisherman.presentation.rankingdetail.RankingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +21,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val logInRepository: LogInRepository,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    @ApplicationScope private val externalScope: CoroutineScope
 ) : ViewModel() {
 
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
@@ -60,7 +61,7 @@ class HomeViewModel @Inject constructor(
     fun fetchRanking(isRefresh: Boolean = false) {
         _isRankLoading.value = true
 
-        viewModelScope.launch(Dispatchers.IO) {
+        externalScope.launch {
             when (val result =
                 homeRepository.fetchRankingList(FishRankingRequest.HOME, isRefresh)) {
                 is Result.Success -> {
@@ -77,7 +78,7 @@ class HomeViewModel @Inject constructor(
     fun fetchYoutube(isRefresh: Boolean = false) {
         _youtubeError.value = null
 
-        viewModelScope.launch(Dispatchers.IO) {
+        externalScope.launch {
             _isYoutubeLoading.postValue(true)
             val repoCallback = RepoResponseImpl<List<HomeRecommendData>>()
 
@@ -101,7 +102,7 @@ class HomeViewModel @Inject constructor(
         _isWeatherLoading.postValue(true)
 
         if (location != null) {
-            viewModelScope.launch(Dispatchers.IO) {
+            externalScope.launch {
                 val currentCallback = RepoResponseImpl<HomeCurrentWeather?>()
 
                 currentCallback.addSuccessCallback {
@@ -138,7 +139,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadLocation() {
-        viewModelScope.launch(Dispatchers.IO) {
+        externalScope.launch {
             when (val result = locationRepository.updateAddress()) {
                 is Result.Success -> _address.postValue(result.data)
                 is Result.Fail -> _error.postValue(Event(result.description))
