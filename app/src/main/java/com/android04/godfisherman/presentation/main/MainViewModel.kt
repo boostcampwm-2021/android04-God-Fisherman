@@ -102,11 +102,11 @@ class MainViewModel @Inject constructor(
     fun saveTimeLineRecord() {
         if (!_tmpFishingList.value.isNullOrEmpty()) {
             _isLoading.value = true
-          
+
             viewModelScope.launch(Dispatchers.IO) {
-                val result = repository.saveTimeLineRecord(stopwatch.getTime())
+                val result = repository.saveTimeLineRecord(stopwatch.getSaveTime())
                 _isLoading.postValue(false)
-                
+
                 when (result) {
                     is Result.Success -> {
                         _successOrFail.postValue(Event("업로드를 완료했습니다."))

@@ -3,12 +3,14 @@ package com.android04.godfisherman.utils
 import java.util.*
 
 class StopwatchManager(private val callback:(Double) -> (Unit), private var time: Double = 0.0) {
-    var resumeTime = 0.0
+    private var resumeTime = 0.0
+    private var saveTime = 0.0
     private lateinit var stopwatch: Timer
 
     fun end(){
         resumeTime = time
         stopwatch.cancel()
+        saveTime = time
         time = 0.0
         callback(time)
     }
@@ -25,6 +27,10 @@ class StopwatchManager(private val callback:(Double) -> (Unit), private var time
 
     fun getTime(): Double {
         return time
+    }
+
+    fun getSaveTime(): Double {
+        return saveTime
     }
 
     private inner class StopwatchTask(private val period: Long) : TimerTask() {
