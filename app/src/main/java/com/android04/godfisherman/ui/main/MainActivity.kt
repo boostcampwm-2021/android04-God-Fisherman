@@ -132,7 +132,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     R.id.navigation_camera -> {
                         viewModel.isServiceRequestWithOutCamera = false
                         startActivity(Intent(this, CameraActivity::class.java))
-                        true
+                        false
                     }
                     R.id.navigation_stopwatch -> {
                         if (viewModel.stopwatchOnFlag.value == true) {
