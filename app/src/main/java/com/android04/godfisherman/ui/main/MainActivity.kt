@@ -51,7 +51,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         setOrientation()
         StopwatchNotification.createChannel(this)
-        checkLocationPermission()
         initBottomNavigation()
         initMotionListener()
         checkFromService()
@@ -244,6 +243,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     override fun onResume() {
         super.onResume()
+        checkLocationPermission()
         viewModel.isServiceRequestWithOutCamera = true
         if (isStopwatchServiceRunning) {
             stopService(serviceIntent)
