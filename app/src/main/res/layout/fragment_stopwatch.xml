@@ -2,10 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.android04.godfisherman.presentation.main.MainViewModel" />
+
         <variable
             name="fragment"
             type="com.android04.godfisherman.ui.stopwatch.StopwatchFragment" />
@@ -81,8 +84,8 @@
                     android:layout_marginTop="@dimen/space_xxx_large"
                     android:background="@null"
                     android:clickable="true"
-                    android:onClick="@{() -> viewModel.startOrStopTimer() ? fragment.showDialog() : void}"
                     android:elevation="10dp"
+                    android:onClick="@{() -> viewModel.startOrStopTimer() ? fragment.showDialog() : void}"
                     android:src="@{viewModel.isStopwatchStarted() ? @drawable/btn_stop_with_ripple : @drawable/btn_start}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -103,13 +106,15 @@
 
                 <com.android04.godfisherman.common.RecyclerViewEmptySupport
                     android:id="@+id/rv_time_line"
+                    submitList="@{viewModel.tmpFishingList}"
                     android:layout_width="0dp"
-                    android:layout_height="500dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/space_large"
                     android:layout_marginTop="@dimen/space_median"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    submitList="@{viewModel.tmpFishingList}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title_time_line"
