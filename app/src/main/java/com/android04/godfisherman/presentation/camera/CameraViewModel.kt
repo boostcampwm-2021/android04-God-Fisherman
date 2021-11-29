@@ -18,6 +18,9 @@ class CameraViewModel : ViewModel() {
     private val _bodySize: MutableLiveData<Double?> by lazy { MutableLiveData<Double?>() }
     val bodySize : LiveData<Double?> = _bodySize
 
+    private val _isShutterPressed: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
+    val isShutterPressed: LiveData<Boolean> = _isShutterPressed
+
     fun setRect(list: List<List<Int>>) {
         when {
             list.size >= 2 -> {
@@ -73,5 +76,9 @@ class CameraViewModel : ViewModel() {
     
     fun changedLevel(x: Float, y: Float){
         _isLevelOk.value = isLevelCorrect(x, y)
+    }
+
+    fun setShutterPressed(pressed: Boolean) {
+        _isShutterPressed.value = pressed
     }
 }
