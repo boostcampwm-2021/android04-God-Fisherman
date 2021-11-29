@@ -78,7 +78,7 @@
             android:layout_height="70dp"
             android:layout_marginEnd="@dimen/camera_guide_margin"
             android:background="@drawable/bg_primary_to_secondary_circle"
-            android:enabled="@{viewModel.bodySize != null &amp;&amp; viewModel.isLevelOk}"
+            android:enabled="@{viewModel.bodySize != null &amp;&amp; viewModel.isLevelOk &amp;&amp; !viewModel.isShutterPressed}"
             android:onClickListener="@{()->activity.takePhoto()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

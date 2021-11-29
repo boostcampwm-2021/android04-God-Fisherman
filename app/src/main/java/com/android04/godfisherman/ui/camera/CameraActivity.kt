@@ -147,6 +147,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
+        viewModel.setShutterPressed(true)
+
         val intent = Intent(this, UploadActivity::class.java)
 
         val imageCapture = imageCapture ?: return
@@ -177,6 +179,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
                         finish()
                     } else {
+                        viewModel.setShutterPressed(false)
                         showToast(this@CameraActivity, R.string.camera_detect_error)
                         image.close()
                     }

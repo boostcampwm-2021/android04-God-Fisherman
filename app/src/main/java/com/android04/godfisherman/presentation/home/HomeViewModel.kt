@@ -88,6 +88,7 @@ class HomeViewModel @Inject constructor(
 
             repoCallback.addFailureCallback {
                 _isYoutubeLoading.postValue(false)
+                _youtubeList.postValue(listOf())
                 _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했습니다\n내일 다시 시도해주세요")
             }
 
@@ -141,8 +142,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = locationRepository.updateAddress()) {
                 is Result.Success -> _address.postValue(result.data)
-                is Result.Fail -> _error.postValue(Event(result.description))
+                is Result.Fail -> _address.postValue(result.description)
             }
         }
     }
+
 }

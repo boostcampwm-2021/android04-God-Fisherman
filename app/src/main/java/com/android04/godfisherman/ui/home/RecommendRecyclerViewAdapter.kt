@@ -13,6 +13,7 @@ class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewA
     private val data = mutableListOf<HomeRecommendData>()
 
     fun setData(newData : List<HomeRecommendData>) {
+        data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
     }

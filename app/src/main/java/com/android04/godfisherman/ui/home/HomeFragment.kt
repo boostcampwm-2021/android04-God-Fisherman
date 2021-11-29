@@ -1,7 +1,6 @@
 package com.android04.godfisherman.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
@@ -45,7 +44,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             viewLifecycleOwner
         ) { key, bundle ->
             val isSaved = bundle.getBoolean(MainActivity.DEFAULT_BUNDLE)
-            Log.d("LocationUpdate", "통신 완료 : $isSaved")
             if (isSaved) viewModel.loadLocation()
         }
     }
