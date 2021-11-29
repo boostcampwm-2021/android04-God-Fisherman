@@ -10,7 +10,6 @@ import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
 import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
-import com.android04.godfisherman.common.LocationHelper
 import com.android04.godfisherman.utils.StopwatchManager
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,13 +21,13 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: StopwatchRepository,
-    private val locationRepository: LocationRepository,
-    private val locationHelper: LocationHelper
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
     companion object {
         var isTimeLine = false
         var isFromService = false
     }
+
     val stopwatch = StopwatchManager({ time -> _displayTime.postValue(time.toTimeMilliSecond()) })
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
     var beforeMenuItemId: Int = 0
@@ -135,14 +134,9 @@ class MainViewModel @Inject constructor(
         _isAfterUpload.value = false
     }
 
-    fun requestLocation() {
-        locationHelper.setLocationUpdate { updateLocation() }
-    }
-
-    private fun updateLocation() {
+    fun updateLocation(location: Location?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val location = locationHelper.getLocation()
                 locationRepository.saveLocation(location)
                 _currentLocation.postValue(location)
             }
