@@ -115,37 +115,40 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun initBottomNavigation() {
         binding.navView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_home -> {
-                    changeFragment(R.id.fl_fragment_container, HomeFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_home
-                    true
-                }
-                R.id.navigation_feed -> {
-                    changeFragment(R.id.fl_fragment_container, FeedFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_feed
-                    true
-                }
-                R.id.navigation_camera -> {
-                    viewModel.isServiceRequestWithOutCamera = false
-                    startActivity(Intent(this, CameraActivity::class.java))
-                    viewModel.beforeMenuItemId = R.id.navigation_camera
-                    true
-                }
-                R.id.navigation_stopwatch -> {
-                    if (viewModel.stopwatchOnFlag.value == true) {
-                        swipeMotionLayoutWrapper.transitionToState(R.id.end)
-                    } else {
-                        changeFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+            if (menuItem.isChecked) {
+                false
+            } else {
+                when (menuItem.itemId) {
+                    R.id.navigation_home -> {
+                        changeFragment(R.id.fl_fragment_container, HomeFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_home
+                        true
                     }
-                    true
+                    R.id.navigation_feed -> {
+                        changeFragment(R.id.fl_fragment_container, FeedFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_feed
+                        true
+                    }
+                    R.id.navigation_camera -> {
+                        viewModel.isServiceRequestWithOutCamera = false
+                        startActivity(Intent(this, CameraActivity::class.java))
+                        true
+                    }
+                    R.id.navigation_stopwatch -> {
+                        if (viewModel.stopwatchOnFlag.value == true) {
+                            swipeMotionLayoutWrapper.transitionToState(R.id.end)
+                        } else {
+                            changeFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+                        }
+                        true
+                    }
+                    R.id.navigation_my_page -> {
+                        changeFragment(R.id.fl_fragment_container, MyPageFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_my_page
+                        true
+                    }
+                    else -> false
                 }
-                R.id.navigation_my_page -> {
-                    changeFragment(R.id.fl_fragment_container, MyPageFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_my_page
-                    true
-                }
-                else -> false
             }
         }
         changeFragment(R.id.fl_fragment_container, HomeFragment())
