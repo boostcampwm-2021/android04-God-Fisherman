@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
 import java.lang.Exception
@@ -19,7 +18,6 @@ class RecyclerViewEmptySupport : RecyclerView {
     private var emptyView: View? = null
 
     private fun onDataChanged() {
-        Log.d("TAG", "onChanged: ${adapter!!.itemCount}")
         if (adapter != null && emptyView != null)
         {
             if (adapter!!.itemCount == 0)
