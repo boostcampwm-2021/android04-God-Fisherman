@@ -88,6 +88,7 @@ class HomeViewModel @Inject constructor(
 
             repoCallback.addFailureCallback {
                 _isYoutubeLoading.postValue(false)
+                _youtubeList.postValue(listOf())
                 _youtubeError.postValue("일일 유튜브 API 호출 수를 초과했습니다\n내일 다시 시도해주세요")
             }
 
