@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemWeatherDetailBinding
+import com.android04.godfisherman.presentation.home.HomeDetailWeather
 
 class WeatherRecyclerViewAdapter : RecyclerView.Adapter<WeatherRecyclerViewAdapter.WeatherViewHolder>() {
 

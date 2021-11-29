@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.RankingDetailFragment"
+        tools:context=".ui.rankingdetail.RankingDetailFragment"
         android:background="@color/background_home"
         android:fillViewport="true">
 

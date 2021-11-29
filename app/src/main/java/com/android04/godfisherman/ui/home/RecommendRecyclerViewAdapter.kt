@@ -4,10 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.view.marginRight
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemHomeRecommendBinding
+import com.android04.godfisherman.presentation.home.HomeRecommendData
 
 class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewAdapter.RecommendViewHolder>() {
 

@@ -1,10 +1,13 @@
 package com.android04.godfisherman.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -36,5 +39,13 @@ abstract class BaseFragment<T : ViewDataBinding, R : ViewModel>(@LayoutRes priva
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun showToast(context: Context, msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showToast(context: Context, @StringRes resourceId: Int) {
+        Toast.makeText(context, context.getString(resourceId), Toast.LENGTH_SHORT).show()
     }
 }

@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.camera.CameraViewModel" />
+            type="com.android04.godfisherman.presentation.camera.CameraViewModel" />
 
     </data>
 
@@ -84,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.android04.godfisherman.utils.LevelView
+        <com.android04.godfisherman.ui.camera.LevelView
             android:id="@+id/lv_test"
             android:layout_width="200dp"
             android:layout_height="200dp"

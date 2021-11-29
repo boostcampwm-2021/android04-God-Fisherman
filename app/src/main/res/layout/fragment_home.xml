@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.home.HomeViewModel" />
+            type="com.android04.godfisherman.presentation.home.HomeViewModel" />
 
         <variable
             name="detailClickListener"

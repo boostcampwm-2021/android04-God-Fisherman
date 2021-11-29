@@ -1,11 +1,10 @@
 package com.android04.godfisherman.data.datasource.homedatasource
 
-import com.android04.godfisherman.common.FishRankingRequest
+import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
-import com.android04.godfisherman.ui.home.RankingData
-
-import com.android04.godfisherman.utils.RepoResponse
+import com.android04.godfisherman.presentation.rankingdetail.RankingData
 
 interface HomeDataSource {
     interface RemoteDataSource {

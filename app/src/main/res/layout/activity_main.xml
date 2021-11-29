@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.main.MainViewModel" />
+            type="com.android04.godfisherman.presentation.main.MainViewModel" />
         <variable
             name="activity"
             type="com.android04.godfisherman.ui.main.MainActivity" />

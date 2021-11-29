@@ -2,13 +2,13 @@ package com.android04.godfisherman.data.repository
 
 import androidx.paging.*
 import com.android04.godfisherman.common.NetworkChecker
-import com.android04.godfisherman.common.Type
-import com.android04.godfisherman.data.DTO.FeedDTO
-import com.android04.godfisherman.data.datasource.feedDatasource.FeedDataSource
-import com.android04.godfisherman.data.datasource.feedDatasource.remote.FeedRemoteDataSourceImpl.Companion.FEED_IDENTIFIER_NAME
-import com.android04.godfisherman.di.ApplicationScope
-import com.android04.godfisherman.localdatabase.entity.TypeInfoWithFishingRecords
-import com.android04.godfisherman.ui.feed.FeedData
+import com.android04.godfisherman.common.constant.Type
+import com.android04.godfisherman.data.dto.FeedDTO
+import com.android04.godfisherman.data.datasource.feeddatasource.FeedDataSource
+import com.android04.godfisherman.data.datasource.feeddatasource.remote.FeedRemoteDataSourceImpl.Companion.FEED_IDENTIFIER_NAME
+import com.android04.godfisherman.common.di.ApplicationScope
+import com.android04.godfisherman.data.localdatabase.entity.TypeInfoWithFishingRecords
+import com.android04.godfisherman.presentation.feed.FeedData
 import com.android04.godfisherman.utils.toFeedPhotoData
 import com.android04.godfisherman.utils.toFeedTimeLineData
 import com.android04.godfisherman.utils.toFishingRecordCached

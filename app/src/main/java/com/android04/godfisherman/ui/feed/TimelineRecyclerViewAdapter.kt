@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemTimelineBinding
+import com.android04.godfisherman.presentation.feed.TimeLineData
 
 class TimelineRecyclerViewAdapter(private val data : List<TimeLineData>) :
     RecyclerView.Adapter<TimelineRecyclerViewAdapter.TimelineViewHolder>() {

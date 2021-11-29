@@ -12,12 +12,8 @@ import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.ui.main.MainViewModel
-import com.android04.godfisherman.utils.UploadDialog
-import com.android04.godfisherman.utils.showToast
+import com.android04.godfisherman.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class TestStopwatchFragment :

@@ -1,13 +1,13 @@
 package com.android04.godfisherman.data.repository
 
 import android.graphics.Bitmap
-import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
-import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.TypeInfo
-import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
-import com.android04.godfisherman.ui.login.LogInViewModel.Companion.LOGIN_NAME
-import com.android04.godfisherman.utils.RepoResponse
-import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.data.datasource.uploaddatasource.UploadDataSource
+import com.android04.godfisherman.data.dto.FishingRecord
+import com.android04.godfisherman.data.dto.TypeInfo
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.presentation.login.LogInViewModel.Companion.LOGIN_NAME
+import com.android04.godfisherman.common.SharedPreferenceManager
 import com.android04.godfisherman.utils.StorageManager
 import com.android04.godfisherman.utils.calculateRecordSize
 import com.google.firebase.Timestamp

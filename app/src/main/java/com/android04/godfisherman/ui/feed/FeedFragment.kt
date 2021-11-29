@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentFeedBinding
+import com.android04.godfisherman.presentation.feed.FeedViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

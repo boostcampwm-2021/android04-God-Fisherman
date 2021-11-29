@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.main.MainViewModel" />
+            type="com.android04.godfisherman.presentation.main.MainViewModel" />
         <variable
             name="fragment"
             type="com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment" />
@@ -101,7 +101,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.android04.godfisherman.utils.RecyclerViewEmptySupport
+                <com.android04.godfisherman.common.RecyclerViewEmptySupport
                     android:id="@+id/rv_time_line"
                     android:layout_width="0dp"
                     android:layout_height="500dp"

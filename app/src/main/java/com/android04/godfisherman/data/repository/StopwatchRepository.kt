@@ -2,12 +2,12 @@ package com.android04.godfisherman.data.repository
 
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.data.datasource.stopwatchdatasource.StopwatchDataSource
-import com.android04.godfisherman.data.datasource.uploadDataSource.UploadDataSource
-import com.android04.godfisherman.data.entity.FishingRecord
-import com.android04.godfisherman.data.entity.TypeInfo
-import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
-import com.android04.godfisherman.ui.login.LogInViewModel
-import com.android04.godfisherman.utils.SharedPreferenceManager
+import com.android04.godfisherman.data.datasource.uploaddatasource.UploadDataSource
+import com.android04.godfisherman.data.dto.FishingRecord
+import com.android04.godfisherman.data.dto.TypeInfo
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.presentation.login.LogInViewModel
+import com.android04.godfisherman.common.SharedPreferenceManager
 import com.google.firebase.Timestamp
 import java.util.*
 import javax.inject.Inject
