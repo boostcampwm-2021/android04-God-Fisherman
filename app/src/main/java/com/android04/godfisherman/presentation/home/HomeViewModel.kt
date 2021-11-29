@@ -141,8 +141,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = locationRepository.updateAddress()) {
                 is Result.Success -> _address.postValue(result.data)
-                is Result.Fail -> _error.postValue(Event(result.description))
+                is Result.Fail -> _address.postValue(result.description)
             }
         }
     }
+
 }

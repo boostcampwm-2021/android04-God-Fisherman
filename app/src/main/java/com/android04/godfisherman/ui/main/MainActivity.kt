@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.LocationHelper
 import com.android04.godfisherman.common.StopwatchNotification
 import com.android04.godfisherman.databinding.ActivityMainBinding
 import com.android04.godfisherman.presentation.main.MainViewModel
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private lateinit var serviceIntent: Intent
+    private val locationHelper: LocationHelper by lazy { LocationHelper(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         setOrientation()
         StopwatchNotification.createChannel(this)
-        checkLocationPermission()
         initBottomNavigation()
         initMotionListener()
         checkFromService()
@@ -136,7 +137,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                     if (viewModel.stopwatchOnFlag.value == true) {
                         swipeMotionLayoutWrapper.transitionToState(R.id.end)
                     } else {
-                        changeFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+                        changeFragmentWithBackStack(
+                            R.id.fl_fragment_container,
+                            StopwatchInfoFragment()
+                        )
                     }
                     true
                 }
@@ -251,6 +255,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        checkLocationPermission()
+    }
+
     private fun passStopwatchToService(time: Double) {
         if (viewModel.isStopwatchStarted.value == true) {
             viewModel.passStopwatchToService()
@@ -279,15 +288,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun checkLocationPermission() {
         if (isGrantedLocationPermission(this)) {
-            viewModel.requestLocation()
+            requestLocation()
         } else {
             requestLocationPermission()
         }
     }
 
     private fun isGrantedLocationPermission(context: Context) =
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestLocationPermission() {
         var permissionCount = 0
@@ -299,7 +314,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 if (it.value) permissionCount++
             }
             if (permissionCount == 2) {
-                viewModel.requestLocation()
+                requestLocation()
             } else {
                 finish()
             }
@@ -316,6 +331,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         swipeMotionLayoutWrapper.updateConstraint(R.id.end, R.id.cl_container_stopwatch) {
             it.propertySet.visibility = visibility
         }
+    }
+
+    private fun requestLocation() {
+        locationHelper.setLocationUpdate { locationRequestCallback() }
+    }
+
+    private fun locationRequestCallback() {
+        viewModel.updateLocation(locationHelper.getLocation())
     }
 
     companion object {
