@@ -51,7 +51,7 @@ class RecordRepositoryImpl @Inject constructor(
                 false,
                 getAddress(),
                 0,
-                sharedPreferenceManager.getString(LOGIN_NAME) ?: "USER1"
+                getUserName()
             )
             val fishingRecord = FishingRecord(0, imageUrl, Date(), fishLength, fishType)
             var isSuccess = true
@@ -88,9 +88,6 @@ class RecordRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAddress(): String =
-        sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: ""
-
     override suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord> =
         localDataSource.loadTmpTimeLineRecord()
 
@@ -116,10 +113,9 @@ class RecordRepositoryImpl @Inject constructor(
             val type = TypeInfo(
                 Timestamp(Date()),
                 true,
-                sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION)
-                    ?: "위치 정보 없음",
+                getAddress(),
                 time.toInt(),
-                sharedPreferenceManager.getString(LOGIN_NAME) ?: "유저 이름 없음"
+                getUserName()
             )
 
             if (remoteDataSource.saveTimeLineType(type, recordList)) {
@@ -132,4 +128,9 @@ class RecordRepositoryImpl @Inject constructor(
     }
 
     private suspend fun removeTmpTimeLineRecord() = localDataSource.removeTmpTimeLineRecord()
+
+    override fun getAddress(): String =
+        sharedPreferenceManager.getString(SharedPreferenceManager.PREF_LOCATION) ?: "위치 정보 없음"
+
+    private fun getUserName(): String = sharedPreferenceManager.getString(LOGIN_NAME) ?: "유저 이름 없음"
 }
