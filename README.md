@@ -106,5 +106,5 @@
 
 |K001|K006|K024|K053|
 |:----:|:----:|:----:|:----:|
-|구윤경|김세진|박치윤|전종현|
+|[구윤경](https://github.com/potatoyum)|[김세진](https://github.com/sejins)|[박치윤](https://github.com/chiyoon)|[전종현](https://github.com/JeonJongHyeon97)|
 |<img src = "https://user-images.githubusercontent.com/38002959/143966220-83278ffa-5541-46cf-b568-62699e4d2284.png" height="200px">|<img src = "https://user-images.githubusercontent.com/38002959/143966223-7c10b010-32a9-4fd5-b021-3a9764134318.png" height="200px">|<img src = "https://user-images.githubusercontent.com/38002959/143966226-04126b93-33ba-45b8-9543-0dbbeafe8bba.jpg" height="200px">|<img src = "https://user-images.githubusercontent.com/38002959/143966231-f2ed1b7a-c357-49e4-a434-f5759c37935a.jpg" height="200px">|
