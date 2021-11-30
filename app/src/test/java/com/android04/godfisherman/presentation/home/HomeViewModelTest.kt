@@ -5,10 +5,10 @@ import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.data.repository.HomeRepository
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.LogInRepository
-
 import com.android04.godfisherman.presentation.InstantTaskExecutorRule
 import com.android04.godfisherman.presentation.MainCoroutineRule
 import com.android04.godfisherman.presentation.rankingdetail.RankingData
+import com.android04.godfisherman.utils.GPS_ERROR
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
@@ -84,5 +84,37 @@ internal class HomeViewModelTest {
         resumeDispatcher()
         assertEquals(2, homeViewModel.rankList.value?.size ?: 0)
         assertEquals(false, homeViewModel.isRankLoading.value)
+    }
+
+    @ExperimentalCoroutinesApi
+    @DisplayName("위치 정보 받아오기 실패 테스트")
+    @Test
+    fun loadLocation_fail() = mainCoroutineRule.runBlockingTest {
+        // Given
+        val errorMessage = GPS_ERROR
+
+        // When
+        `when`(locationRepository.updateAddress()).thenReturn(
+            Result.Fail(errorMessage)
+        )
+        homeViewModel.loadLocation()
+
+        assertEquals(errorMessage, homeViewModel.address.value)
+    }
+
+    @ExperimentalCoroutinesApi
+    @DisplayName("위치 정보 받아오기 성공 테스트")
+    @Test
+    fun loadLocation_success() = mainCoroutineRule.runBlockingTest {
+        // Given
+        val address = "테스트시 테스트구 테스트동"
+
+        // When
+        `when`(locationRepository.updateAddress()).thenReturn(
+            Result.Success(address)
+        )
+        homeViewModel.loadLocation()
+
+        assertEquals(address, homeViewModel.address.value)
     }
 }
