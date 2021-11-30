@@ -100,7 +100,7 @@
 
 # 🧑‍💻 기술 특장점
 
-[기술 특장점](https://www.notion.so/96dfeeff79324038a000ba56858fe06a)
+[기술 특장점](https://github.com/boostcampwm-2021/android04-God-Fisherman/wiki/기술-특장점)
 
 # 팀원 소개
 
