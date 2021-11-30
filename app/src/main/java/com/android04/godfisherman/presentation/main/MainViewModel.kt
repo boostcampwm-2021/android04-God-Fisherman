@@ -7,21 +7,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.Event
 import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.common.di.IoDispatcher
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.data.repository.LocationRepository
 import com.android04.godfisherman.data.repository.StopwatchRepository
-import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
 import com.android04.godfisherman.utils.StopwatchManager
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: StopwatchRepository,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     companion object {
         var isTimeLine = false
@@ -102,7 +103,7 @@ class MainViewModel @Inject constructor(
         if (!_tmpFishingList.value.isNullOrEmpty()) {
             _isLoading.value = true
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(ioDispatcher) {
                 val result = repository.saveTimeLineRecord(stopwatch.getSaveTime())
                 _isLoading.postValue(false)
 
@@ -120,7 +121,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun loadTmpTimeLineRecord() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             _tmpFishingList.postValue(repository.loadTmpTimeLineRecord())
         }
     }
@@ -135,11 +136,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateLocation(location: Location?) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                locationRepository.saveLocation(location)
-                _currentLocation.postValue(location)
-            }
+        viewModelScope.launch(ioDispatcher) {
+            locationRepository.saveLocation(location)
+            _currentLocation.postValue(location)
+
         }
     }
 
