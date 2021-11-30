@@ -67,7 +67,7 @@ class UploadViewModel @Inject constructor(
         fetchFishTypeList()
     }
 
-    fun fetchFishTypeList() {
+    private fun fetchFishTypeList() {
         when (networkChecker.isConnected()) {
             true -> {
                 viewModelScope.launch(ioDispatcher) {
@@ -118,7 +118,7 @@ class UploadViewModel @Inject constructor(
                     )
                 }
             } else {
-                viewModelScope.launch {
+                viewModelScope.launch(ioDispatcher) {
                     val callback = RepoResponseImpl<Unit>()
 
                     callback.addSuccessCallback {
