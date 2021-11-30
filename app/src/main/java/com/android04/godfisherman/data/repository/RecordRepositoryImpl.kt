@@ -15,7 +15,9 @@ import com.android04.godfisherman.utils.calculateRecordSize
 import com.google.firebase.Timestamp
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RecordRepositoryImpl @Inject constructor(
     private val localDataSource: UploadDataSource.LocalDataSource,
     private val remoteDataSource: UploadDataSource.RemoteDataSource,
