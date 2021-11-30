@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.common.RepoResponseImpl
 import com.android04.godfisherman.common.di.IoDispatcher
-import com.android04.godfisherman.data.repository.UploadRepository
+import com.android04.godfisherman.domain.RecordRepository
 import com.android04.godfisherman.presentation.main.MainViewModel
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.utils.convertCentiMeter
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UploadViewModel @Inject constructor(
-    private val repository: UploadRepository,
+    private val repository: RecordRepository.UploadRepository,
     private val networkChecker: NetworkChecker,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {

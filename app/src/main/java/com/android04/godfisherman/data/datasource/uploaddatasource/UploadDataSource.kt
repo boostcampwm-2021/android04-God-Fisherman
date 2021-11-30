@@ -9,6 +9,8 @@ interface UploadDataSource {
 
     interface LocalDataSource {
         suspend fun saveTmpTimeLineRecord(record: TmpFishingRecord)
+        suspend fun loadTmpTimeLineRecord(): List<TmpFishingRecord>
+        suspend fun removeTmpTimeLineRecord()
     }
 
     interface RemoteDataSource {
