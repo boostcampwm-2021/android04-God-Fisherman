@@ -29,8 +29,8 @@ fun Double.toTimeSecond(): String {
     return String.format("%02d:%02d:%02d", hour, min, sec)
 }
 
-fun Double.toTimeHourMinute(): String {
-    val time = this.roundToInt()
+fun Int.toTimeHourMinute(): String {
+    val time = this
     val hour = time / 360000
     val min = time % 360000 / 6000
     return String.format("%02d시간 %02d분", hour, min)

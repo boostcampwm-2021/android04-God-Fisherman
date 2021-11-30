@@ -17,6 +17,7 @@ fun TypeInfoWithFishingRecords.toFeedTimeLineData(): FeedTimelineData {
         typeInfo.userName,
         typeInfo.location,
         typeInfo.id.toFeedDateFormat(),
+        typeInfo.fishingTime.toTimeHourMinute(),
         fishingRecords.map { it.imageUrl },
         fishingRecords.map {
             TimeLineData(
@@ -46,6 +47,7 @@ fun FeedDTO.toFeedTimeLineData(): FeedTimelineData {
         typeInfo.userName,
         typeInfo.location,
         typeInfo.id.toDate().toFeedDateFormat(),
+        typeInfo.fishingTime.toTimeHourMinute(),
         fishingRecordList.map { it.imageUrl },
         fishingRecordList.map {
             TimeLineData(
@@ -86,7 +88,7 @@ fun Date.toFeedDateFormat(): String {
 }
 
 fun Date.toFeedTimeFormat(): String {
-    val timeFormat = SimpleDateFormat("HH:mm")
+    val timeFormat = SimpleDateFormat("H:mm")
     timeFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
 
     return timeFormat.format(this)

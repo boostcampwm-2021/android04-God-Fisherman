@@ -49,6 +49,7 @@
     <string name="feed_show_timeline">⌛️타임라인 보기</string>
     <string name="feed_close_timeline">⌛️타임라인 닫기</string>
     <string name="sample_time">10:10</string>
+    <string name="feed_timeline_type_total_time_format">총 %s</string>
 
     <!-- Home Fragment -->
     <string name="home_sample_id">안녕하세요 구전김박님!</string>

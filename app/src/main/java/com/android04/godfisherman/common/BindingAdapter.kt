@@ -108,7 +108,7 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("setTimeToMinute")
-    fun setTimeWithDouble(view: TextView, millisecond: Double) {
+    fun setTimeWithDouble(view: TextView, millisecond: Int) {
         view.text = millisecond.toTimeHourMinute()
     }
 
