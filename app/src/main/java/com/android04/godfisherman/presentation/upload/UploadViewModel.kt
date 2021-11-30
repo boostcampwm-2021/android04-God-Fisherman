@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android04.godfisherman.R
+import com.android04.godfisherman.common.Event
 import com.android04.godfisherman.common.NetworkChecker
 import com.android04.godfisherman.common.RepoResponseImpl
 import com.android04.godfisherman.common.di.IoDispatcher
@@ -32,24 +34,14 @@ class UploadViewModel @Inject constructor(
     private val _isUploadSuccess: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isUploadSuccess: LiveData<Boolean?> = _isUploadSuccess
 
-    private val _isInputCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
-    val isInputCorrect: MutableLiveData<Boolean?> = _isInputCorrect
-
-    private val _isSizeCorrect: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
-    val isSizeCorrect: MutableLiveData<Boolean?> = _isSizeCorrect
-
     private val _isLoading: MutableLiveData<Boolean?> by lazy { MutableLiveData<Boolean?>(null) }
     val isLoading: MutableLiveData<Boolean?> = _isLoading
 
-    private val _isNetworkConnected: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>(
-            true
-        )
-    }
-    val isNetworkConnected: MutableLiveData<Boolean?> = _isNetworkConnected
-
     private val _address: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val address: LiveData<String> get() = _address
+
+    private val _error: MutableLiveData<Event<Int>> by lazy { MutableLiveData<Event<Int>>() }
+    val error: LiveData<Event<Int>> = _error
 
     var fishTypeSelected: String? = null
     var bodySize: Double? = null
@@ -75,6 +67,7 @@ class UploadViewModel @Inject constructor(
 
                     callback.addFailureCallback {
                         _isFetchSuccess.postValue(false)
+                        _error.value = Event(R.string.upload_network_disconnected)
                     }
 
                     _isFetchSuccess.postValue(true)
@@ -83,18 +76,18 @@ class UploadViewModel @Inject constructor(
             }
             false -> {
                 _isFetchSuccess.value = false
+                _error.value = Event(R.string.upload_network_disconnected)
             }
         }
     }
 
     fun saveFishingRecord() {
         if (!networkChecker.isConnected()) {
-            _isNetworkConnected.value = false
+            _error.value = Event(R.string.upload_network_disconnected)
             return
         }
 
         if (fishTypeSelected != null && bodySize != null) {
-            _isInputCorrect.value = true
             _isLoading.value = true
             if (MainViewModel.isTimeLine) {
                 viewModelScope.launch(ioDispatcher) {
@@ -106,7 +99,7 @@ class UploadViewModel @Inject constructor(
                     }
 
                     callback.addFailureCallback {
-                        _isSizeCorrect.postValue(false)
+                        _error.value = Event(R.string.upload_size_fail)
                         _isLoading.postValue(false)
                     }
 
@@ -140,7 +133,7 @@ class UploadViewModel @Inject constructor(
                 }
             }
         } else {
-            _isInputCorrect.value = false
+            _error.value = Event(R.string.upload_input_fail)
         }
     }
 }
