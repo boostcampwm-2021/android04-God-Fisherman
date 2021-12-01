@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.di.IoDispatcher
-import com.android04.godfisherman.data.repository.HomeRepository
+import com.android04.godfisherman.data.repository.HomeInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RankingDetailViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
+    private val homeInfoRepository: HomeInfoRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -28,10 +28,10 @@ class RankingDetailViewModel @Inject constructor(
     fun fetchRanking() {
         viewModelScope.launch(ioDispatcher) {
             val deferredSizeRanking = async {
-                homeRepository.fetchRankingList(FishRankingRequest.DETAIL)
+                homeInfoRepository.fetchRankingList(FishRankingRequest.DETAIL)
             }
             val deferredTimeRanking = async {
-                homeRepository.fetchWaitingRankingList()
+                homeInfoRepository.fetchWaitingRankingList()
             }
 
             val sizeRanking = deferredSizeRanking.await()
