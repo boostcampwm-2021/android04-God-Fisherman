@@ -79,9 +79,7 @@ class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diff
             binding.ivFishPhoto.adapter = TimelineViewPagerAdapter(data.photoUrlList)
             binding.indicator.setViewPager2(binding.ivFishPhoto)
             binding.rvTimeline.adapter = TimelineRecyclerViewAdapter(data.timeline)
-            binding.rvTimeline.visibility = View.GONE
-            binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
-            binding.tvShowTimeline.setText(R.string.feed_show_timeline)
+            closeTimeLineList()
             setListener()
         }
 
@@ -89,14 +87,20 @@ class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diff
             binding.timelineClickListener = {
                 if (binding.rvTimeline.visibility == View.GONE) {
                     binding.rvTimeline.visibility = View.VISIBLE
+                    binding.tvTotalTime.visibility = View.VISIBLE
                     binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_up_primary)
                     binding.tvShowTimeline.setText(R.string.feed_close_timeline)
                 } else {
-                    binding.rvTimeline.visibility = View.GONE
-                    binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
-                    binding.tvShowTimeline.setText(R.string.feed_show_timeline)
+                    closeTimeLineList()
                 }
             }
+        }
+
+        private fun closeTimeLineList() {
+            binding.rvTimeline.visibility = View.GONE
+            binding.tvTotalTime.visibility = View.GONE
+            binding.ivShowAll.setImageResource(R.drawable.ic_baseline_arrow_drop_down_primary)
+            binding.tvShowTimeline.setText(R.string.feed_show_timeline)
         }
     }
 
@@ -107,7 +111,7 @@ class FeedAdapter : PagingDataAdapter<FeedData, FeedAdapter.FeedViewHolder>(diff
 
             override fun areItemsTheSame(oldItem: FeedData, newItem: FeedData): Boolean =
                 oldItem.date == newItem.date
-           
+
             override fun areContentsTheSame(oldItem: FeedData, newItem: FeedData): Boolean =
                 oldItem == newItem
         }

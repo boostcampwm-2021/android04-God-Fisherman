@@ -23,10 +23,10 @@
             <ImageView
                 android:id="@+id/iv_time_line"
                 setImage="@{item.image}"
-                android:layout_width="110dp"
+                android:layout_width="@dimen/item_time_line_in_stop_watch_image_view_width"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,16 +34,17 @@
 
             <TextView
                 android:id="@+id/tv_time_in_time_line"
-                setDate="@{item.date}"
-                android:layout_width="108dp"
+                setTime="@{item.date}"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_small"
-                android:layout_marginTop="18dp"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_median"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_fish_tag_in_time_line"
                 app:layout_constraintStart_toEndOf="@+id/iv_time_line"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="00 : 12 : 34" />
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="오전 1시 11분" />
 
             <TextView
                 android:id="@+id/tv_fish_tag_in_time_line"
@@ -51,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_small"
                 android:layout_marginTop="@dimen/space_small"
-                android:layout_marginBottom="18dp"
                 android:text="@{item.fishType}"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,12 +61,12 @@
 
             <TextView
                 android:id="@+id/tv_fish_length_in_time_line"
+                setLength="@{item.fishLength}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_x_small"
                 android:layout_marginTop="@dimen/space_small"
                 android:layout_marginBottom="18dp"
-                setLength = "@{item.fishLength}"
                 android:textSize="@dimen/text_median"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_fish_tag_in_time_line"

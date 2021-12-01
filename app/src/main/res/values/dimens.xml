@@ -34,4 +34,5 @@
 
     <!-- Main Activity -->
     <dimen name="stopwatch_view_height_small">56dp</dimen>
+    <dimen name="item_time_line_in_stop_watch_image_view_width">140dp</dimen>
 </resources>

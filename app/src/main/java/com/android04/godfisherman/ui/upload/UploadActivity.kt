@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.ActivityUploadBinding
 import com.android04.godfisherman.presentation.upload.UploadViewModel
@@ -31,7 +32,7 @@ class UploadActivity :
         setOrientation()
         initListener()
         setupObserver()
-        setUpBinding()
+        setupBinding()
         loadData()
 
     }
@@ -41,7 +42,7 @@ class UploadActivity :
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    private fun setUpBinding() {
+    private fun setupBinding() {
         binding.uploadViewModel = viewModel
     }
 
@@ -62,17 +63,10 @@ class UploadActivity :
         }
         viewModel.isFetchSuccess.observe(this) {
             it?.let {
-                when (it) {
-                    true -> {
-                        binding.toolbarTop.menu.getItem(0).isEnabled = true
-                    }
-                    false -> {
-                        binding.toolbarTop.menu.getItem(0).isEnabled = false
-                        showToast(this, R.string.fetch_fail)
-                    }
-                }
+                binding.toolbarTop.menu.getItem(0).isEnabled = it
             }
         }
+
         viewModel.isUploadSuccess.observe(this) {
             when (it) {
                 true -> {
@@ -83,17 +77,6 @@ class UploadActivity :
                 false -> {
                     showToast(this, R.string.upload_server_fail)
                 }
-            }
-
-        }
-        viewModel.isInputCorrect.observe(this) {
-            if (it == false) {
-                showToast(this, R.string.upload_input_fail)
-            }
-        }
-        viewModel.isSizeCorrect.observe(this) {
-            if (it == false) {
-                showToast(this, R.string.upload_size_fail)
             }
         }
 
@@ -108,11 +91,9 @@ class UploadActivity :
             }
         }
 
-        viewModel.isNetworkConnected.observe(this) {
-            if (it == false) {
-                showToast(this, R.string.upload_network_disconnected)
-            }
-        }
+        viewModel.error.observe(this, EventObserver { message ->
+            showToast(this, message)
+        })
     }
 
     override fun onBackPressed() {

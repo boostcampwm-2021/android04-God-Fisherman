@@ -9,7 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.android04.godfisherman.R
 import com.android04.godfisherman.utils.convertCentiMeter
-import com.android04.godfisherman.utils.toDateString
+import com.android04.godfisherman.utils.toTimeString
 import com.android04.godfisherman.utils.toTimeHourMinute
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
@@ -101,14 +101,14 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("setDate")
+    @BindingAdapter("setTime")
     fun setSizeTextWithDouble(view: TextView, date: Date) {
-        view.text = date.toDateString()
+        view.text = date.toTimeString()
     }
 
     @JvmStatic
     @BindingAdapter("setTimeToMinute")
-    fun setTimeWithDouble(view: TextView, millisecond: Double) {
+    fun setTimeWithInt(view: TextView, millisecond: Int) {
         view.text = millisecond.toTimeHourMinute()
     }
 
