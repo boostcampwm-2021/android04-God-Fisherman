@@ -14,9 +14,10 @@ import com.android04.godfisherman.presentation.home.HomeRecommendData
 import com.android04.godfisherman.utils.*
 import com.android04.godfisherman.presentation.rankingdetail.RankingData
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.roundToInt
 
-class HomeRepository @Inject constructor(
+class HomeInfoRepository @Inject constructor(
     private val remoteDataSource: HomeDataSource.RemoteDataSource,
     private val homeInfoCache: HomeInfoCache
 ) {

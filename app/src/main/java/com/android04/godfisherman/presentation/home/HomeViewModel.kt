@@ -9,9 +9,7 @@ import com.android04.godfisherman.common.RepoResponseImpl
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.di.IoDispatcher
-import com.android04.godfisherman.data.repository.HomeRepository
-import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.data.repository.LogInRepository
+import com.android04.godfisherman.domain.HomeRepository
 import com.android04.godfisherman.presentation.rankingdetail.RankingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,8 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
-    private val logInRepository: LogInRepository,
-    private val locationRepository: LocationRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -99,7 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchWeather() {
-        val location = locationRepository.loadLocation()
+        val location = homeRepository.loadLocation()
 
         _isWeatherLoading.postValue(true)
 
@@ -137,12 +133,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchUserID() {
-        _userName.value = logInRepository.getUserInfo().name
+        _userName.value = homeRepository.getUserInfo().name
     }
 
     fun loadLocation() {
         viewModelScope.launch(ioDispatcher) {
-            when (val result = locationRepository.updateAddress()) {
+            when (val result = homeRepository.updateAddress()) {
                 is Result.Success -> _address.postValue(result.data)
                 is Result.Fail -> _address.postValue(result.description)
             }

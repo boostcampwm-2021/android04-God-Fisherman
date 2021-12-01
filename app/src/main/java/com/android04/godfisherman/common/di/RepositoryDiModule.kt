@@ -1,6 +1,8 @@
 package com.android04.godfisherman.common.di
 
-import com.android04.godfisherman.data.repository.RecordRepositoryImpl
+import com.android04.godfisherman.data.repository.*
+import com.android04.godfisherman.domain.HomeRepository
+import com.android04.godfisherman.domain.MainViewRepository
 import com.android04.godfisherman.domain.RecordRepository
 import dagger.Binds
 import dagger.Module
@@ -20,4 +22,14 @@ abstract class RepositoryDiModule {
     abstract fun bindStopwatchRepository(
         recordRepositoryImpl: RecordRepositoryImpl
     ): RecordRepository.StopwatchRepository
+
+    @Binds
+    abstract fun bindHomeRepository(
+        homeRepositoryImpl: HomeRepositoryImpl
+    ): HomeRepository
+
+    @Binds
+    abstract fun bindMainViewRepository(
+        mainViewRepositoryImpl: MainViewRepositoryImpl
+    ): MainViewRepository
 }

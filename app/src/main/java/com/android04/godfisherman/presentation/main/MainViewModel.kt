@@ -9,8 +9,7 @@ import com.android04.godfisherman.common.Event
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.common.di.IoDispatcher
 import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
-import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.domain.RecordRepository
+import com.android04.godfisherman.domain.MainViewRepository
 import com.android04.godfisherman.utils.StopwatchManager
 import com.android04.godfisherman.utils.toTimeMilliSecond
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val stopwatchRepository: RecordRepository.StopwatchRepository,
-    private val locationRepository: LocationRepository,
+    private val mainViewRepository: MainViewRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     companion object {
@@ -104,7 +102,7 @@ class MainViewModel @Inject constructor(
             _isLoading.value = true
 
             viewModelScope.launch(ioDispatcher) {
-                val result = stopwatchRepository.saveTimeLineRecord(stopwatch.getSaveTime())
+                val result = mainViewRepository.saveTimeLineRecord(stopwatch.getSaveTime())
                 _isLoading.postValue(false)
 
                 when (result) {
@@ -122,7 +120,7 @@ class MainViewModel @Inject constructor(
 
     fun loadTmpTimeLineRecord() {
         viewModelScope.launch(ioDispatcher) {
-            _tmpFishingList.postValue(stopwatchRepository.loadTmpTimeLineRecord())
+            _tmpFishingList.postValue(mainViewRepository.loadTmpTimeLineRecord())
         }
     }
 
@@ -137,9 +135,8 @@ class MainViewModel @Inject constructor(
 
     fun updateLocation(location: Location?) {
         viewModelScope.launch(ioDispatcher) {
-            locationRepository.saveLocation(location)
+            mainViewRepository.saveLocation(location)
             _currentLocation.postValue(location)
-
         }
     }
 
