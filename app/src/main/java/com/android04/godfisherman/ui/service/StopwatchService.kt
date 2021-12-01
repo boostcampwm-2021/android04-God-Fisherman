@@ -40,7 +40,7 @@ class StopwatchService :
         intent.putExtra(FROM_SERVICE, true)
 
         val pendingIntent = PendingIntent
-            .getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            .getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         notification = NotificationCompat.Builder(this, StopwatchNotification.CHANNEL_ID)
             .setContentTitle("그물잠")
@@ -75,7 +75,7 @@ class StopwatchService :
     private fun createNotification(): Notification = notification.setContentText("00:00:00").build()
 
     private fun updateNotification(time: Double) {
-        val updatedNotifiaction = notification.setContentText(time.toTimeSecond()).build()
-        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, updatedNotifiaction)
+        val updatedNotification = notification.setContentText(time.toTimeSecond()).build()
+        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, updatedNotification)
     }
 }
