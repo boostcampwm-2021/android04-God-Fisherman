@@ -1,10 +1,12 @@
 package com.android04.godfisherman.presentation.home
 
-import com.android04.godfisherman.data.repository.HomeInfoRepository
-import com.android04.godfisherman.data.repository.LocationRepository
-import com.android04.godfisherman.data.repository.LogInRepository
+import com.android04.godfisherman.common.constant.FishRankingRequest
+import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.domain.HomeRepository
 import com.android04.godfisherman.presentation.InstantTaskExecutorRule
 import com.android04.godfisherman.presentation.MainCoroutineRule
+import com.android04.godfisherman.presentation.rankingdetail.RankingData
+import com.android04.godfisherman.utils.GPS_ERROR
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
@@ -19,9 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 internal class HomeViewModelTest {
 
-    @Mock lateinit var homeInfoRepository: HomeInfoRepository
-    @Mock private lateinit var loginRepository: LogInRepository
-    @Mock private lateinit var locationRepository: LocationRepository
+    @Mock lateinit var homeRepository: HomeRepository
     private lateinit var homeViewModel: HomeViewModel
 
     @get:Rule val instantExecutor = InstantTaskExecutorRule()
@@ -33,7 +33,7 @@ internal class HomeViewModelTest {
     @Before
     fun setUp() {
         homeViewModel =
-            HomeViewModel(homeInfoRepository, loginRepository, locationRepository, mainCoroutineRule.testDispatcher)
+            HomeViewModel(homeRepository, mainCoroutineRule.testDispatcher)
     }
 
     @ExperimentalCoroutinesApi
@@ -90,7 +90,7 @@ internal class HomeViewModelTest {
         val errorMessage = GPS_ERROR
 
         // When
-        `when`(locationRepository.updateAddress()).thenReturn(
+        `when`(homeRepository.updateAddress()).thenReturn(
             Result.Fail(errorMessage)
         )
         homeViewModel.loadLocation()
@@ -106,7 +106,7 @@ internal class HomeViewModelTest {
         val address = "테스트시 테스트구 테스트동"
 
         // When
-        `when`(locationRepository.updateAddress()).thenReturn(
+        `when`(homeRepository.updateAddress()).thenReturn(
             Result.Success(address)
         )
         homeViewModel.loadLocation()
