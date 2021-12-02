@@ -5,7 +5,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 
 class SwipeMotionLayoutWrapper(private val motionLayout: MotionLayout) {
 
-    fun setupTransitionListener(
+    fun initTransitionListener(
         transitionStartedCallback: ((view: MotionLayout?, startId: Int, endId: Int) -> Unit)?,
         transitionChangedCallback: ((view: MotionLayout?, startId: Int, endId: Int, progress: Float) -> Unit)?,
         transitionCompletedCallback: ((view: MotionLayout?, currentId: Int) -> Unit)?,

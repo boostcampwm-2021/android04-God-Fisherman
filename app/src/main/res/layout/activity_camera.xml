@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.android04.godfisherman.ui.camera.CameraViewModel" />
+            type="com.android04.godfisherman.presentation.camera.CameraViewModel" />
 
     </data>
 
@@ -78,13 +78,13 @@
             android:layout_height="70dp"
             android:layout_marginEnd="@dimen/camera_guide_margin"
             android:background="@drawable/bg_primary_to_secondary_circle"
-            android:enabled="@{viewModel.bodySize != null &amp;&amp; viewModel.isLevelOk}"
+            android:enabled="@{viewModel.bodySize != null &amp;&amp; viewModel.isLevelOk &amp;&amp; !viewModel.isShutterPressed}"
             android:onClickListener="@{()->activity.takePhoto()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.android04.godfisherman.utils.LevelView
+        <com.android04.godfisherman.ui.camera.LevelView
             android:id="@+id/lv_test"
             android:layout_width="200dp"
             android:layout_height="200dp"

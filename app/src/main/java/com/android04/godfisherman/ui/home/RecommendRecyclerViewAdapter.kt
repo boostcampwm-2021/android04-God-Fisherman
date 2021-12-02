@@ -4,16 +4,16 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.view.marginRight
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemHomeRecommendBinding
+import com.android04.godfisherman.presentation.home.HomeRecommendData
 
 class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewAdapter.RecommendViewHolder>() {
 
     private val data = mutableListOf<HomeRecommendData>()
 
-    fun setData(newData : List<HomeRecommendData>) {
+    fun setData(newData: List<HomeRecommendData>) {
+        data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
     }
@@ -31,9 +31,9 @@ class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewA
         return data.size
     }
 
-    inner class RecommendViewHolder(private val binding : ItemHomeRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RecommendViewHolder(private val binding: ItemHomeRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data : HomeRecommendData) {
+        fun onBind(data: HomeRecommendData) {
             binding.data = data
             binding.root.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)

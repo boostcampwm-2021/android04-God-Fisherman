@@ -1,8 +1,8 @@
 package com.android04.godfisherman.data.repository
 
-import com.android04.godfisherman.ui.mypage.UserInfo
-import com.android04.godfisherman.utils.FirebaseAuthManager
-import com.android04.godfisherman.utils.RepoResponse
+import com.android04.godfisherman.common.FirebaseAuthManager
+import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.presentation.mypage.UserInfo
 import javax.inject.Inject
 
 class LogInRepository @Inject constructor(
@@ -22,7 +22,7 @@ class LogInRepository @Inject constructor(
         manager.doLogOut()
     }
 
-    fun getUserInfo() = manager.getUserInfo()
+    fun loadUserInfo() = manager.loadUserInfo()
 
     fun isAutoLogIn() = manager.isAutoLogIn()
 }

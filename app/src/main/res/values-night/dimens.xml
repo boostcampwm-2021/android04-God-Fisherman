@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_time_line_in_stop_watch_image_view_width">140dp</dimen>
+</resources>

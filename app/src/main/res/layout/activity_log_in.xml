@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary"
+        android:background="@color/primary99"
         tools:context=".ui.login.LogInActivity">
 
         <TextView
@@ -14,8 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="48dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_xxxx_large"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/iv_app_icon"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,20 +27,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/app_name_sub"
-            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="32dp"
-            android:textStyle="bold|italic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_large"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
 
         <ImageView
             android:id="@+id/iv_app_icon"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:background="@color/primary"
             android:src="@drawable/app_icon"
             app:layout_constraintBottom_toBottomOf="@id/googleButton"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_x_large"
             android:text="@string/social_login"
-            android:textColor="@color/white"
+            android:textColor="@color/primary"
             android:textSize="@dimen/text_x_large"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/googleButton"

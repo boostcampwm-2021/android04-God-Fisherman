@@ -10,9 +10,9 @@ import android.view.Window
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.databinding.FragmentMyPageBinding
+import com.android04.godfisherman.presentation.mypage.MyPageViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.login.LogInActivity
-import com.android04.godfisherman.utils.showToast
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,20 +21,20 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
 
     override val viewModel: MyPageViewModel by viewModels()
 
-    private lateinit var loadingDialog : Dialog
+    private lateinit var loadingDialog: Dialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
         setStatusBarColor(R.color.background_home)
-        setLoadingDialog()
-        setListener()
+        initListener()
+        initLoadingDialog()
 
-        viewModel.fetchUserData()
+        viewModel.loadUserData()
     }
 
-    private fun setListener() {
+    private fun initListener() {
         binding.btLogout.setOnClickListener {
             logOut()
         }
@@ -53,7 +53,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         requireActivity().finish()
     }
 
-    private fun setLoadingDialog() {
+    private fun initLoadingDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(false)

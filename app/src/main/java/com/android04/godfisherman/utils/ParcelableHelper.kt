@@ -2,7 +2,6 @@ package com.android04.godfisherman.utils
 
 import android.content.SharedPreferences
 import android.os.Parcelable
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 

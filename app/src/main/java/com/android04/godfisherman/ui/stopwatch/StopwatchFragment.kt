@@ -1,0 +1,122 @@
+package com.android04.godfisherman.ui.stopwatch
+
+import android.app.Dialog
+import android.os.Bundle
+import android.view.View
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.android04.godfisherman.R
+import com.android04.godfisherman.common.EventObserver
+import com.android04.godfisherman.common.LoadingDialogProvider
+import com.android04.godfisherman.databinding.FragmentStopwatchBinding
+import com.android04.godfisherman.presentation.main.MainViewModel
+import com.android04.godfisherman.ui.base.BaseFragment
+import com.android04.godfisherman.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class StopwatchFragment :
+    BaseFragment<FragmentStopwatchBinding, MainViewModel>(R.layout.fragment_stopwatch) {
+
+    override val viewModel: MainViewModel by activityViewModels()
+
+    private var isPlayAnimate = false
+    private val loadingDialog: Dialog by lazy {
+        LoadingDialogProvider().provideLoadingDialog(requireContext(), R.layout.dialog_upload_loading)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.fragment = this
+
+        initRecyclerView()
+        initListener()
+        setupObserver()
+        animateFinger()
+    }
+
+    fun showDialog() {
+        val dialog = UploadDialog(requireContext(), { viewModel.saveTimeLineRecord() },
+            { viewModel.resumeStopwatch() })
+
+        dialog.showDialog()
+    }
+
+    private fun initRecyclerView() {
+        viewModel.loadTmpTimeLineRecord()
+        binding.rvTimeLine.apply {
+            setConfiguration(
+                TimelineListAdapter(),
+                binding.tvEmptyView,
+                50
+            )
+        }
+    }
+
+    private fun setupObserver() {
+        viewModel.isStopwatchStarted.observe(viewLifecycleOwner, {
+            binding.vShadow.isVisible = it
+            isPlayAnimate = it
+            if (it) {
+                lifecycleScope.launchWhenStarted {
+                    animateShadow()
+                }
+            }
+        })
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> loadingDialog.show()
+                false -> loadingDialog.cancel()
+            }
+        }
+        viewModel.successOrFail.observe(viewLifecycleOwner, EventObserver { message ->
+            showToast(requireContext(), message)
+        })
+    }
+
+    private fun initListener() {
+
+        binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.GONE)
+            }
+            if (scrollY == 0) {
+                (requireActivity() as MainActivity).setMotionSwipeAreaVisibility(View.VISIBLE)
+            }
+        }
+    }
+
+    private fun animateShadow() {
+        if (isPlayAnimate) {
+            binding.vShadow.apply {
+                animate().scaleX(1.1f).scaleY(1.1f).setDuration(1000).withEndAction {
+                    animate().scaleX(1f).scaleY(1f).setDuration(1000).withEndAction {
+                        animateShadow()
+                    }.start()
+                }.start()
+            }
+        }
+    }
+
+    private fun animateFinger() {
+        binding.ivFinger.apply {
+            animate().translationYBy(0f).setDuration(700).withEndAction {
+                isVisible = true
+                animate().translationYBy(200f).setDuration(1000).withEndAction {
+                    translationY = 0f
+                    animate().translationYBy(200f).setDuration(1000).withEndAction {
+                        isVisible = false
+                    }.start()
+                }.start()
+            }.start()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isPlayAnimate = false
+    }
+
+}

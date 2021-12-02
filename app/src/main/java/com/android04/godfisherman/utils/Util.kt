@@ -1,6 +1,6 @@
 package com.android04.godfisherman.utils
 
-import com.android04.godfisherman.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -18,13 +18,13 @@ fun roundBodySize(length: Double): Double {
     return String.format("%.1f", length).toDouble()
 }
 
-fun widthConvert(x: Int, imageWidth: Int, screenWidth: Int) : Int {
+fun widthConvert(x: Int, imageWidth: Int, screenWidth: Int): Int {
     val ratio = screenWidth.toFloat() / imageWidth
 
     return (x * ratio).toInt()
 }
 
-fun heightConvert(y: Int, imageHeight: Int, screenHeight: Int) : Int {
+fun heightConvert(y: Int, imageHeight: Int, screenHeight: Int): Int {
     val height = screenHeight.toFloat()
     val ratio = height / imageHeight
 

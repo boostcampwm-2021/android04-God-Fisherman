@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.android04.godfisherman.ui.home.RankingData.HomeWaitingRankingData" />
+            type="com.android04.godfisherman.presentation.rankingdetail.RankingData.HomeWaitingRankingData" />
 
     </data>
 

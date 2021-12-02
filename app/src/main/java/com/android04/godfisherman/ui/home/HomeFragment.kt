@@ -1,16 +1,17 @@
 package com.android04.godfisherman.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.databinding.FragmentHomeBinding
+import com.android04.godfisherman.presentation.home.HomeViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.utils.showToast
+import com.android04.godfisherman.ui.rankingdetail.RankingDetailFragment
+import com.android04.godfisherman.ui.rankingdetail.RankingRecyclerViewAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,11 +25,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.viewModel = viewModel
 
         setStatusBarColor(R.color.background_home)
-        setLocationSavedListener()
+        initLocationSavedListener()
         loadLocation()
         initView()
-        setListener()
-        setRecyclerView()
+        initListener()
+        initRecyclerView()
         setupObserver()
 
         viewModel.fetchUserID()
@@ -37,13 +38,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     }
 
-    private fun setLocationSavedListener() {
+    private fun initLocationSavedListener() {
         parentFragmentManager.setFragmentResultListener(
             LOCATION_UPDATED,
             viewLifecycleOwner
         ) { key, bundle ->
             val isSaved = bundle.getBoolean(MainActivity.DEFAULT_BUNDLE)
-            Log.d("LocationUpdate", "통신 완료 : $isSaved")
             if (isSaved) viewModel.loadLocation()
         }
     }
@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.tvUserName.isSelected = true
     }
 
-    private fun setRecyclerView() {
+    private fun initRecyclerView() {
         binding.rvRanking.adapter = RankingRecyclerViewAdapter()
         (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setLimitItemCount(5)
 
@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         })
     }
 
-    private fun setListener() {
+    private fun initListener() {
         binding.detailClickListener = {
             if (binding.rvWeatherDetail.visibility == View.VISIBLE) {
                 binding.rvWeatherDetail.visibility = View.GONE

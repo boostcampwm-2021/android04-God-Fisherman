@@ -1,30 +1,36 @@
 package com.android04.godfisherman.ui.main
 
 import android.Manifest
-import android.content.Intent
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
+import com.android04.godfisherman.common.LocationHelper
+import com.android04.godfisherman.common.StopwatchNotification
 import com.android04.godfisherman.databinding.ActivityMainBinding
+import com.android04.godfisherman.presentation.main.MainViewModel
 import com.android04.godfisherman.ui.base.BaseActivity
 import com.android04.godfisherman.ui.camera.CameraActivity
 import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
+import com.android04.godfisherman.ui.service.StopwatchService
+import com.android04.godfisherman.ui.stopwatch.StopwatchFragment
 import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
-import com.android04.godfisherman.ui.stopwatch.TestStopwatchFragment
-import com.android04.godfisherman.utils.*
+import com.android04.godfisherman.ui.stopwatch.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private lateinit var serviceIntent: Intent
+    private val locationHelper: LocationHelper by lazy { LocationHelper(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +51,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         serviceIntent = Intent(this, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
 
-        setOrientation()
         StopwatchNotification.createChannel(this)
-        checkLocationPermission()
+        initOrientation()
         initBottomNavigation()
         initMotionListener()
         checkFromService()
@@ -92,7 +98,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
-                changeFragment(R.id.fl_stopwatch_big, TestStopwatchFragment())
+                replaceFragment(R.id.fl_stopwatch_big, StopwatchFragment())
                 swipeMotionLayoutWrapper.apply {
                     setTransition(R.id.transition)
                     swipeMotionLayoutWrapper.setProgress(1f) {
@@ -110,48 +116,52 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun initBottomNavigation() {
         binding.navView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_home -> {
-                    changeFragment(R.id.fl_fragment_container, HomeFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_home
-                    true
-                }
-                R.id.navigation_feed -> {
-                    changeFragment(R.id.fl_fragment_container, FeedFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_feed
-                    true
-                }
-                R.id.navigation_camera -> {
-                    viewModel.isServiceRequestWithOutCamera = false
-                    startActivity(Intent(this, CameraActivity::class.java))
-                    viewModel.beforeMenuItemId = R.id.navigation_camera
-                    true
-                }
-                R.id.navigation_stopwatch -> {
-                    if (viewModel.stopwatchOnFlag.value == true) {
-                        swipeMotionLayoutWrapper.transitionToState(R.id.end)
-                    } else {
-                        changeFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+
+            if (menuItem.isChecked) {
+                false
+            } else {
+                when (menuItem.itemId) {
+                    R.id.navigation_home -> {
+                        replaceFragment(R.id.fl_fragment_container, HomeFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_home
+                        true
                     }
-                    true
+                    R.id.navigation_feed -> {
+                        replaceFragment(R.id.fl_fragment_container, FeedFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_feed
+                        true
+                    }
+                    R.id.navigation_camera -> {
+                        viewModel.isServiceRequestWithOutCamera = false
+                        startActivity(Intent(this, CameraActivity::class.java))
+                        false
+                    }
+                    R.id.navigation_stopwatch -> {
+                        if (viewModel.stopwatchOnFlag.value == true) {
+                            swipeMotionLayoutWrapper.transitionToState(R.id.end)
+                        } else {
+                            replaceFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+                        }
+                        true
+                    }
+                    R.id.navigation_my_page -> {
+                        replaceFragment(R.id.fl_fragment_container, MyPageFragment())
+                        viewModel.beforeMenuItemId = R.id.navigation_my_page
+                        true
+                    }
+                    else -> false
                 }
-                R.id.navigation_my_page -> {
-                    changeFragment(R.id.fl_fragment_container, MyPageFragment())
-                    viewModel.beforeMenuItemId = R.id.navigation_my_page
-                    true
-                }
-                else -> false
             }
         }
-        changeFragment(R.id.fl_fragment_container, HomeFragment())
+        replaceFragment(R.id.fl_fragment_container, HomeFragment())
         viewModel.beforeMenuItemId = R.id.navigation_home
     }
 
-    private fun changeFragment(containerId: Int, fragment: Fragment) {
+    private fun replaceFragment(containerId: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(containerId, fragment).commit()
     }
 
-    private fun changeFragmentWithBackStack(containerId: Int, fragment: Fragment) {
+    private fun replaceFragmentWithBackStack(containerId: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(containerId, fragment)
             .addToBackStack(BEFORE_FRAGMENT)
@@ -163,7 +173,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun initMotionListener() {
-        swipeMotionLayoutWrapper.setupTransitionListener(
+        swipeMotionLayoutWrapper.initTransitionListener(
             transitionCompletedCallback = { _, currentId ->
                 binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
                 MainViewModel.isFromService = false
@@ -192,29 +202,27 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
         }
 
-        println(supportFragmentManager.fragments)
-
         when {
             viewModel.isOpened -> {
                 swipeMotionLayoutWrapper.transitionToState(R.id.start)
                 viewModel.isOpened = false
             }
             !isHome -> {
-                transitionToHome()
+                moveToHome()
             }
             isHome -> {
-                backWithFinish()
+                backWithFinishCheck()
             }
         }
     }
 
-    private fun transitionToHome() {
-        changeFragment(R.id.fl_fragment_container, HomeFragment())
+    private fun moveToHome() {
+        replaceFragment(R.id.fl_fragment_container, HomeFragment())
         viewModel.beforeMenuItemId = R.id.navigation_home
         binding.navView.selectedItemId = R.id.navigation_home
     }
 
-    private fun backWithFinish() {
+    private fun backWithFinishCheck() {
         val currentTime = System.currentTimeMillis()
 
         if (currentTime > viewModel.lastBackTime + 2000) {
@@ -226,7 +234,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    private fun setOrientation() {
+    private fun initOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
@@ -244,6 +252,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             stopService(serviceIntent)
             isStopwatchServiceRunning = false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkLocationPermission()
     }
 
     private fun passStopwatchToService(time: Double) {
@@ -274,11 +287,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun checkLocationPermission() {
         if (isGrantedLocationPermission(this)) {
-            viewModel.requestLocation()
+            requestLocation()
         } else {
             requestLocationPermission()
         }
     }
+
+    private fun isGrantedLocationPermission(context: Context) =
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestLocationPermission() {
         var permissionCount = 0
@@ -290,7 +313,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 if (it.value) permissionCount++
             }
             if (permissionCount == 2) {
-                viewModel.requestLocation()
+                requestLocation()
             } else {
                 finish()
             }
@@ -307,6 +330,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         swipeMotionLayoutWrapper.updateConstraint(R.id.end, R.id.cl_container_stopwatch) {
             it.propertySet.visibility = visibility
         }
+    }
+
+    private fun requestLocation() {
+        val locationRequestCallback = { viewModel.updateLocation(locationHelper.getLocation()) }
+        locationHelper.setLocationUpdate(locationRequestCallback)
     }
 
     companion object {

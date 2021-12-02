@@ -24,8 +24,9 @@ import androidx.core.content.ContextCompat
 import com.android04.godfisherman.R
 import com.android04.godfisherman.common.App
 import com.android04.godfisherman.databinding.ActivityCameraBinding
+import com.android04.godfisherman.presentation.camera.CameraViewModel
 import com.android04.godfisherman.ui.base.BaseActivity
-import com.android04.godfisherman.ui.camera.upload.UploadActivity
+import com.android04.godfisherman.ui.upload.UploadActivity
 import com.android04.godfisherman.utils.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -37,27 +38,27 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
 
-    private val screenSize : Size by lazy {
+    private val screenSize: Size by lazy {
         Size(resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
     }
 
-    private val sensorManager by lazy{
+    private val sensorManager by lazy {
         getSystemService(SENSOR_SERVICE) as SensorManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setFullScreen()
-        setBinding()
+        initFullScreen()
+        initBinding()
         operateCamera()
         (application as App).exitCameraActivityFlag = true
     }
 
-    private fun setFullScreen() {
+    private fun initFullScreen() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -65,7 +66,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         }
     }
 
-    private fun setBinding() {
+    private fun initBinding() {
         binding.activity = this
         binding.viewModel = viewModel
     }
@@ -146,6 +147,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     fun takePhoto() {
+        viewModel.setShutterPressed(true)
+
         val intent = Intent(this, UploadActivity::class.java)
 
         val imageCapture = imageCapture ?: return
@@ -176,6 +179,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
                         finish()
                     } else {
+                        viewModel.setShutterPressed(false)
                         showToast(this@CameraActivity, R.string.camera_detect_error)
                         image.close()
                     }
@@ -185,9 +189,11 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(this,
+        sensorManager.registerListener(
+            this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_NORMAL)
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -195,7 +201,7 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        event?.let{
+        event?.let {
             binding.lvTest.onSensorEvent(event)
 
             val x = event.values[0]
@@ -219,10 +225,12 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
             detector.detectImage(image) { rectList ->
                 viewModel.setRect(
                     rectList.map {
-                        listOf(heightConvert(it.top, image.height, screenSize.height),
+                        listOf(
+                            heightConvert(it.top, image.height, screenSize.height),
                             heightConvert(it.bottom, image.height, screenSize.height),
                             widthConvert(it.left, image.width, screenSize.width),
-                            widthConvert(it.right, image.width, screenSize.width))
+                            widthConvert(it.right, image.width, screenSize.width)
+                        )
                     }
                 )
             }
@@ -233,6 +241,6 @@ class CameraActivity : BaseActivity<ActivityCameraBinding, CameraViewModel>(R.la
         const val INTENT_FISH_SIZE = "Fish Size"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        var captureImage : Bitmap? = null
+        var captureImage: Bitmap? = null
     }
 }
