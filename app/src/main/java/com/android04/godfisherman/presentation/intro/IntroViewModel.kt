@@ -13,8 +13,8 @@ class IntroViewModel @Inject constructor(private val repository: IntroRepository
     private val _isFirstStart: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val isFirstStart: LiveData<Boolean> = _isFirstStart
 
-    fun fetchFirstStart() {
-        _isFirstStart.value = repository.fetchFirstStart()
+    fun loadFirstStart() {
+        _isFirstStart.value = repository.loadFirstStart()
     }
 
     fun setFirstStart() {

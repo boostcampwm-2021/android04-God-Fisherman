@@ -28,13 +28,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
 
         binding.viewModel = viewModel
         setStatusBarColor(R.color.background_home)
-        setLoadingDialog()
-        setListener()
+        initListener()
+        initLoadingDialog()
 
-        viewModel.fetchUserData()
+        viewModel.loadUserData()
     }
 
-    private fun setListener() {
+    private fun initListener() {
         binding.btLogout.setOnClickListener {
             logOut()
         }
@@ -53,7 +53,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
         requireActivity().finish()
     }
 
-    private fun setLoadingDialog() {
+    private fun initLoadingDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(false)

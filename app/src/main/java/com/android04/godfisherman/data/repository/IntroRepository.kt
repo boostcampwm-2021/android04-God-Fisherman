@@ -5,7 +5,7 @@ import com.android04.godfisherman.common.SharedPreferenceManager
 import javax.inject.Inject
 
 class IntroRepository @Inject constructor(private val manager: SharedPreferenceManager) {
-    fun fetchFirstStart() =
+    fun loadFirstStart() =
         manager.getString(IntroViewModel.FIRST_START) != IntroViewModel.FIRST_START
 
     fun setFirstStart() {

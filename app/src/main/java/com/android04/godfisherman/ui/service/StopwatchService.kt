@@ -14,22 +14,13 @@ import com.android04.godfisherman.ui.main.MainActivity
 import com.android04.godfisherman.utils.toTimeSecond
 import java.util.*
 
-class StopwatchService :
-    Service() {
-
-    companion object {
-        const val TIME_EXTRA = "timeExtra"
-        const val FROM_SERVICE = "fromService"
-        const val SERVICE_DESTROYED = "serviceDestroyed"
-        const val STOPWATCH_ENTER = "timeEnter"
-        const val NOTIFICATION_ID = 10
-    }
+class StopwatchService : Service() {
 
     private var saveTime = 0.0
     private val stopwatch = Timer()
     private lateinit var notification: NotificationCompat.Builder
 
-    override fun onBind(p0: Intent?): IBinder? = null
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(passedIntent: Intent, flags: Int, startId: Int): Int {
         MainActivity.isStopwatchServiceRunning = true
@@ -51,7 +42,7 @@ class StopwatchService :
             .setContentIntent(pendingIntent)
         saveTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
         startForeground(NOTIFICATION_ID, createNotification())
-        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, 1000)
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, PERIOD)
         return START_NOT_STICKY
     }
 
@@ -64,10 +55,9 @@ class StopwatchService :
         NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
     }
 
-    private inner class StopwatchTask() : TimerTask() {
+    private inner class StopwatchTask : TimerTask() {
         override fun run() {
-            Log.d("StopWatch", saveTime.toString())
-            saveTime += 100
+            saveTime += INTERVAL
             updateNotification(saveTime)
         }
     }
@@ -77,5 +67,15 @@ class StopwatchService :
     private fun updateNotification(time: Double) {
         val updatedNotification = notification.setContentText(time.toTimeSecond()).build()
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, updatedNotification)
+    }
+
+    companion object {
+        const val TIME_EXTRA = "timeExtra"
+        const val FROM_SERVICE = "fromService"
+        const val SERVICE_DESTROYED = "serviceDestroyed"
+        const val STOPWATCH_ENTER = "timeEnter"
+        const val NOTIFICATION_ID = 10
+        const val PERIOD = 1000L
+        const val INTERVAL = 100.0
     }
 }

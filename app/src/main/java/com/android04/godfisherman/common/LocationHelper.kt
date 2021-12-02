@@ -20,6 +20,7 @@ class LocationHelper @Inject constructor(
     @SuppressLint("MissingPermission")
     fun setLocationUpdate(callback: () -> (Unit)) {
         updateCallback = callback
+
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 5f, this)
         } else {
@@ -30,11 +31,13 @@ class LocationHelper @Inject constructor(
     @SuppressLint("MissingPermission")
     fun getLocation(): Location? {
         var bestLocation: Location? = null
+
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             bestLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
         } else {
             Toast.makeText(context, GPS_ERROR, Toast.LENGTH_SHORT).show()
         }
+
         return bestLocation
     }
 
@@ -46,5 +49,4 @@ class LocationHelper @Inject constructor(
     private fun stopLocationUpdate() {
         locationManager.removeUpdates(this)
     }
-
 }

@@ -32,7 +32,7 @@ class StopwatchFragment :
         binding.fragment = this
 
         initRecyclerView()
-        setupListener()
+        initListener()
         setupObserver()
         animateFinger()
     }
@@ -47,7 +47,7 @@ class StopwatchFragment :
     private fun initRecyclerView() {
         viewModel.loadTmpTimeLineRecord()
         binding.rvTimeLine.apply {
-            setUpConfiguration(
+            setConfiguration(
                 TimelineListAdapter(),
                 binding.tvEmptyView,
                 50
@@ -76,7 +76,7 @@ class StopwatchFragment :
         })
     }
 
-    private fun setupListener() {
+    private fun initListener() {
 
         binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {

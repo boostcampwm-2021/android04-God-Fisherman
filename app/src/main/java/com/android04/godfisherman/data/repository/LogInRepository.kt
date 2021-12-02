@@ -22,7 +22,7 @@ class LogInRepository @Inject constructor(
         manager.doLogOut()
     }
 
-    fun getUserInfo() = manager.getUserInfo()
+    fun loadUserInfo() = manager.loadUserInfo()
 
     fun isAutoLogIn() = manager.isAutoLogIn()
 }

@@ -17,8 +17,8 @@ class GodFishermanIntro : AppIntro() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObserver()
-        viewModel.fetchFirstStart()
+        setupObserver()
+        viewModel.loadFirstStart()
 
         addSlide(
             AppIntroFragment.newInstance(
@@ -46,7 +46,7 @@ class GodFishermanIntro : AppIntro() {
         )
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.isFirstStart.observe(this) {
             if (it == false) {
                 startMainActivity()

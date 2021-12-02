@@ -33,16 +33,16 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setFullScreen()
-        setLoginInstance()
-        setListener()
-        setObserver()
-        setLoadingDialog()
+        initFullScreen()
+        initLoginInstance()
+        initListener()
+        setupObserver()
+        initLoadingDialog()
 
         viewModel.fetchLoginData()
     }
 
-    private fun setFullScreen() {
+    private fun initFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -50,7 +50,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         }
     }
 
-    private fun setLoginInstance() {
+    private fun initLoginInstance() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -61,7 +61,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         auth = FirebaseAuth.getInstance()
     }
 
-    private fun setListener() {
+    private fun initListener() {
         binding.googleButton.setOnClickListener {
             viewModel.setLoading(true)
             val signInIntent = googleSignInClient.signInIntent
@@ -69,7 +69,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         }
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.isLogin.observe(this) {
             if (it) {
                 showToast(this, R.string.login_auto)
@@ -123,7 +123,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
         }
     }
 
-    private fun setLoadingDialog() {
+    private fun initLoadingDialog() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(false)

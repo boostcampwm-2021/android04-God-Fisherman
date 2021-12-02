@@ -18,12 +18,12 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setViewPager()
-        setObserver()
+        initViewPager()
+        setupObserver()
         viewModel.fetchRanking()
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.rankList.observe(viewLifecycleOwner) {
             binding.lottieLoading.visibility = View.GONE
             binding.lottieLoading.pauseAnimation()
@@ -33,7 +33,7 @@ class RankingDetailFragment : BaseFragment<FragmentRankingDetailBinding, Ranking
         }
     }
 
-    private fun setViewPager() {
+    private fun initViewPager() {
         binding.vpRanking.adapter = RankingViewPagerAdapter()
         binding.vpRanking.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.indicatorRanking.setViewPager2(binding.vpRanking)

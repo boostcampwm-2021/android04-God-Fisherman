@@ -39,11 +39,11 @@ class TimelineListAdapter : ListAdapter<TmpFishingRecord, TimelineListAdapter.Ti
     class ItemComparator : DiffUtil.ItemCallback<TmpFishingRecord>() {
 
         override fun areItemsTheSame(oldItem: TmpFishingRecord, newItem: TmpFishingRecord): Boolean {
-            return newItem == oldItem
+            return newItem.date == oldItem.date
         }
 
         override fun areContentsTheSame(oldItem: TmpFishingRecord, newItem: TmpFishingRecord): Boolean {
-            return newItem.date == oldItem.date
+            return newItem == oldItem
         }
     }
 }

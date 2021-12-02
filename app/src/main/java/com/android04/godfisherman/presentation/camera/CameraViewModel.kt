@@ -42,10 +42,10 @@ class CameraViewModel : ViewModel() {
             }
         }
 
-        setSize()
+        calculateSize()
     }
 
-    private fun setSize() {
+    private fun calculateSize() {
         val fishRect = _fishRect.value
         val moneyRect = _moneyRect.value
 
@@ -80,5 +80,9 @@ class CameraViewModel : ViewModel() {
 
     fun setShutterPressed(pressed: Boolean) {
         _isShutterPressed.value = pressed
+    }
+
+    companion object {
+        const val MONEY_SIZE = 13.6F
     }
 }

@@ -33,17 +33,6 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("setImage")
-    fun setImageWithBitmap(view: ImageView, img: Bitmap) {
-        // TODO: 에러 상태 이미지 처리 필요
-        Glide.with(view.context)
-            .load(img)
-            .placeholder(R.color.purple_200)
-            .error(R.color.money_red)
-            .into(view)
-    }
-
-    @JvmStatic
-    @BindingAdapter("setImage")
     fun setImageWithUrl(view: ImageView, url: String?) {
         Glide.with(view.context)
             .load(url)

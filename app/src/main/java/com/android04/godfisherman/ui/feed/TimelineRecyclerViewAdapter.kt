@@ -45,10 +45,10 @@ class TimelineRecyclerViewAdapter(private val data : List<TimeLineData>) :
             }
         }
 
-        private fun isFirst() = adapterPosition == 0
+        private fun isFirst() = bindingAdapterPosition == 0
 
-        private fun isLast() = adapterPosition == itemCount - 1
+        private fun isLast() = bindingAdapterPosition == itemCount - 1
 
-        private fun isAlone() = itemCount == 1 && adapterPosition == itemCount - 1
+        private fun isAlone() = itemCount == 1 && bindingAdapterPosition == itemCount - 1
     }
 }

@@ -15,8 +15,8 @@ class MyPageViewModel @Inject constructor(
     private val _userInfo: MutableLiveData<UserInfo> by lazy { MutableLiveData<UserInfo>() }
     val userInfo: LiveData<UserInfo> = _userInfo
 
-    fun fetchUserData() {
-        _userInfo.value = repository.getUserInfo()
+    fun loadUserData() {
+        _userInfo.value = repository.loadUserInfo()
     }
 
     fun doLogout() {

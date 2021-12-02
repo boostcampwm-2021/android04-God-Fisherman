@@ -8,6 +8,7 @@ import android.os.Build
 class StopwatchNotification {
     companion object{
         const val CHANNEL_ID = "Stopwatch_channel_id"
+
         fun createChannel(context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val serviceChannel = NotificationChannel(
