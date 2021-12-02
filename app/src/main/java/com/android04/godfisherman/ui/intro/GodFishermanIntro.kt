@@ -1,13 +1,13 @@
 package com.android04.godfisherman.ui.intro
 
-import android.os.Bundle
-import com.github.paolorotolo.appintro.AppIntro
-import com.android04.godfisherman.ui.main.MainActivity
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
 import com.android04.godfisherman.presentation.intro.IntroViewModel
+import com.android04.godfisherman.ui.main.MainActivity
+import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,8 +17,8 @@ class GodFishermanIntro : AppIntro() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setObserver()
-        viewModel.fetchFirstStart()
+        setupObserver()
+        viewModel.loadFirstStart()
 
         addSlide(
             AppIntroFragment.newInstance(
@@ -46,7 +46,7 @@ class GodFishermanIntro : AppIntro() {
         )
     }
 
-    private fun setObserver() {
+    private fun setupObserver() {
         viewModel.isFirstStart.observe(this) {
             if (it == false) {
                 startMainActivity()

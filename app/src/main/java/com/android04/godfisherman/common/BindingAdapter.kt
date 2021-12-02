@@ -9,8 +9,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.android04.godfisherman.R
 import com.android04.godfisherman.utils.convertCentiMeter
-import com.android04.godfisherman.utils.toTimeString
 import com.android04.godfisherman.utils.toTimeHourMinute
+import com.android04.godfisherman.utils.toTimeString
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
@@ -29,17 +29,6 @@ object BindingAdapter {
         } else {
             view.visibility = View.GONE
         }
-    }
-
-    @JvmStatic
-    @BindingAdapter("setImage")
-    fun setImageWithBitmap(view: ImageView, img: Bitmap) {
-        // TODO: 에러 상태 이미지 처리 필요
-        Glide.with(view.context)
-            .load(img)
-            .placeholder(R.color.purple_200)
-            .error(R.color.money_red)
-            .into(view)
     }
 
     @JvmStatic

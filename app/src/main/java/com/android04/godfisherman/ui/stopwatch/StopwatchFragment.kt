@@ -10,9 +10,9 @@ import com.android04.godfisherman.R
 import com.android04.godfisherman.common.EventObserver
 import com.android04.godfisherman.common.LoadingDialogProvider
 import com.android04.godfisherman.databinding.FragmentStopwatchBinding
+import com.android04.godfisherman.presentation.main.MainViewModel
 import com.android04.godfisherman.ui.base.BaseFragment
 import com.android04.godfisherman.ui.main.MainActivity
-import com.android04.godfisherman.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +32,7 @@ class StopwatchFragment :
         binding.fragment = this
 
         initRecyclerView()
-        setupListener()
+        initListener()
         setupObserver()
         animateFinger()
     }
@@ -47,7 +47,7 @@ class StopwatchFragment :
     private fun initRecyclerView() {
         viewModel.loadTmpTimeLineRecord()
         binding.rvTimeLine.apply {
-            setUpConfiguration(
+            setConfiguration(
                 TimelineListAdapter(),
                 binding.tvEmptyView,
                 50
@@ -76,7 +76,7 @@ class StopwatchFragment :
         })
     }
 
-    private fun setupListener() {
+    private fun initListener() {
 
         binding.nsvStopwatch.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
@@ -100,7 +100,7 @@ class StopwatchFragment :
         }
     }
 
-    private fun animateFinger(){
+    private fun animateFinger() {
         binding.ivFinger.apply {
             animate().translationYBy(0f).setDuration(700).withEndAction {
                 isVisible = true

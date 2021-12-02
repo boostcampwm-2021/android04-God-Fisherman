@@ -25,11 +25,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.viewModel = viewModel
 
         setStatusBarColor(R.color.background_home)
-        setLocationSavedListener()
+        initLocationSavedListener()
         loadLocation()
         initView()
-        setListener()
-        setRecyclerView()
+        initListener()
+        initRecyclerView()
         setupObserver()
 
         viewModel.fetchUserID()
@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     }
 
-    private fun setLocationSavedListener() {
+    private fun initLocationSavedListener() {
         parentFragmentManager.setFragmentResultListener(
             LOCATION_UPDATED,
             viewLifecycleOwner
@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         binding.tvUserName.isSelected = true
     }
 
-    private fun setRecyclerView() {
+    private fun initRecyclerView() {
         binding.rvRanking.adapter = RankingRecyclerViewAdapter()
         (binding.rvRanking.adapter as RankingRecyclerViewAdapter).setLimitItemCount(5)
 
@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         })
     }
 
-    private fun setListener() {
+    private fun initListener() {
         binding.detailClickListener = {
             if (binding.rvWeatherDetail.visibility == View.VISIBLE) {
                 binding.rvWeatherDetail.visibility = View.GONE

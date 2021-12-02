@@ -37,7 +37,7 @@ class HomeRepositoryImpl @Inject constructor(
         isRefresh: Boolean
     ) = homeInfoRepository.fetchRankingList(request, isRefresh)
 
-    override fun getUserInfo() = logInRepository.getUserInfo()
+    override fun getUserInfo() = logInRepository.loadUserInfo()
 
     override suspend fun updateAddress() = locationRepository.updateAddress()
 

@@ -1,10 +1,10 @@
 package com.android04.godfisherman.data.datasource.feeddatasource.remote
 
 import com.android04.godfisherman.common.constant.Type
-import com.android04.godfisherman.data.dto.FeedDTO
 import com.android04.godfisherman.data.datasource.feeddatasource.FeedDataSource
 import com.android04.godfisherman.data.datasource.uploaddatasource.remote.UploadRemoteDataSourceImpl.Companion.FEED_COLLECTION_NAME
 import com.android04.godfisherman.data.datasource.uploaddatasource.remote.UploadRemoteDataSourceImpl.Companion.FISHING_RECORD_COLLECTION_NAME
+import com.android04.godfisherman.data.dto.FeedDTO
 import com.android04.godfisherman.data.dto.FishingRecord
 import com.android04.godfisherman.data.dto.TypeInfo
 import com.google.firebase.Timestamp

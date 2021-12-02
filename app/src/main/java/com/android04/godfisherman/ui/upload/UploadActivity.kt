@@ -29,20 +29,19 @@ class UploadActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setOrientation()
+        initOrientation()
         initListener()
         setupObserver()
-        setupBinding()
+        initBinding()
         loadData()
-
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    private fun setOrientation() {
+    private fun initOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    private fun setupBinding() {
+    private fun initBinding() {
         binding.uploadViewModel = viewModel
     }
 

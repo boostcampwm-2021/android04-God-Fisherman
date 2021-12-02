@@ -1,7 +1,7 @@
 package com.android04.godfisherman.presentation.home
 
-import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.domain.HomeRepository
 import com.android04.godfisherman.presentation.InstantTaskExecutorRule
 import com.android04.godfisherman.presentation.MainCoroutineRule
@@ -11,7 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -21,13 +21,16 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 internal class HomeViewModelTest {
 
-    @Mock lateinit var homeRepository: HomeRepository
+    @Mock
+    lateinit var homeRepository: HomeRepository
     private lateinit var homeViewModel: HomeViewModel
 
-    @get:Rule val instantExecutor = InstantTaskExecutorRule()
+    @get:Rule
+    val instantExecutor = InstantTaskExecutorRule()
 
     @ExperimentalCoroutinesApi
-    @get:Rule val mainCoroutineRule = MainCoroutineRule()
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule()
 
     @ExperimentalCoroutinesApi
     @Before

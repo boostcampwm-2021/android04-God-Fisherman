@@ -22,10 +22,6 @@ class MainViewModel @Inject constructor(
     private val mainViewRepository: MainViewRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    companion object {
-        var isTimeLine = false
-        var isFromService = false
-    }
 
     val stopwatch = StopwatchManager({ time -> _displayTime.postValue(time.toTimeMilliSecond()) })
     val stopwatchOnFlag: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -36,16 +32,12 @@ class MainViewModel @Inject constructor(
     var lastBackTime = 0L
 
     private val _currentLocation: MutableLiveData<Location?> by lazy {
-        MutableLiveData<Location?>(
-            null
-        )
+        MutableLiveData<Location?>(null)
     }
     val currentLocation: LiveData<Location?> = _currentLocation
 
     private val _isStopwatchStarted: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>(
-            false
-        )
+        MutableLiveData<Boolean>(false)
     }
     val isStopwatchStarted: LiveData<Boolean> = _isStopwatchStarted
 
@@ -140,4 +132,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    companion object {
+        var isTimeLine = false
+        var isFromService = false
+    }
 }

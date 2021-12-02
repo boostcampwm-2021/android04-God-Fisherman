@@ -61,18 +61,12 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         fun onBind(data: RankingData.HomeRankingData) {
             binding.data = data
-            binding.rank = when (adapterPosition + 1) {
-                1 -> "🥇 "
-                2 -> "🥈 "
-                3 -> "🥉 "
-                else -> ""
-            } + "${adapterPosition + 1}위"
-
+            binding.rank = convertToRankingString(bindingAdapterPosition)
             setLastView()
         }
 
         private fun setLastView() {
-            if (adapterPosition == itemCount - 1) {
+            if (bindingAdapterPosition == itemCount - 1) {
                 binding.vLine.visibility = View.INVISIBLE
             } else {
                 binding.vLine.visibility = View.VISIBLE
@@ -85,23 +79,26 @@ class RankingRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         fun onBind(data: RankingData.HomeWaitingRankingData) {
             binding.data = data
-            binding.rank = when (adapterPosition + 1) {
-                1 -> "🥇 "
-                2 -> "🥈 "
-                3 -> "🥉 "
-                else -> ""
-            } + "${adapterPosition + 1}위"
-
+            binding.rank = convertToRankingString(bindingAdapterPosition)
             setLastView()
         }
 
         private fun setLastView() {
-            if (adapterPosition == itemCount - 1) {
+            if (bindingAdapterPosition == itemCount - 1) {
                 binding.vLine.visibility = View.INVISIBLE
             } else {
                 binding.vLine.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun convertToRankingString(position: Int): String {
+        return when (position + 1) {
+            1 -> "🥇 "
+            2 -> "🥈 "
+            3 -> "🥉 "
+            else -> ""
+        } + "${position + 1}위"
     }
 
     companion object {

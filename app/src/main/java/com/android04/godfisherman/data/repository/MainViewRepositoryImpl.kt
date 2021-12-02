@@ -4,7 +4,6 @@ import android.location.Location
 import com.android04.godfisherman.domain.MainViewRepository
 import com.android04.godfisherman.domain.RecordRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class MainViewRepositoryImpl @Inject constructor(
     private val stopwatchRepository: RecordRepository.StopwatchRepository,

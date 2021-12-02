@@ -3,8 +3,8 @@ package com.android04.godfisherman.presentation.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android04.godfisherman.data.repository.LogInRepository
 import com.android04.godfisherman.common.RepoResponseImpl
+import com.android04.godfisherman.data.repository.LogInRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

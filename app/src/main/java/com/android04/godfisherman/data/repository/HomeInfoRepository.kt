@@ -2,19 +2,20 @@ package com.android04.godfisherman.data.repository
 
 import com.android04.godfisherman.common.RepoResponse
 import com.android04.godfisherman.common.RepoResponseImpl
-import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.common.Result
 import com.android04.godfisherman.common.cache.HomeInfoCache
+import com.android04.godfisherman.common.constant.FishRankingRequest
 import com.android04.godfisherman.data.datasource.homedatasource.HomeDataSource
 import com.android04.godfisherman.network.response.WeatherResponse
 import com.android04.godfisherman.network.response.YoutubeResponse
 import com.android04.godfisherman.presentation.home.HomeCurrentWeather
 import com.android04.godfisherman.presentation.home.HomeDetailWeather
 import com.android04.godfisherman.presentation.home.HomeRecommendData
-import com.android04.godfisherman.utils.*
 import com.android04.godfisherman.presentation.rankingdetail.RankingData
+import com.android04.godfisherman.utils.roundTime
+import com.android04.godfisherman.utils.timeConvertUTC
+import com.android04.godfisherman.utils.timeConvertUTCFull
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.roundToInt
 
 class HomeInfoRepository @Inject constructor(

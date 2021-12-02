@@ -2,30 +2,26 @@ package com.android04.godfisherman.common
 
 import android.content.Context
 import android.graphics.Rect
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
-import java.lang.Exception
+import androidx.recyclerview.widget.RecyclerView
 
 
 class RecyclerViewEmptySupport : RecyclerView {
 
-    constructor (context: Context) : super(context){}
+    constructor (context: Context) : super(context) {}
 
-    constructor (context: Context, attrs: AttributeSet) : super(context, attrs){}
+    constructor (context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
     private var emptyView: View? = null
 
     private fun onDataChanged() {
-        if (adapter != null && emptyView != null)
-        {
-            if (adapter!!.itemCount == 0)
-            {
+        if (adapter != null && emptyView != null) {
+            if (adapter!!.itemCount == 0) {
                 emptyView!!.visibility = View.VISIBLE
                 this@RecyclerViewEmptySupport.visibility = View.GONE
-            } else
-            {
+            } else {
                 emptyView!!.visibility = View.GONE
                 this@RecyclerViewEmptySupport.visibility = View.VISIBLE
             }
@@ -41,7 +37,6 @@ class RecyclerViewEmptySupport : RecyclerView {
         this.emptyView = emptyView
     }
 
-    // RecyclerView Adpater 가 ListAdapter인 경우에만 사용
     fun <T> submitList(dataList: List<T>) {
         try {
             (adapter as ListAdapter<T, *>).submitList(dataList) {
@@ -49,16 +44,15 @@ class RecyclerViewEmptySupport : RecyclerView {
             }
 
         } catch (e: Exception) {
-            // 이는 사용자가 아닌 개발자의 실라 별도의 예외처리 없이 로그 출력
             e.printStackTrace()
         }
     }
 
-    fun setVerticalInterval(height: Int) {
+    private fun setVerticalInterval(height: Int) {
         this.addItemDecoration(VerticalItemDecoration(height))
     }
 
-    fun setUpConfiguration(adapter: Adapter<*>?, emptyView: View, interval: Int) {
+    fun setConfiguration(adapter: Adapter<*>?, emptyView: View, interval: Int) {
         setAdapter(adapter)
         setEmptyView(emptyView)
         setVerticalInterval(interval)

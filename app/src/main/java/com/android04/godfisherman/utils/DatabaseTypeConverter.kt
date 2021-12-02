@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
 import java.io.ByteArrayOutputStream
-import java.util.Date
+import java.util.*
 
 class DatabaseTypeConverter {
     @TypeConverter
@@ -18,14 +18,14 @@ class DatabaseTypeConverter {
     }
 
     @TypeConverter
-    fun toByteArray(bitmap : Bitmap) : ByteArray{
+    fun toByteArray(bitmap: Bitmap): ByteArray {
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         return outputStream.toByteArray()
     }
 
     @TypeConverter
-    fun toBitmap(bytes : ByteArray) : Bitmap{
+    fun toBitmap(bytes: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 

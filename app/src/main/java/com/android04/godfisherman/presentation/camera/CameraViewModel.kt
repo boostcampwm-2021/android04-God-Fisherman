@@ -3,20 +3,23 @@ package com.android04.godfisherman.presentation.camera
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android04.godfisherman.utils.*
+import com.android04.godfisherman.utils.findHeightCenter
+import com.android04.godfisherman.utils.heightConvert
+import com.android04.godfisherman.utils.isLevelCorrect
+import com.android04.godfisherman.utils.widthConvert
 
 class CameraViewModel : ViewModel() {
     private val _isLevelOk: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isLevelOk: LiveData<Boolean> = _isLevelOk
 
     private val _fishRect: MutableLiveData<List<Int>?> by lazy { MutableLiveData<List<Int>?>() }
-    val fishRect : LiveData<List<Int>?> = _fishRect
+    val fishRect: LiveData<List<Int>?> = _fishRect
 
     private val _moneyRect: MutableLiveData<List<Int>?> by lazy { MutableLiveData<List<Int>?>() }
-    val moneyRect : LiveData<List<Int>?> = _moneyRect
+    val moneyRect: LiveData<List<Int>?> = _moneyRect
 
     private val _bodySize: MutableLiveData<Double?> by lazy { MutableLiveData<Double?>() }
-    val bodySize : LiveData<Double?> = _bodySize
+    val bodySize: LiveData<Double?> = _bodySize
 
     private val _isShutterPressed: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     val isShutterPressed: LiveData<Boolean> = _isShutterPressed
@@ -42,10 +45,10 @@ class CameraViewModel : ViewModel() {
             }
         }
 
-        setSize()
+        calculateSize()
     }
 
-    private fun setSize() {
+    private fun calculateSize() {
         val fishRect = _fishRect.value
         val moneyRect = _moneyRect.value
 
@@ -73,12 +76,16 @@ class CameraViewModel : ViewModel() {
             null
         }
     }
-    
-    fun changedLevel(x: Float, y: Float){
+
+    fun changedLevel(x: Float, y: Float) {
         _isLevelOk.value = isLevelCorrect(x, y)
     }
 
     fun setShutterPressed(pressed: Boolean) {
         _isShutterPressed.value = pressed
+    }
+
+    companion object {
+        const val MONEY_SIZE = 13.6F
     }
 }

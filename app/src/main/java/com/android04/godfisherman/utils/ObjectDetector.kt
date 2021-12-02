@@ -8,7 +8,7 @@ import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 
 class ObjectDetector {
-    private val options =  ObjectDetectorOptions.Builder()
+    private val options = ObjectDetectorOptions.Builder()
         .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
         .enableMultipleObjects()
         .enableClassification()

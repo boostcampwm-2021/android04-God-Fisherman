@@ -1,10 +1,10 @@
 package com.android04.godfisherman.ui.main
 
 import android.Manifest
-import android.content.Intent
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -28,8 +28,8 @@ import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
 import com.android04.godfisherman.ui.service.StopwatchService
-import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.StopwatchFragment
+import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,8 +51,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
         serviceIntent = Intent(this, StopwatchService::class.java)
         registerReceiver(receiveTime, IntentFilter(StopwatchService.SERVICE_DESTROYED))
 
-        setOrientation()
         StopwatchNotification.createChannel(this)
+        initOrientation()
         initBottomNavigation()
         initMotionListener()
         checkFromService()
@@ -98,7 +98,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
         viewModel.stopwatchOnFlag.observe(this) { flag ->
             if (flag) {
-                changeFragment(R.id.fl_stopwatch_big, StopwatchFragment())
+                replaceFragment(R.id.fl_stopwatch_big, StopwatchFragment())
                 swipeMotionLayoutWrapper.apply {
                     setTransition(R.id.transition)
                     swipeMotionLayoutWrapper.setProgress(1f) {
@@ -116,18 +116,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun initBottomNavigation() {
         binding.navView.setOnItemSelectedListener { menuItem ->
-          
+
             if (menuItem.isChecked) {
                 false
             } else {
                 when (menuItem.itemId) {
                     R.id.navigation_home -> {
-                        changeFragment(R.id.fl_fragment_container, HomeFragment())
+                        replaceFragment(R.id.fl_fragment_container, HomeFragment())
                         viewModel.beforeMenuItemId = R.id.navigation_home
                         true
                     }
                     R.id.navigation_feed -> {
-                        changeFragment(R.id.fl_fragment_container, FeedFragment())
+                        replaceFragment(R.id.fl_fragment_container, FeedFragment())
                         viewModel.beforeMenuItemId = R.id.navigation_feed
                         true
                     }
@@ -140,12 +140,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                         if (viewModel.stopwatchOnFlag.value == true) {
                             swipeMotionLayoutWrapper.transitionToState(R.id.end)
                         } else {
-                            changeFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
+                            replaceFragmentWithBackStack(R.id.fl_fragment_container, StopwatchInfoFragment())
                         }
                         true
                     }
                     R.id.navigation_my_page -> {
-                        changeFragment(R.id.fl_fragment_container, MyPageFragment())
+                        replaceFragment(R.id.fl_fragment_container, MyPageFragment())
                         viewModel.beforeMenuItemId = R.id.navigation_my_page
                         true
                     }
@@ -153,15 +153,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
                 }
             }
         }
-        changeFragment(R.id.fl_fragment_container, HomeFragment())
+        replaceFragment(R.id.fl_fragment_container, HomeFragment())
         viewModel.beforeMenuItemId = R.id.navigation_home
     }
 
-    private fun changeFragment(containerId: Int, fragment: Fragment) {
+    private fun replaceFragment(containerId: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(containerId, fragment).commit()
     }
 
-    private fun changeFragmentWithBackStack(containerId: Int, fragment: Fragment) {
+    private fun replaceFragmentWithBackStack(containerId: Int, fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(containerId, fragment)
             .addToBackStack(BEFORE_FRAGMENT)
@@ -173,7 +173,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun initMotionListener() {
-        swipeMotionLayoutWrapper.setupTransitionListener(
+        swipeMotionLayoutWrapper.initTransitionListener(
             transitionCompletedCallback = { _, currentId ->
                 binding.navView.menu.findItem(viewModel.beforeMenuItemId).isChecked = true
                 MainViewModel.isFromService = false
@@ -202,29 +202,27 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
         }
 
-        println(supportFragmentManager.fragments)
-
         when {
             viewModel.isOpened -> {
                 swipeMotionLayoutWrapper.transitionToState(R.id.start)
                 viewModel.isOpened = false
             }
             !isHome -> {
-                transitionToHome()
+                moveToHome()
             }
             isHome -> {
-                backWithFinish()
+                backWithFinishCheck()
             }
         }
     }
 
-    private fun transitionToHome() {
-        changeFragment(R.id.fl_fragment_container, HomeFragment())
+    private fun moveToHome() {
+        replaceFragment(R.id.fl_fragment_container, HomeFragment())
         viewModel.beforeMenuItemId = R.id.navigation_home
         binding.navView.selectedItemId = R.id.navigation_home
     }
 
-    private fun backWithFinish() {
+    private fun backWithFinishCheck() {
         val currentTime = System.currentTimeMillis()
 
         if (currentTime > viewModel.lastBackTime + 2000) {
@@ -236,7 +234,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    private fun setOrientation() {
+    private fun initOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
@@ -335,11 +333,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun requestLocation() {
-        locationHelper.setLocationUpdate { locationRequestCallback() }
-    }
-
-    private fun locationRequestCallback() {
-        viewModel.updateLocation(locationHelper.getLocation())
+        val locationRequestCallback = { viewModel.updateLocation(locationHelper.getLocation()) }
+        locationHelper.setLocationUpdate(locationRequestCallback)
     }
 
     companion object {

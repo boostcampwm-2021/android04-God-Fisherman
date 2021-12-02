@@ -21,7 +21,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.login.LogInActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

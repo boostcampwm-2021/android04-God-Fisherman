@@ -12,7 +12,7 @@ class RankingViewPagerAdapter : RecyclerView.Adapter<RankingViewPagerAdapter.Ran
 
     private val data = mutableListOf<RankingPageData>()
 
-    fun setData(newData : List<RankingPageData>) {
+    fun setData(newData: List<RankingPageData>) {
         data.addAll(newData)
         notifyDataSetChanged()
     }
@@ -26,13 +26,13 @@ class RankingViewPagerAdapter : RecyclerView.Adapter<RankingViewPagerAdapter.Ran
         holder.bind(data[position])
     }
 
-    override fun getItemCount(): Int  = data.size
+    override fun getItemCount(): Int = data.size
 
     class RankingPageViewHolder(private val binding: ItemRankingBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(pageData: RankingPageData) {
             binding.tvRankingTitle.text =
-                when(pageData.rankingType) {
+                when (pageData.rankingType) {
                     RankingType.SIZE -> binding.root.context.getText(R.string.ranking_size)
                     RankingType.TIME -> binding.root.context.getText(R.string.ranking_time)
                 }

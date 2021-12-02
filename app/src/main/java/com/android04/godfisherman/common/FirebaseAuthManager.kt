@@ -34,7 +34,7 @@ class FirebaseAuthManager @Inject constructor(
         manager.saveString(LOGIN_IMG, userInfo.imgUrl)
     }
 
-    fun getUserInfo(): UserInfo {
+    fun loadUserInfo(): UserInfo {
         val name = manager.getString(LOGIN_NAME) ?: ""
         val email = manager.getString(LOGIN_EMAIL) ?: ""
         val img = manager.getString(LOGIN_IMG) ?: ""
