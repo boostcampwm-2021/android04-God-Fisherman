@@ -16,10 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedViewModel @Inject constructor(private val repository: FeedRepository) : ViewModel() {
 
-    private val _isDataLoading : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(true) }
-    val isDataLoading : LiveData<Boolean> = _isDataLoading
+    private val _isDataLoading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(true) }
+    val isDataLoading: LiveData<Boolean> = _isDataLoading
 
-    private var pagingData : Flow<PagingData<FeedData>> = repository.getFeedDataList(Type.ALL).cachedIn(viewModelScope)
+    private var pagingData: Flow<PagingData<FeedData>> = repository.getFeedDataList(Type.ALL).cachedIn(viewModelScope)
 
     private fun fetchFeedDataList(type: Type): Flow<PagingData<FeedData>> {
         pagingData = repository.getFeedDataList(type).cachedIn(viewModelScope)
@@ -40,11 +40,11 @@ class FeedViewModel @Inject constructor(private val repository: FeedRepository) 
         }
     }
 
-    fun setLoadingOn(){
+    fun setLoadingOn() {
         _isDataLoading.postValue(true)
     }
 
-    fun setLoadingOff(){
+    fun setLoadingOff() {
         _isDataLoading.postValue(false)
     }
 }

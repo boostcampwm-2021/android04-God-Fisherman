@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemTimelinePhotoBinding
 
-class TimelineViewPagerAdapter(private val data : List<String>) : RecyclerView.Adapter<TimelineViewPagerAdapter.PhotoViewHolder>() {
+class TimelineViewPagerAdapter(private val data: List<String>) : RecyclerView.Adapter<TimelineViewPagerAdapter.PhotoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding = ItemTimelinePhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,8 +20,8 @@ class TimelineViewPagerAdapter(private val data : List<String>) : RecyclerView.A
         return data.size
     }
 
-    class PhotoViewHolder(private val binding : ItemTimelinePhotoBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(url : String) {
+    class PhotoViewHolder(private val binding: ItemTimelinePhotoBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(url: String) {
             binding.url = url
         }
     }

@@ -21,7 +21,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding, MyPageViewModel>(R.la
 
     override val viewModel: MyPageViewModel by viewModels()
 
-    private lateinit var loadingDialog : Dialog
+    private lateinit var loadingDialog: Dialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

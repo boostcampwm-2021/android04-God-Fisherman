@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android04.godfisherman.databinding.ItemTimelineBinding
 import com.android04.godfisherman.presentation.feed.TimeLineData
 
-class TimelineRecyclerViewAdapter(private val data : List<TimeLineData>) :
+class TimelineRecyclerViewAdapter(private val data: List<TimeLineData>) :
     RecyclerView.Adapter<TimelineRecyclerViewAdapter.TimelineViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineViewHolder {
@@ -23,9 +23,9 @@ class TimelineRecyclerViewAdapter(private val data : List<TimeLineData>) :
         return data.size
     }
 
-    inner class TimelineViewHolder(private val binding : ItemTimelineBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TimelineViewHolder(private val binding: ItemTimelineBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data : TimeLineData) {
+        fun onBind(data: TimeLineData) {
             binding.data = data
             changeLine()
         }

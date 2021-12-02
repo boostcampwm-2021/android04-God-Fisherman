@@ -1,10 +1,10 @@
 package com.android04.godfisherman.ui.main
 
 import android.Manifest
-import android.content.Intent
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -28,8 +28,8 @@ import com.android04.godfisherman.ui.feed.FeedFragment
 import com.android04.godfisherman.ui.home.HomeFragment
 import com.android04.godfisherman.ui.mypage.MyPageFragment
 import com.android04.godfisherman.ui.service.StopwatchService
-import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.StopwatchFragment
+import com.android04.godfisherman.ui.stopwatch.StopwatchInfoFragment
 import com.android04.godfisherman.ui.stopwatch.UploadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -116,7 +116,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     private fun initBottomNavigation() {
         binding.navView.setOnItemSelectedListener { menuItem ->
-          
+
             if (menuItem.isChecked) {
                 false
             } else {
@@ -333,7 +333,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     }
 
     private fun requestLocation() {
-        val locationRequestCallback = {viewModel.updateLocation(locationHelper.getLocation())}
+        val locationRequestCallback = { viewModel.updateLocation(locationHelper.getLocation()) }
         locationHelper.setLocationUpdate(locationRequestCallback)
     }
 

@@ -1,7 +1,7 @@
 package com.android04.godfisherman.network.response
 
 data class YoutubeResponse(
-    val items : List<YoutubeItem>
+    val items: List<YoutubeItem>
 )
 
 data class YoutubeItem(

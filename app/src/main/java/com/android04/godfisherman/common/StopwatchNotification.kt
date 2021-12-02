@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 
 class StopwatchNotification {
-    companion object{
+    companion object {
         const val CHANNEL_ID = "Stopwatch_channel_id"
 
         fun createChannel(context: Context) {

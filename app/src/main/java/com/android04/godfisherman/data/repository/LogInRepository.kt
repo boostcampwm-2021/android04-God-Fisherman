@@ -1,8 +1,8 @@
 package com.android04.godfisherman.data.repository
 
-import com.android04.godfisherman.presentation.mypage.UserInfo
 import com.android04.godfisherman.common.FirebaseAuthManager
 import com.android04.godfisherman.common.RepoResponse
+import com.android04.godfisherman.presentation.mypage.UserInfo
 import javax.inject.Inject
 
 class LogInRepository @Inject constructor(

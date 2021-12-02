@@ -2,30 +2,26 @@ package com.android04.godfisherman.common
 
 import android.content.Context
 import android.graphics.Rect
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
-import java.lang.Exception
+import androidx.recyclerview.widget.RecyclerView
 
 
 class RecyclerViewEmptySupport : RecyclerView {
 
-    constructor (context: Context) : super(context){}
+    constructor (context: Context) : super(context) {}
 
-    constructor (context: Context, attrs: AttributeSet) : super(context, attrs){}
+    constructor (context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
     private var emptyView: View? = null
 
     private fun onDataChanged() {
-        if (adapter != null && emptyView != null)
-        {
-            if (adapter!!.itemCount == 0)
-            {
+        if (adapter != null && emptyView != null) {
+            if (adapter!!.itemCount == 0) {
                 emptyView!!.visibility = View.VISIBLE
                 this@RecyclerViewEmptySupport.visibility = View.GONE
-            } else
-            {
+            } else {
                 emptyView!!.visibility = View.GONE
                 this@RecyclerViewEmptySupport.visibility = View.VISIBLE
             }

@@ -1,7 +1,6 @@
 package com.android04.godfisherman.common
 
 import android.app.Application
-import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

@@ -9,8 +9,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.android04.godfisherman.R
 import com.android04.godfisherman.utils.convertCentiMeter
-import com.android04.godfisherman.utils.toTimeString
 import com.android04.godfisherman.utils.toTimeHourMinute
+import com.android04.godfisherman.utils.toTimeString
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip

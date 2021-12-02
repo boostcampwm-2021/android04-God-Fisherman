@@ -2,12 +2,11 @@ package com.android04.godfisherman.ui.stopwatch
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.android04.godfisherman.databinding.ItemTimeLineInStopWatchBinding
 import com.android04.godfisherman.data.localdatabase.entity.TmpFishingRecord
+import com.android04.godfisherman.databinding.ItemTimeLineInStopWatchBinding
 
 class TimelineListAdapter : ListAdapter<TmpFishingRecord, TimelineListAdapter.TimeLineViewHolder>(ItemComparator()) {
 

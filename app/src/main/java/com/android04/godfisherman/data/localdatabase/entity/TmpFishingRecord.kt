@@ -3,7 +3,7 @@ package com.android04.godfisherman.data.localdatabase.entity
 import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import java.util.*
 
 @Entity(tableName = "temporary_fishing_record")
 data class TmpFishingRecord(

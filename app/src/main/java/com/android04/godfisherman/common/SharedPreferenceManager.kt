@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class SharedPreferenceManager @Inject constructor(
     @ApplicationContext context: Context
-){
+) {
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF_APP_FILE, Context.MODE_PRIVATE)
@@ -33,7 +33,7 @@ class SharedPreferenceManager @Inject constructor(
     }
 
     fun loadGps(): Gps? {
-       return sharedPref.getParcelable(KEY_GPS, null)
+        return sharedPref.getParcelable(KEY_GPS, null)
     }
 
     companion object {

@@ -1,13 +1,13 @@
 package com.android04.godfisherman.data.repository
 
 import android.location.Location
-import com.android04.godfisherman.presentation.main.Gps
-import com.android04.godfisherman.data.datasource.locationdatasource.LocationRemoteDataSource
-import com.android04.godfisherman.common.SharedPreferenceManager
-import javax.inject.Inject
 import com.android04.godfisherman.common.Result
+import com.android04.godfisherman.common.SharedPreferenceManager
+import com.android04.godfisherman.data.datasource.locationdatasource.LocationRemoteDataSource
+import com.android04.godfisherman.presentation.main.Gps
 import com.android04.godfisherman.utils.GPS_ERROR
 import com.android04.godfisherman.utils.NETWORK_ERROR
+import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
     private val remoteDataSource: LocationRemoteDataSource,
@@ -16,7 +16,7 @@ class LocationRepository @Inject constructor(
 
     suspend fun updateAddress(): Result<String> {
         val location = loadLocation()
-        
+
         if (location != null) {
             val currentAddress =
                 remoteDataSource.fetchAddress(location.latitude, location.longitude)

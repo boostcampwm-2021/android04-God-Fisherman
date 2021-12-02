@@ -1,13 +1,13 @@
 package com.android04.godfisherman.ui.intro
 
-import android.os.Bundle
-import com.github.paolorotolo.appintro.AppIntro
-import com.android04.godfisherman.ui.main.MainActivity
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.android04.godfisherman.R
 import com.android04.godfisherman.presentation.intro.IntroViewModel
+import com.android04.godfisherman.ui.main.MainActivity
+import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import dagger.hilt.android.AndroidEntryPoint
 

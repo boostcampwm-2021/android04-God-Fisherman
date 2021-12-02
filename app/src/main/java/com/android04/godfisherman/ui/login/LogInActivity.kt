@@ -84,7 +84,7 @@ class LogInActivity : BaseActivity<ActivityLogInBinding, LogInViewModel>(R.layou
             }
         }
         viewModel.isLogInSuccess.observe(this) {
-            when(it) {
+            when (it) {
                 true -> {
                     showToast(this, R.string.login_success)
                     moveToIntro()

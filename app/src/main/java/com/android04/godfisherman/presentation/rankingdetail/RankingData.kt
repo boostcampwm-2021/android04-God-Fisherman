@@ -2,9 +2,9 @@ package com.android04.godfisherman.presentation.rankingdetail
 
 sealed class RankingData {
     data class HomeRankingData(
-        val userId : String,
-        val type : String,
-        val size : Double
+        val userId: String,
+        val type: String,
+        val size: Double
     ) : RankingData()
 
     data class HomeWaitingRankingData(
@@ -18,4 +18,4 @@ data class RankingPageData(
     val rankingData: List<RankingData>
 )
 
-enum class RankingType { SIZE, TIME}
+enum class RankingType { SIZE, TIME }

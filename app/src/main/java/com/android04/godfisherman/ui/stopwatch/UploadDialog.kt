@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.Button
 import com.android04.godfisherman.R
 
-class UploadDialog(context: Context, private val uploadCallback:() -> (Unit), private val backCallback:() -> (Unit)) {
+class UploadDialog(context: Context, private val uploadCallback: () -> (Unit), private val backCallback: () -> (Unit)) {
     private val dialog = Dialog(context)
 
     fun showDialog() {

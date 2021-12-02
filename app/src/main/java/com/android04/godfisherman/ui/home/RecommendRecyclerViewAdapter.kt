@@ -12,7 +12,7 @@ class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewA
 
     private val data = mutableListOf<HomeRecommendData>()
 
-    fun setData(newData : List<HomeRecommendData>) {
+    fun setData(newData: List<HomeRecommendData>) {
         data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
@@ -31,9 +31,9 @@ class RecommendRecyclerViewAdapter : RecyclerView.Adapter<RecommendRecyclerViewA
         return data.size
     }
 
-    inner class RecommendViewHolder(private val binding : ItemHomeRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RecommendViewHolder(private val binding: ItemHomeRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data : HomeRecommendData) {
+        fun onBind(data: HomeRecommendData) {
             binding.data = data
             binding.root.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
