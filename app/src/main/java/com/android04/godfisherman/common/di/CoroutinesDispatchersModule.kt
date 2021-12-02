@@ -1,7 +1,7 @@
 package com.android04.godfisherman.common.di
 
-import dagger.Provides
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher

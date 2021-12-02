@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<MotionScene 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
@@ -23,7 +22,7 @@
             motion:layout_constraintBottom_toTopOf="@+id/nav_view"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="60dp"/>
+            android:layout_marginEnd="60dp" />
 
         <Constraint
             android:id="@+id/cl_stopwatch_small"
@@ -32,8 +31,7 @@
             motion:layout_constraintBottom_toBottomOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
@@ -41,8 +39,7 @@
             android:layout_height="0dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/nav_view"
@@ -52,8 +49,7 @@
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main" />
 
         <Constraint
             android:id="@+id/fl_fragment_container"
@@ -80,8 +76,7 @@
             android:layout_height="0dp"
             motion:layout_constraintBottom_toTopOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
-            motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
@@ -91,8 +86,7 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            />
+            motion:layout_constraintBottom_toBottomOf="parent" />
 
         <Constraint
             android:id="@+id/nav_view"
@@ -100,8 +94,7 @@
             android:layout_height="wrap_content"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toBottomOf="parent"
-            />
+            motion:layout_constraintTop_toBottomOf="parent" />
 
         <Constraint
             android:id="@+id/fl_fragment_container"
@@ -110,8 +103,7 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintVertical_bias="0.0"
-            />
+            motion:layout_constraintVertical_bias="0.0" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/start_close">
@@ -130,8 +122,7 @@
             motion:layout_constraintBottom_toBottomOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
             motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
-            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
@@ -139,8 +130,7 @@
             android:layout_height="0dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/nav_view"
@@ -150,8 +140,7 @@
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main" />
 
         <Constraint
             android:id="@+id/fl_fragment_container"
@@ -160,8 +149,7 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintVertical_bias="0.0"
-            />
+            motion:layout_constraintVertical_bias="0.0" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end_close">
@@ -180,8 +168,7 @@
             motion:layout_constraintBottom_toBottomOf="@+id/cl_container_stopwatch"
             motion:layout_constraintEnd_toEndOf="@+id/cl_container_stopwatch"
             motion:layout_constraintStart_toStartOf="@+id/cl_container_stopwatch"
-            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toTopOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/fl_stopwatch_big"
@@ -189,8 +176,7 @@
             android:layout_height="0dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/cl_container_stopwatch" />
 
         <Constraint
             android:id="@+id/nav_view"
@@ -200,8 +186,7 @@
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main"
-            />
+            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_activity_main" />
 
         <Constraint
             android:id="@+id/fl_fragment_container"
@@ -210,8 +195,7 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintVertical_bias="0.0"
-            />
+            motion:layout_constraintVertical_bias="0.0" />
     </ConstraintSet>
 
 </MotionScene>

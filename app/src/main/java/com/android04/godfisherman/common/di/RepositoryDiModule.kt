@@ -1,6 +1,8 @@
 package com.android04.godfisherman.common.di
 
-import com.android04.godfisherman.data.repository.*
+import com.android04.godfisherman.data.repository.HomeRepositoryImpl
+import com.android04.godfisherman.data.repository.MainViewRepositoryImpl
+import com.android04.godfisherman.data.repository.RecordRepositoryImpl
 import com.android04.godfisherman.domain.HomeRepository
 import com.android04.godfisherman.domain.MainViewRepository
 import com.android04.godfisherman.domain.RecordRepository
