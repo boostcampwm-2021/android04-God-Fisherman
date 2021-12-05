@@ -1,6 +1,6 @@
 # 🐟 프로젝트 소개
 
-<p align="center"><img src="https://user-images.githubusercontent.com/38002959/143963637-6963d42d-ed64-4349-9e5b-b4795271b920.gif"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/38002959/143963637-6963d42d-ed64-4349-9e5b-b4795271b920.gif" width="500"></p>
 
 ### 그물잠은 낚시를 보다 재밌게 즐길 수 있는 앱입니다.
 
@@ -10,9 +10,10 @@
 
 ⏰ 낚시를 하는 동안 잡힌 물고기를 타임라인으로 남겨보세요!
 
-[WIKI](https://github.com/boostcampwm-2021/android04-God-Fisherman/wiki)
-
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2Fandroid04-God-Fisherman&count_bg=%238357FF&title_bg=%23525252&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
+### 🎬데모 영상
+https://www.youtube.com/watch?v=ECKfQMjWBvs
 
 # 🎬 주요 기능
 
@@ -99,8 +100,10 @@
     - OpenWeatherMap API
 
 # 🧑‍💻 기술 특장점
-
 [기술 특장점](https://github.com/boostcampwm-2021/android04-God-Fisherman/wiki/기술-특장점)
+
+# 📒WIKI
+[WIKI](https://github.com/boostcampwm-2021/android04-God-Fisherman/wiki)
 
 # 팀원 소개
 
