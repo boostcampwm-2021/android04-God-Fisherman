@@ -42,7 +42,7 @@ class StopwatchService : Service() {
         startTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
         startForeground(NOTIFICATION_ID, createNotification())
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, PERIOD)
-        return START_NOT_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
