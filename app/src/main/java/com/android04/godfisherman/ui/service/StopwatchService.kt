@@ -15,7 +15,7 @@ import java.util.*
 
 class StopwatchService : Service() {
 
-    private var saveTime = 0.0
+    private var startTime = 0.0
     private val stopwatch = Timer()
     private lateinit var notification: NotificationCompat.Builder
 
@@ -39,27 +39,28 @@ class StopwatchService : Service() {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
-        saveTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
+        startTime = passedIntent.getDoubleExtra(TIME_EXTRA, 0.0)
         startForeground(NOTIFICATION_ID, createNotification())
         stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, PERIOD)
-        return START_NOT_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
         super.onDestroy()
         stopwatch.cancel()
         val intent = Intent(SERVICE_DESTROYED)
-        intent.putExtra(SERVICE_DESTROYED, saveTime)
+        intent.putExtra(SERVICE_DESTROYED, startTime)
         sendBroadcast(intent)
         NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
     }
 
     private inner class StopwatchTask : TimerTask() {
         override fun run() {
-            saveTime += INTERVAL
-            updateNotification(saveTime)
+            updateNotification(displayTime())
         }
     }
+
+    private fun displayTime() = (System.currentTimeMillis().toDouble()-startTime) / 10
 
     private fun createNotification(): Notification = notification.setContentText("00:00:00").build()
 

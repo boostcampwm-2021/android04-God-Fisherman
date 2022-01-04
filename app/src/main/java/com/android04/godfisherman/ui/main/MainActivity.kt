@@ -241,7 +241,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     override fun onStop() {
         super.onStop()
         if (viewModel.isServiceRequestWithOutCamera) {
-            passStopwatchToService(viewModel.stopwatch.getTime())
+            passStopwatchToService(viewModel.stopwatch.getStartTime())
         }
     }
 

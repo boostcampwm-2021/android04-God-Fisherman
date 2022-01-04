@@ -73,7 +73,7 @@ class MainViewModel @Inject constructor(
 
     private fun startStopwatch() {
         isTimeLine = true
-        stopwatch.start(10)
+        stopwatch.start(10,System.currentTimeMillis().toDouble())
         _isStopwatchStarted.value = true
     }
 
