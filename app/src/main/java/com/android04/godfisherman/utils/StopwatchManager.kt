@@ -1,42 +1,47 @@
 package com.android04.godfisherman.utils
 
+import android.util.Log
 import java.util.*
 
-class StopwatchManager(private val callback: (Double) -> (Unit), private var time: Double = 0.0) {
+class StopwatchManager(private val callback: (Double) -> (Unit), private var startTime: Double = System.currentTimeMillis().toDouble()) {
     private var resumeTime = 0.0
     private var saveTime = 0.0
     private lateinit var stopwatch: Timer
 
     fun end() {
-        resumeTime = time
+        resumeTime = startTime
         stopwatch.cancel()
-        saveTime = time
-        time = 0.0
-        callback(time)
+        callback(0.0)
     }
 
-    fun start(period: Long, startTime: Double = 0.0) {
-        time = startTime
+    fun start(period: Long, time: Double = 0.0) {
+        startTime = time
         stopwatch = Timer()
-        stopwatch.scheduleAtFixedRate(StopwatchTask(period), 0, period)
+        stopwatch.scheduleAtFixedRate(StopwatchTask(), 0, period)
     }
 
     fun resumeStopwatch(period: Long) {
         start(period, resumeTime)
     }
 
-    fun getTime(): Double {
-        return time
+    fun getStartTime(): Double {
+        return startTime
     }
 
     fun getSaveTime(): Double {
         return saveTime
     }
 
-    private inner class StopwatchTask(private val period: Long) : TimerTask() {
+    private inner class StopwatchTask() : TimerTask() {
         override fun run() {
-            time += period / 10
-            callback(time)
+            Log.d("stopwatch", startTime.toString())
+            Log.d("stopwatch", System.currentTimeMillis().toDouble().toString())
+            callback(displayTime())
         }
+    }
+
+    private fun displayTime(): Double {
+        saveTime = (System.currentTimeMillis().toDouble()-startTime) / 10
+        return saveTime
     }
 }
